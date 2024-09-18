@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game() 
-: window(sf::VideoMode(800, 800), "Szachy"), board() {
+: window(sf::VideoMode(800, 800), "Szachy"), board(), currentPlayerTurn(WHITE) {
     // Inicjalizacja innych elementów, jeśli potrzeba
 }
 
@@ -26,7 +26,7 @@ void Game::processEvents() {
                     sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
                     for (auto& piece : board.b_pieces) {
-                        if (piece->getSprite().getGlobalBounds().contains(mousePosition)) {
+                        if (piece->getSprite().getGlobalBounds().contains(mousePosition) && piece->getColor() == currentPlayerTurn) {
                             isDragging = true;
                             draggedPiece = dynamic_cast<Piece*>(piece);
                             dragOffset = mousePosition - draggedPiece->getPosition();
@@ -42,11 +42,22 @@ void Game::processEvents() {
                     
                     sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
-                    // better rough snapping
+                    // Zaokrąglenie pozycji myszy do najbliższego pola
                     float snappedX = std::round(mousePosition.x / 82);
                     float snappedY = std::round(mousePosition.y / 89);
                     
-                    draggedPiece->move(snappedX, snappedY);
+
+                    if (draggedPiece->isValidMove(snappedX, snappedY)) {
+                        draggedPiece->move(snappedX, snappedY);
+                        
+                        // zmien turę po dozwolonym ruchu
+                        currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+                    }
+                    else{
+                        draggedPiece->move(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
+                    }
+
+
                     draggedPiece = nullptr;
                     dragOffset = sf::Vector2f(0, 0);
                 }

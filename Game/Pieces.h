@@ -25,11 +25,12 @@ public:
 
     Piece(int color, sf::Vector2f position, PieceType type, int boardX, int boardY);
     Piece();
-    virtual ~Piece();  // Ensure this is virtual
+    virtual ~Piece();
 
     virtual void draw(sf::RenderWindow& window) = 0;
-    virtual void move(int boardX, int boardY) = 0;
-    virtual void move(sf::Vector2f newPosition) = 0;
+    virtual void move(int boardX, int boardY);
+    virtual void move(sf::Vector2f newPosition);
+    virtual bool isValidMove(int boardX, int boardY) = 0;
 
 
     sf::Sprite& getSprite();
@@ -40,12 +41,12 @@ public:
     
 
 protected:
-    Board* board;
-    sf::Texture texture;
-    sf::Sprite sprite;
-    sf::Vector2f m_position;
-    int m_color;
-    PieceType m_type;
-    Coordinate boardPosition;
+    Board* board; // wskaźnik na planszę
+    sf::Texture texture; // tekstura figury
+    sf::Sprite sprite; // sprite figury
+    sf::Vector2f m_position; // pozycja figury na planszy
+    int m_color; // kolor figury
+    PieceType m_type; // typ figury
+    Coordinate boardPosition; // pozycja figury na planszy w postaci współrzędnych planszy
 
 };

@@ -93,22 +93,8 @@ bool Queen::isValidBishopMove(int boardX, int boardY) {
     return false;
 }
 
-void Queen::move(sf::Vector2f newPosition) {
-    m_position = newPosition;
-    sprite.setPosition(newPosition);
-}
-
 void Queen::move(int boardX, int boardY) {
-    if (isValidMove(boardX, boardY)) {
-        // Przemieść królową
-        m_position = Position(boardX, boardY).getPixelPosition();
-        boardPosition = Coordinate(boardX, boardY);
-        sprite.setPosition(m_position);
-    } else {
-        // Jeśli ruch jest nieprawidłowy, królowa wraca na poprzednią pozycję
-        m_position = Position(boardPosition.x, boardPosition.y).getPixelPosition();
-        sprite.setPosition(m_position);
-    }
+    Piece::move(boardX, boardY);
 }
 
 Queen::~Queen() {}

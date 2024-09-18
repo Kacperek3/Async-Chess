@@ -20,7 +20,7 @@ public:
     bool isEnemyPieceAt(int boardX, int boardY, int color) const;
     void removePiece(int boardX, int boardY);
 
-    std::vector<Piece*> b_pieces;
+    std::vector<Piece*> b_pieces; // wektor przechowujący wskaźniki na obiekty klasy Piece
 private:
-    // Możesz dodać zmienne, które będą reprezentować stan planszy
+    
 };

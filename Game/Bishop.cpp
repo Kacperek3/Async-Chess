@@ -54,22 +54,8 @@ bool Bishop::isValidMove(int boardX, int boardY) {
     return false;  // W innych przypadkach ruch jest niedozwolony
 }
 
-void Bishop::move(sf::Vector2f newPosition) {
-    m_position = newPosition;
-    sprite.setPosition(newPosition);
-}
-
 void Bishop::move(int boardX, int boardY) {
-    if (isValidMove(boardX, boardY)) {
-        // Przemieść gońca
-        m_position = Position(boardX, boardY).getPixelPosition();
-        boardPosition = Coordinate(boardX, boardY);
-        sprite.setPosition(m_position);
-    } else {
-        // Jeśli ruch jest nieprawidłowy, ustaw gońca z powrotem na poprzednią pozycję
-        m_position = Position(boardPosition.x, boardPosition.y).getPixelPosition();
-        sprite.setPosition(m_position);
-    }
+    Piece::move(boardX, boardY);
 }
 
 Bishop::~Bishop() {}

@@ -2,29 +2,30 @@
 
 Board::Board() {
     // białe bierki
-    b_pieces.push_back(new Rook(WHITE, 0, 0, this));
-    b_pieces.push_back(new Knight(WHITE, 1, 0, this));
-    b_pieces.push_back(new Bishop(WHITE, 2, 0, this));
-    b_pieces.push_back(new Queen(WHITE, 3, 0, this));
-    b_pieces.push_back(new King(WHITE, 4, 0, this));
-    b_pieces.push_back(new Bishop(WHITE, 5, 0, this));
-    b_pieces.push_back(new Knight(WHITE, 6, 0, this));
-    b_pieces.push_back(new Rook(WHITE, 7, 0, this));
+    // czarne bierki
+    b_pieces.push_back(new Rook(BLACK, 0, 0, this));
+    b_pieces.push_back(new Knight(BLACK, 1, 0, this));
+    b_pieces.push_back(new Bishop(BLACK, 2, 0, this));
+    b_pieces.push_back(new Queen(BLACK, 3, 0, this));
+    b_pieces.push_back(new King(BLACK, 4, 0, this));
+    b_pieces.push_back(new Bishop(BLACK, 5, 0, this));
+    b_pieces.push_back(new Knight(BLACK, 6, 0, this));
+    b_pieces.push_back(new Rook(BLACK, 7, 0, this));
     for (int i = 0; i < 8; i++) {
-        b_pieces.push_back(new Pawn(WHITE, i, 1, this));
+        b_pieces.push_back(new Pawn(BLACK, i, 1, this));
     }
 
-    // czarne bierki
-    b_pieces.push_back(new Rook(BLACK, 0, 7, this));
-    b_pieces.push_back(new Knight(BLACK, 1, 7, this));
-    b_pieces.push_back(new Bishop(BLACK, 2, 7, this));
-    b_pieces.push_back(new Queen(BLACK, 3, 7, this));
-    b_pieces.push_back(new King(BLACK, 4, 7, this));
-    b_pieces.push_back(new Bishop(BLACK, 5, 7, this));
-    b_pieces.push_back(new Knight(BLACK, 6, 7, this));
-    b_pieces.push_back(new Rook(BLACK, 7, 7, this));
+    // białe bierki
+    b_pieces.push_back(new Rook(WHITE, 0, 7, this));
+    b_pieces.push_back(new Knight(WHITE, 1, 7, this));
+    b_pieces.push_back(new Bishop(WHITE, 2, 7, this));
+    b_pieces.push_back(new Queen(WHITE, 3, 7, this));
+    b_pieces.push_back(new King(WHITE, 4, 7, this));
+    b_pieces.push_back(new Bishop(WHITE, 5, 7, this));
+    b_pieces.push_back(new Knight(WHITE, 6, 7, this));
+    b_pieces.push_back(new Rook(WHITE, 7, 7, this));
     for (int i = 0; i < 8; i++) {
-        b_pieces.push_back(new Pawn(BLACK, i, 6, this));
+        b_pieces.push_back(new Pawn(WHITE, i, 6, this));
     }
 
     

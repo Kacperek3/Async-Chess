@@ -46,22 +46,9 @@ bool Knight::isValidMove(int boardX, int boardY) {
     return false;  // W innych przypadkach ruch jest niedozwolony
 }
 
-void Knight::move(sf::Vector2f newPosition) {
-    m_position = newPosition;
-    sprite.setPosition(newPosition);
-}
 
 void Knight::move(int boardX, int boardY) {
-    if (isValidMove(boardX, boardY)) {
-        // Przemieść skoczka
-        m_position = Position(boardX, boardY).getPixelPosition();
-        boardPosition = Coordinate(boardX, boardY);
-        sprite.setPosition(m_position);
-    } else {
-        // Jeśli ruch jest nieprawidłowy, ustaw skoczka z powrotem na poprzednią pozycję
-        m_position = Position(boardPosition.x, boardPosition.y).getPixelPosition();
-        sprite.setPosition(m_position);
-    }
+    Piece::move(boardX, boardY);
 }
 
 Knight::~Knight() {}

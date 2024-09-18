@@ -18,6 +18,16 @@ Coordinate Piece::getBoardPosition(){
     return boardPosition;
 }
 
+void Piece::move(sf::Vector2f newPosition) {
+    m_position = newPosition;
+    sprite.setPosition(newPosition);
+}
+
+void Piece::move(int boardX, int boardY) {
+    m_position = Position(boardX, boardY).getPixelPosition();
+    boardPosition = Coordinate(boardX, boardY);
+    sprite.setPosition(m_position);
+}
 
 Piece::Piece() {}
 

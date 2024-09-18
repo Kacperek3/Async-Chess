@@ -14,7 +14,6 @@ public:
 
     void draw(sf::RenderWindow& window) override;
     void move(int boardX, int boardY) override;
-    void move(sf::Vector2f newPosition) override;
     bool isValidMove(int boardX, int boardY);
     
     

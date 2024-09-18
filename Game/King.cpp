@@ -46,22 +46,8 @@ bool King::isValidMove(int boardX, int boardY) {
     return false;  // W innych przypadkach ruch jest niedozwolony
 }
 
-void King::move(sf::Vector2f newPosition) {
-    m_position = newPosition;
-    sprite.setPosition(newPosition);
-}
-
 void King::move(int boardX, int boardY) {
-    if (isValidMove(boardX, boardY)) {
-        // Przemieść króla
-        m_position = Position(boardX, boardY).getPixelPosition();
-        boardPosition = Coordinate(boardX, boardY);
-        sprite.setPosition(m_position);
-    } else {
-        // Jeśli ruch jest nieprawidłowy, król wraca na poprzednią pozycję
-        m_position = Position(boardPosition.x, boardPosition.y).getPixelPosition();
-        sprite.setPosition(m_position);
-    }
+    Piece::move(boardX, boardY);
 }
 
 King::~King() {}
