@@ -50,13 +50,11 @@ void Game::processEvents() {
                     if (draggedPiece->isValidMove(snappedX, snappedY)) {
                         draggedPiece->move(snappedX, snappedY);
                         currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
-
-                        if (board.isCheckmate(currentPlayerTurn)) {
-                            std::cout << "Checkmate! Gracz " << ((currentPlayerTurn == WHITE) ? "czarny" : "biały") << " wygrał!" << std::endl;
-                            window.close();  // Zamknięcie gry lub wywołanie końca gry
+                        
+                        for(Coordinate c : draggedPiece->getPossibleMoves()){
+                            std::cout <<c.x << " " << c.y << std::endl;
                         }
-
-
+                        std::cout << std::endl;
                         // zmien turę po dozwolonym ruchu
                         
                     }

@@ -5,11 +5,9 @@ Board::Board() {
     // czarne bierki
     
     b_pieces.push_back(new Queen(BLACK, 3, 0, this));
-    b_pieces.push_back(new Queen(BLACK, 3, 1, this));
-    b_pieces.push_back(new King(BLACK, 4, 0, this));
-
-    b_pieces.push_back(new King(WHITE, 4, 7, this));
     
+    //b_pieces.push_back(new Pawn(WHITE, 3, 7, this));
+    b_pieces.push_back(new Pawn(WHITE, 4, 7, this));
 }
 
 
@@ -230,18 +228,41 @@ void Board::draw(sf::RenderWindow& window) {
     sf::Color lightColor(238, 238, 210); 
     sf::Color darkColor(118, 150, 86); 
 
+    // Font do wyświetlania koordynatów
+    sf::Font font;
+    if (!font.loadFromFile("/home/kacper/Pulpit/chess/assets/fonts/Poppins-Thin.ttf")) {
+        // Obsługa błędu ładowania fontu
+        return;
+    }
+
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             sf::RectangleShape tile(sf::Vector2f(75, 75));
             tile.setPosition(col * 75, row * 75);
+
+            // Kolorowanie kafelków
             if ((row + col) % 2 == 0) {
-                    tile.setFillColor(lightColor); 
+                tile.setFillColor(lightColor); 
             } else {
                 tile.setFillColor(darkColor);
             }
             window.draw(tile);
+
+            // Tworzenie tekstu z koordynatami
+            sf::Text coordinates;
+            coordinates.setFont(font);
+            coordinates.setString(std::to_string(row) + " " + std::to_string(col));
+            coordinates.setCharacterSize(20);  // Rozmiar tekstu
+            coordinates.setFillColor(sf::Color::Black);  // Kolor tekstu
+
+            // Pozycjonowanie tekstu na środku pola
+            coordinates.setPosition(col * 75 + 20, row * 75 + 20); 
+
+            // Rysowanie tekstu
+            window.draw(coordinates);
         }
     }
+
     for (auto& piece : b_pieces) {
         piece->draw(window);
     }
