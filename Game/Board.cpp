@@ -4,15 +4,13 @@ Board::Board() {
     // białe bierki
     // czarne bierki
     
-    b_pieces.push_back(new Queen(BLACK, 3, 0, this));
     b_pieces.push_back(new King(BLACK, 4, 0, this));
-    b_pieces.push_back(new Queen(BLACK, 0, 0, this));
+    b_pieces.push_back(new Pawn(BLACK, 0, 4, this));
     
     //b_pieces.push_back(new Pawn(WHITE, 3, 7, this));
     //b_pieces.push_back(new Pawn(WHITE, 4, 7, this));
     
     b_pieces.push_back(new King(WHITE, 4, 7, this));
-    b_pieces.push_back(new Rook(WHITE, 0, 6, this));
 }
 
 
@@ -238,6 +236,39 @@ bool Board::isCheckmate(int color) {
 }
 
 
+
+void Board::promotePawn(Piece* pawn) {
+    // Display promotion UI (or terminal-based selection)
+    std::cout << "Promote to: (Q)ueen, (R)ook, (B)ishop, (K)night" << std::endl;
+    char choice;
+    std::cin >> choice;
+
+    Piece* newPiece = nullptr;
+    switch (choice) {
+        case 'Q':
+            newPiece = new Queen(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+            break;
+        case 'R':
+            newPiece = new Rook(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+            break;
+        case 'B':
+            newPiece = new Bishop(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+            break;
+        case 'K':
+            newPiece = new Knight(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+            break;
+        default:
+            std::cout << "Invalid choice, defaulting to Queen" << std::endl;
+            newPiece = new Queen(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+    }
+
+    // Remove pawn and replace with new piece
+    //removePiece(pawn->getBoardPosition().x, pawn->getBoardPosition().y);
+    b_pieces.push_back(newPiece);
+}
+
+
+
 void Board::showPossibleMoves(sf::RenderWindow& window, Piece* piece){
     std::vector<Coordinate> possibleMoves = getValidMoves(piece);
     sf::Color circleColor(183, 180, 180, 128);
@@ -286,7 +317,7 @@ void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
 
     // Font do wyświetlania koordynatów
     sf::Font font;
-    if (!font.loadFromFile("/home/kacper/Pulpit/chess/assets/fonts/Poppins-Thin.ttf")) {
+    if (!font.loadFromFile("/Users/kacpersztuka/Desktop/chess/Chess-Game/assets/fonts/Poppins-Thin.ttf")) {
         // Obsługa błędu ładowania fontu
         return;
     }

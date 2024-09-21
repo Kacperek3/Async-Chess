@@ -71,8 +71,6 @@ std::vector<Coordinate> Pawn::getPossibleCaptures(){
         possibleCaptures.push_back(Coordinate(boardPosition.x - 1, boardPosition.y + direction));
     }
 
-    // Możliwość dodania funkcji dla bicia w przelocie (en passant) oraz promocji pionka
-
     return possibleCaptures;
 }
 
@@ -106,6 +104,8 @@ bool Pawn::isValidMove(int boardX, int boardY) {
 void Pawn::move(int boardX, int boardY) {
     Piece::move(boardX, boardY);
     firstMove = false;
+
+    std::cout << "Pawn moved to: " << boardX << ", " << boardY << std::endl;
 }
 
 Pawn::~Pawn() {}

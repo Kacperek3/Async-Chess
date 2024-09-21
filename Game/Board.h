@@ -31,7 +31,7 @@ public:
     void showPossibleMoves(sf::RenderWindow& window, Piece* piece); // Pokazuje możliwe ruchy dla przesuwanej bierki
     void showPossibleCaptures(sf::RenderWindow& window, Piece* piece); // Pokazuje możliwe bicia dla przesuwanej bierki
     void markPieceField(sf::RenderWindow& window, Piece* piece); // Podkreśla przesuwaną bierkę
-    
+    void promotePawn(Piece* pawn);
     
 
 
