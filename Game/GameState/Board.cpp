@@ -5,7 +5,7 @@ Board::Board(sf::RenderWindow* window) : window(window) {
     // białe bierki
     b_pieces.push_back(new King(BLACK, 4, 0, this));
     b_pieces.push_back(new Queen(BLACK, 1, 5, this));
-    b_pieces.push_back(new Pawn(BLACK, 1, 1, this));
+    b_pieces.push_back(new Pawn(BLACK, 0, 0, this));
     //b_pieces.push_back(new Pawn(WHITE, 4, 7, this));
 
 

@@ -13,7 +13,7 @@ Queen::Queen(int color, int boardX, int boardY, Board* board)
     std::filesystem::path currentPath = std::filesystem::current_path().parent_path();
     std::string filePath;
 
-    if (color == 0) {
+    if (color == WHITE) {
         filePath = (currentPath / "assets/pieces/chessCom1/wq.png").string();
     } else {
         filePath = (currentPath / "assets/pieces/chessCom1/bq.png").string();

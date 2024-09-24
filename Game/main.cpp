@@ -1,11 +1,24 @@
 #include "Game.h"
+#include "GameStateManager.h"
 
 int main() {
-    Game game;
-    game.run();
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Chess");
+    GameStateManager gsm;
+
     
+    gsm.pushState(new Game(&gsm, &window));
+
+    while (window.isOpen()) {
+        gsm.handleInput(); 
+        gsm.update();       
+        window.clear();
+        gsm.render();
+        window.display();
+    }
+
     return 0;
 }
+
 // todo roszada
 // todo pat
 // todo bicie w przelocie

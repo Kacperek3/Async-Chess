@@ -1,28 +1,18 @@
 #include "Game.h"
 
-Game::Game() 
-: window(sf::VideoMode(800, 800), "Szachy"), board(&window), currentPlayerTurn(WHITE) {
+Game::Game(GameStateManager* gsm, sf::RenderWindow* window)
+: gsm(gsm), window(window), board(window),currentPlayerTurn(WHITE) {
     // Inicjalizacja innych elementów, jeśli potrzeba
 }
 
-void Game::run() {
-    window.setFramerateLimit(60);  // Ograniczenie liczby klatek na sekundę
-    // Główna pętla gry
-    while (window.isOpen()) {
-        processEvents();  // Przetwarzanie zdarzeń
-        update();         // Aktualizacja stanu gry
-        render();         // Renderowanie gry
-    }
-}
-
-void Game::processEvents() {
+void Game::handleInput() {
     sf::Event event;
-    while (window.pollEvent(event)) {
+    while (window->pollEvent(event)) {
         switch (event.type) {
             case sf::Event::Closed:
-                window.close();
+                window->close();
                 break;
-
+            
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::R) {
                     // Przełącz widoczność koordynatów po naciśnięciu 'R'
@@ -31,7 +21,7 @@ void Game::processEvents() {
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                    sf::Vector2f mousePosition = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 
                     for (auto& piece : board.b_pieces) {
                         if (piece->getSprite().getGlobalBounds().contains(mousePosition) && piece->getColor() == currentPlayerTurn) {
@@ -48,7 +38,7 @@ void Game::processEvents() {
                 if (event.mouseButton.button == sf::Mouse::Left && isDragging) {
                     isDragging = false;
                     
-                    sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                    sf::Vector2f mousePosition = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
                     
 
                     // Zaokrąglenie pozycji myszy do najbliższego pola
@@ -106,24 +96,24 @@ void Game::update() {
 }
 
 void Game::render() {
-    window.clear();
+    window->clear();
 
     // Rysowanie planszy i elementów gry
-    board.drawBoard(window, showCoordinates);
+    board.drawBoard(*window, showCoordinates);
     
     if(isDragging && draggedPiece != nullptr){
-        board.showPossibleMoves(window, draggedPiece);
-        board.showPossibleCaptures(window, draggedPiece);
-        board.markPieceField(window, draggedPiece);
+        board.showPossibleMoves(*window, draggedPiece);
+        board.showPossibleCaptures(*window, draggedPiece);
+        board.markPieceField(*window, draggedPiece);
 
 
 
         // przesuwanie pionka, który jest aktualnie przeciągany, musi być rysowany na wierzchu dlatego jest tutaj
-        sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        sf::Vector2f mousePosition = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
         draggedPiece->move(mousePosition - dragOffset);
     }
-    board.drawPieces(window, draggedPiece);
-    window.display();
+    board.drawPieces(*window, draggedPiece);
+    window->display();
 }
 
 

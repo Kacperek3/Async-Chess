@@ -3,18 +3,23 @@
 #include "Board.h"
 #include <math.h>
 #include <iostream>
+#include "GameState.h"
+#include "GameStateManager.h"
 
-class Game {
+class Game : public GameState {
 public:
-    Game();  // Konstruktor
-    void run();  // Funkcja do uruchomienia głównej pętli gry
+    Game(GameStateManager* gsm, sf::RenderWindow* window);  // Konstruktor
 
 private:
-    void processEvents();  // Obsługa zdarzeń
-    void update();         // Aktualizacja stanu gry
-    void render();         // Renderowanie gry
+    void handleInput() override;  // Obsługa zdarzeń
+    void update() override;         // Aktualizacja stanu gry
+    void render() override;         // Renderowanie gry
 
-    sf::RenderWindow window;  // Główne okno SFML
+
+    GameStateManager *gsm;
+    sf::RenderWindow *window;  // Główne okno SFML
+
+
     Board board;              // Obiekt planszy szachowej
 
     int currentPlayerTurn;  // Aktualny gracz
