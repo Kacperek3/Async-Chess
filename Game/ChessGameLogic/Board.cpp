@@ -258,9 +258,6 @@ bool Board::isStalemate(int color) {
 }
 
 
-
-
-
 void Board::promotePawn(Piece* pawn) {
     // Tworzenie nowego okna dla interfejsu promocji
     sf::RenderWindow promotionWindow(sf::VideoMode(270, 200), "Pawn Promotion");

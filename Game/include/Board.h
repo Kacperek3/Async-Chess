@@ -11,7 +11,7 @@
 #include "Bishop.h"
 #include "Knight.h"
 
-class Game;
+//class GameWith2State;
 class Board {
 public:
 

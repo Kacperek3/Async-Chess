@@ -1,12 +1,13 @@
-#include "Game.h"
+#include <SFML/Graphics.hpp>
 #include "GameStateManager.h"
+#include "MenuState.h"
+#include "GameWith2State.h"
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Chess");
     GameStateManager gsm;
-
     
-    gsm.pushState(new Game(&gsm, &window));
+    gsm.pushState(new MenuState(&gsm, &window));
 
     while (window.isOpen()) {
         gsm.handleInput(); 
