@@ -33,6 +33,7 @@ public:
     bool isKingInCheckAfterMove(Piece* movedPiece, Coordinate targetPosition);
     void showPossibleMoves(sf::RenderWindow& window, Piece* piece); // Pokazuje możliwe ruchy dla przesuwanej bierki
     void showPossibleCaptures(sf::RenderWindow& window, Piece* piece); // Pokazuje możliwe bicia dla przesuwanej bierki
+    void showCheck(sf::RenderWindow& window, int color); // Pokazuje szach
     void markPieceField(sf::RenderWindow& window, Piece* piece); // Podkreśla przesuwaną bierkę
     void promotePawn(Piece* pawn);
     bool isStalemate(int color);

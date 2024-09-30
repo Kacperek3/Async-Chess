@@ -371,6 +371,16 @@ void Board::showPossibleCaptures(sf::RenderWindow& window, Piece* piece){
         window.draw(markedField);
     }
 }
+void Board::showCheck(sf::RenderWindow& window, int color){
+    if(isKingInCheck(color)){
+        sf::Color recColor(245, 90, 105, 128);
+        King* king = dynamic_cast<King*>(findKing(color));
+        sf::RectangleShape markedField(sf::Vector2f(75, 75));
+        markedField.setFillColor(recColor);
+        markedField.setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 75);
+        window.draw(markedField);
+    }
+}
 
 void Board::markPieceField(sf::RenderWindow& window, Piece* piece){
     sf::Color recColor(223, 223, 103, 128);

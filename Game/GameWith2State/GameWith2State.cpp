@@ -110,7 +110,7 @@ void GameWith2State::render() {
         sf::Vector2f mousePosition = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
         draggedPiece->move(mousePosition - dragOffset);
     }
-
+    board.showCheck(*window, currentPlayerTurn);
     board.drawPieces(*window, draggedPiece);
     window->display();
 }
