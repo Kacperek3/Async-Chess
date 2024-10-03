@@ -3,18 +3,31 @@
 Board::Board(sf::RenderWindow* window) : window(window) {
     
     // białe bierki
+    b_pieces.push_back(new Rook(BLACK, 0, 0, this));
+    b_pieces.push_back(new Knight(BLACK, 1, 0, this));
+    b_pieces.push_back(new Bishop(BLACK, 2, 0, this));
+    b_pieces.push_back(new Queen(BLACK, 3, 0, this));
     b_pieces.push_back(new King(BLACK, 4, 0, this));
-    //b_pieces.push_back(new Queen(BLACK, 1, 5, this));
-    b_pieces.push_back(new Pawn(BLACK, 0, 0, this, UP));
-    //b_pieces.push_back(new Pawn(WHITE, 4, 7, this));
+    b_pieces.push_back(new Bishop(BLACK, 5, 0, this));
+    b_pieces.push_back(new Knight(BLACK, 6, 0, this));
+    b_pieces.push_back(new Rook(BLACK, 7, 0, this));
+    for(int i = 0; i < 8; i++){
+        b_pieces.push_back(new Pawn(BLACK, i, 1, this, UP));
+    }
 
 
     //czarne bierki
     b_pieces.push_back(new Rook(WHITE, 0, 7, this));
-    b_pieces.push_back(new King(WHITE, 4, 7, this));
-    b_pieces.push_back(new Rook(WHITE, 7, 7, this));
+    b_pieces.push_back(new Knight(WHITE, 1, 7, this));
     b_pieces.push_back(new Bishop(WHITE, 2, 7, this));
-    //b_pieces.push_back(new Pawn(WHITE, 2, 2, this));
+    b_pieces.push_back(new Queen(WHITE, 3, 7, this));
+    b_pieces.push_back(new King(WHITE, 4, 7, this));
+    b_pieces.push_back(new Bishop(WHITE, 5, 7, this));
+    b_pieces.push_back(new Knight(WHITE, 6, 7, this));
+    b_pieces.push_back(new Rook(WHITE, 7, 7, this));
+    for(int i = 0; i < 8; i++){
+        b_pieces.push_back(new Pawn(WHITE, i, 6, this, DOWN));
+    }
 }
 
 
@@ -276,17 +289,17 @@ void Board::promotePawn(Piece* pawn) {
 
     sf::Texture queenTexture, rookTexture, bishopTexture, knightTexture;
     if(pawn->getColor() == WHITE){
-        if(!queenTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/wq.png") ||
-           !rookTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/wr.png") ||
-           !bishopTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/wb.png") ||
-           !knightTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/wn.png")) {
+        if(!queenTexture.loadFromFile("../assets/pieces/chessCom1/wq.png") ||
+           !rookTexture.loadFromFile("../assets/pieces/chessCom1/wr.png") ||
+           !bishopTexture.loadFromFile("../assets/pieces/chessCom1/wb.png") ||
+           !knightTexture.loadFromFile("../assets/pieces/chessCom1/wn.png")) {
             return; 
         }
     } else {
-        if (!queenTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/bq.png") ||
-            !rookTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/br.png") ||
-            !bishopTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/bb.png") ||
-            !knightTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/pieces/chessCom1/bn.png")) {
+        if (!queenTexture.loadFromFile("../assets/pieces/chessCom1/bq.png") ||
+            !rookTexture.loadFromFile("../assets/pieces/chessCom1/br.png") ||
+            !bishopTexture.loadFromFile("../assets/pieces/chessCom1/bb.png") ||
+            !knightTexture.loadFromFile("../assets/pieces/chessCom1/bn.png")) {
             return;
         }
     }
@@ -408,7 +421,7 @@ void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
 
     // Font do wyświetlania koordynatów
     sf::Font font;
-    if (!font.loadFromFile("/home/kacper/Pulpit/chess/assets/fonts/Poppins-Thin.ttf")) {
+    if (!font.loadFromFile("../assets/fonts/Poppins-Thin.ttf")) {
         // Obsługa błędu ładowania fontu
         return;
     }
@@ -446,9 +459,7 @@ void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
 
 
 void Board::rotatePieces(){
-
     for(auto& piece : b_pieces){
-        std::cout << piece->getBoardPosition().x << piece->getBoardPosition().y << std::endl;
         piece->rotatePiece();
     }
 }

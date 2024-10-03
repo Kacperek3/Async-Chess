@@ -6,9 +6,9 @@ void GameStateManager::pushState(GameState* state) {
 
 void GameStateManager::popState() {
     if (!_states.empty()) {
-            delete _states.top();  // Usuń bieżący stan
-            _states.pop();
-        }
+        delete _states.top();  // Usuń bieżący stan
+        _states.pop();
+    }
 }
 
 GameState* GameStateManager::getCurrentState() {

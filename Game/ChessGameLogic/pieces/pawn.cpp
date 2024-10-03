@@ -12,13 +12,11 @@ Pawn::Pawn(int color, int boardX, int boardY, Board* board, int direction)
     this->board = board;
     this->direction = direction;
     
-    std::filesystem::path currentPath = std::filesystem::current_path().parent_path();
     std::string filePath;
-
-    if (color == WHITE) {
-        filePath = (currentPath / "assets/pieces/chessCom1/wp.png").string();
+    if (color == 0) {
+        filePath =  "../assets/pieces/chessCom1/wp.png";
     } else {
-        filePath = (currentPath / "assets/pieces/chessCom1/bp.png").string();
+        filePath = "../assets/pieces/chessCom1/bp.png";
     }
 
     if (!texture.loadFromFile(filePath)) {

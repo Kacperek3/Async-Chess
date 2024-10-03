@@ -9,13 +9,11 @@ Bishop::Bishop(int color, int boardX, int boardY, Board* board)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Bishop, boardX, boardY) 
 {
     this->board = board;
-    std::filesystem::path currentPath = std::filesystem::current_path().parent_path();
     std::string filePath;
-
     if (color == 0) {
-        filePath = (currentPath / "assets/pieces/chessCom1/wb.png").string();
+        filePath =  "../assets/pieces/chessCom1/wb.png";
     } else {
-        filePath = (currentPath / "assets/pieces/chessCom1/bb.png").string();
+        filePath = "../assets/pieces/chessCom1/bb.png";
     }
 
     if (!texture.loadFromFile(filePath)) {

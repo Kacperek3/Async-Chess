@@ -10,15 +10,12 @@ Knight::Knight(int color, int boardX, int boardY, Board* board)
 {
     this->board = board;
     
-    std::filesystem::path currentPath = std::filesystem::current_path().parent_path();
     std::string filePath;
-
     if (color == 0) {
-        filePath = (currentPath / "assets/pieces/wKnight.png").string();
+        filePath =  "../assets/pieces/chessCom1/wn.png";
     } else {
-        filePath = (currentPath / "assets/pieces/bKnight.png").string();
+        filePath = "../assets/pieces/chessCom1/bn.png";
     }
-
     if (!texture.loadFromFile(filePath)) {
         std::cerr << "Error loading texture: " << filePath << std::endl;
     }

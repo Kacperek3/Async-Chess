@@ -2,11 +2,11 @@
 
 
 MenuState::MenuState(GameStateManager* gsm, sf::RenderWindow* window) : gsm(gsm), window(window) {
-    if (!font.loadFromFile("/home/kacper/Pulpit/chess/assets/fonts/Poppins-Thin.ttf")) {
-        std::cerr << "Error loading font\n";
+    if (!font.loadFromFile("../assets/fonts/Poppins-Thin.ttf")) {
+        std::cerr << "loading font\n";
     }
 
-    if (!backgroundTexture.loadFromFile("/home/kacper/Pulpit/chess/assets/Designer.png")) {
+    if (!backgroundTexture.loadFromFile("../assets/menu.png")) {
         std::cerr << "Error loading background image\n";
     }
 
@@ -38,9 +38,8 @@ void MenuState::setupText(sf::Text& text, sf::RectangleShape& rect, const std::s
 // Sprawdzanie najechania na opcję i zmiana koloru tekstu
 void MenuState::checkMouseHover(const sf::Vector2f& mousePos, sf::Text& text, sf::RectangleShape& rect) {
     if (text.getGlobalBounds().contains(mousePos)) {
-        text.setFillColor(hoverColor);  // Zmień kolor tekstu, gdy najedziesz myszką
-    } else {
-        text.setFillColor(sf::Color::Black); // Powróć do domyślnego koloru
+        text.setFillColor(hoverColor);
+        text.setFillColor(sf::Color::Black);
     }
 }
 
@@ -68,7 +67,6 @@ void MenuState::handleInput() {
             // Sprawdzanie, czy kliknięto w opcję "Play by LAN"
             if (playByLanText.getGlobalBounds().contains(mousePos)) {
                 std::cout << "Play by LAN selected\n";
-                // Dodaj logikę dla gry przez sieć
             }
 
             // Sprawdzanie, czy kliknięto w opcję "Exit"
@@ -103,7 +101,4 @@ void MenuState::render() {
     window->draw(playWith2Text);
     window->draw(playByLanText);
     window->draw(exitText);
-
-
-    window->display();
 }

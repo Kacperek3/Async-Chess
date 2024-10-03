@@ -10,13 +10,11 @@ King::King(int color, int boardX, int boardY, Board* board)
 {
     this->board = board;
 
-    std::filesystem::path currentPath = std::filesystem::current_path().parent_path();
     std::string filePath;
-
-    if (color == WHITE) {
-        filePath = (currentPath / "assets/pieces/chessCom1/wk.png").string();
+    if (color == 0) {
+        filePath =  "../assets/pieces/chessCom1/wk.png";
     } else {
-        filePath = (currentPath / "assets/pieces/chessCom1/bk.png").string();
+        filePath = "../assets/pieces/chessCom1/bk.png";
     }
 
     if (!texture.loadFromFile(filePath)) {

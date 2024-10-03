@@ -2,11 +2,11 @@
 
 GameWith2State::GameWith2State(GameStateManager* gsm, sf::RenderWindow* window)
     : gsm(gsm), window(window), board(window), currentPlayerTurn(WHITE) {
-    window->setFramerateLimit(200);
+    //window->setSize(sf::Vector2u(600, 600));
+    window->setVerticalSyncEnabled(true);
 }
 
 GameWith2State::~GameWith2State() {
-    // Resetowanie widoku przy zamknięciu stanu
     sf::View view = window->getView();
     view.setRotation(0);
     window->setView(view);
@@ -26,7 +26,9 @@ void GameWith2State::handleInput() {
                     toggleCoordinates();
                 }
                 else if(event.key.code == sf::Keyboard::Escape){
+                    std::cout << "Escape" << std::endl;
                     gsm->popState();
+                    return;
                 }
                 break;
 
@@ -109,11 +111,9 @@ void GameWith2State::update() {
 
 void GameWith2State::render() {
     window->clear();
-    //std::cout << isBoardRotated << std::endl;
     
     board.drawBoard(*window, showCoordinates);
     
-
     if (isDragging && draggedPiece) {
         board.showPossibleMoves(*window, draggedPiece);
         board.showPossibleCaptures(*window, draggedPiece);
@@ -126,5 +126,4 @@ void GameWith2State::render() {
 
 
     board.drawPieces(*window, draggedPiece);
-    window->display();
 }
