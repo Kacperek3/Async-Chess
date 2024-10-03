@@ -6,7 +6,7 @@ MenuState::MenuState(GameStateManager* gsm, sf::RenderWindow* window) : gsm(gsm)
         std::cerr << "loading font\n";
     }
 
-    if (!backgroundTexture.loadFromFile("../assets/menu.png")) {
+    if (!backgroundTexture.loadFromFile("../assets/Designer.png")) {
         std::cerr << "Error loading background image\n";
     }
 

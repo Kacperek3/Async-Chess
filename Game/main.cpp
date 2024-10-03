@@ -7,6 +7,8 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Chess");
     GameStateManager gsm;
     
+    window.setFramerateLimit(150);
+    
     gsm.pushState(new MenuState(&gsm, &window));
 
     while (window.isOpen()) {
