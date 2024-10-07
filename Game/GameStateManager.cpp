@@ -11,6 +11,20 @@ void GameStateManager::popState() {
     }
 }
 
+void GameStateManager::closeAllStates() {
+    while (!_states.empty()) {
+        delete _states.top();  // Usuń bieżący stan
+        _states.pop();
+    }
+}
+
+void GameStateManager::closePoppedStates() {
+    if (destroyCurrentState) {
+        popState();
+        destroyCurrentState = false;
+    }
+}
+
 GameState* GameStateManager::getCurrentState() {
     if (!_states.empty()) {
         return _states.top();  // Zwróć bieżący stan

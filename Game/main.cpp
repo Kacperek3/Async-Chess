@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "GameStateManager.h"
 #include "MenuState.h"
 #include "GameWith2State.h"
@@ -13,16 +12,15 @@ int main() {
 
     while (window.isOpen()) {
         gsm.handleInput(); 
+        gsm.closePoppedStates();
         gsm.update();       
-        window.clear();
         gsm.render();
         window.display();
     }
-
+    gsm.closeAllStates();
     return 0;
 }
 
-// todo roszada
 // todo bicie w przelocie
 // todo dodanie dzwieku do gry
 // todo zapisywanie stanu gry

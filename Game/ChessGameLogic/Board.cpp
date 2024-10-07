@@ -49,6 +49,15 @@ bool Board::isEnemyPieceAt(int boardX, int boardY, int color) const {
     return false;
 }
 
+bool Board::isTeamPieceAt(int boardX, int boardY, int color) const {
+    for (const auto& piece : playerPieces(color)) {
+        if (piece->getBoardPosition().x == boardX && piece->getBoardPosition().y == boardY) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Board::removePiece(int boardX, int boardY) {
     for (auto it = b_pieces.begin(); it != b_pieces.end(); ) {
         if ((*it) != nullptr && (*it)->getBoardPosition().x == boardX && (*it)->getBoardPosition().y == boardY) {
@@ -95,7 +104,13 @@ bool Board::isWithinBounds(int x, int y) {
     return (x >= 0 && x < 8 && y >= 0 && y < 8);
 }
 
-std::vector<Piece*> Board::playerPieces(int color) {
+void Board::rotatePieces(){
+    for(auto& piece : b_pieces){
+        piece->rotatePiece();
+    }
+}
+
+std::vector<Piece*> Board::playerPieces(int color) const{
     std::vector<Piece*> playerPieces;
     for (auto& piece : b_pieces) {
         if (piece->getColor() == color) {
@@ -162,6 +177,7 @@ bool Board::isKingInCheckAfterMove(Piece* movedPiece, Coordinate targetPosition)
         }
     }
 
+
     if (capturedPiece != nullptr) {
         capturedPiece->simulateMove(-1, -1);
     }
@@ -197,8 +213,6 @@ bool Board::isKingInCheck(int color) {
 bool Board::canKingMove(int color) {
     King* king = dynamic_cast<King*>(findKing(color));
     Coordinate kingPosition = king->getBoardPosition();
-    
-    // Sprawdź wszystkie sąsiadujące pola wokół króla
     for (int dx = -1; dx <= 1; ++dx) {
         for (int dy = -1; dy <= 1; ++dy) {
             if (dx == 0 && dy == 0) continue;  // Ignoruj bieżącą pozycję króla
@@ -212,7 +226,7 @@ bool Board::canKingMove(int color) {
             // Sprawdź, czy nowe pole jest w granicach planszy
             if (isWithinBounds(newX, newY)) {
                 // Sprawdź, czy król może się tam poruszyć bez bycia szachowanym
-                if (!isKingInCheckAfterMove(king, targetPosition)) {
+                if (!isKingInCheckAfterMove(king, targetPosition) && !isTeamPieceAt(newX, newY, color)) {
                     return true;  // Król ma bezpieczny ruch
                 }
             }
@@ -455,11 +469,6 @@ void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
             }
         }
     }
+    
 }
 
-
-void Board::rotatePieces(){
-    for(auto& piece : b_pieces){
-        piece->rotatePiece();
-    }
-}

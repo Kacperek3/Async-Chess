@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "GameStateManager.h"
 #include "MenuState.h"
+#include "SidePanel.h"
 
 class GameWith2State : public GameState {
 public:
@@ -25,6 +26,7 @@ private:
     sf::RenderWindow* window;
 
     Board board;
+    SidePanel sidePanel;
 
     int currentPlayerTurn;
     sf::Vector2f dragOffset;

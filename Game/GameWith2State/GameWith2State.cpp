@@ -1,15 +1,11 @@
 #include "GameWith2State.h"
 
 GameWith2State::GameWith2State(GameStateManager* gsm, sf::RenderWindow* window)
-    : gsm(gsm), window(window), board(window), currentPlayerTurn(WHITE) {
-    //window->setSize(sf::Vector2u(600, 600));
-    window->setVerticalSyncEnabled(true);
+    : gsm(gsm), window(window), board(window), currentPlayerTurn(WHITE), sidePanel() {
 }
 
 GameWith2State::~GameWith2State() {
-    sf::View view = window->getView();
-    view.setRotation(0);
-    window->setView(view);
+    
 }
 
 
@@ -19,6 +15,7 @@ void GameWith2State::handleInput() {
         switch (event.type) {
             case sf::Event::Closed:
                 window->close();
+                return;
                 break;
 
             case sf::Event::KeyPressed:
@@ -27,7 +24,8 @@ void GameWith2State::handleInput() {
                 }
                 else if(event.key.code == sf::Keyboard::Escape){
                     std::cout << "Escape" << std::endl;
-                    gsm->popState();
+                    window->setSize(sf::Vector2u(800, 800));
+                    gsm->destroyCurrentState = true;
                     return;
                 }
                 break;
@@ -78,16 +76,15 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
 
         draggedPiece->move(snappedX, snappedY);
         currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
-        
-        isBoardRotated = !isBoardRotated;
-        
+        board.rotatePieces();
+
         if (board.isCheckmate(currentPlayerTurn)) {
             std::cout << "Szach" << std::endl;
         }
         if (board.isStalemate(currentPlayerTurn)) {
             std::cout << "Pat" << std::endl;
         }
-        board.rotatePieces();
+        
     } else {
         draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
     }
@@ -110,9 +107,15 @@ void GameWith2State::update() {
 }
 
 void GameWith2State::render() {
-    window->clear();
+
+    sf::View view(sf::FloatRect(0, 0, 800, 600));
+    window->setView(view);
+    window->clear(sf::Color(40, 20, 2));
+
     
     board.drawBoard(*window, showCoordinates);
+
+    sidePanel.draw(*window);
     
     if (isDragging && draggedPiece) {
         board.showPossibleMoves(*window, draggedPiece);

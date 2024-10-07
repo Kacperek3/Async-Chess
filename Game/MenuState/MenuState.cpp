@@ -48,6 +48,7 @@ void MenuState::handleInput() {
     while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window->close();
+            return;
         }
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
@@ -61,6 +62,7 @@ void MenuState::handleInput() {
             // Sprawdzanie, czy kliknięto w opcję "Play with 2 Players"
             if (playWith2Text.getGlobalBounds().contains(mousePos)) {
                 std::cout << "Play with 2 Players selected\n";
+                window->setSize(sf::Vector2u(800, 600));
                 gsm->pushState(new GameWith2State(gsm, window));
             }
 
@@ -72,6 +74,7 @@ void MenuState::handleInput() {
             // Sprawdzanie, czy kliknięto w opcję "Exit"
             if (exitText.getGlobalBounds().contains(mousePos)) {
                 window->close();
+                return;
             }
         }
     }
