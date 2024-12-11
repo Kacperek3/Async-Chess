@@ -10,8 +10,8 @@ typedef std::unique_ptr<State> StateRef;
 
 class GameStateManager {
 public:
-    GameStateManager();
-    ~GameStateManager();
+    GameStateManager() = default;
+    ~GameStateManager() = default;
 
     void AddState(StateRef newState, bool isReplacing = true);
     void RemoveState();

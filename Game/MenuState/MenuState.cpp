@@ -2,15 +2,15 @@
 
 
 MenuState::MenuState(GameDataRef data) : _data(data) {
+    
+}
+
+void MenuState::Init(){
     _data->assetManager.LoadTexture("Background", "../assets/Designer.png");
     _data->assetManager.LoadFont("Poppins-Thin", "../assets/fonts/Poppins-Thin.ttf");
 
     backgroundSprite.setTexture(_data->assetManager.GetTexture("Background"));
     font = _data->assetManager.GetFont("Poppins-Thin");
-}
-
-void Init(){
-
 }
 
 /*

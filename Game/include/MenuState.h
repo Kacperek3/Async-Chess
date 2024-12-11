@@ -8,7 +8,7 @@ class MenuState : public State {
 public:
     MenuState(GameDataRef data);
 
-    void Init();
+    void Init() override;
 
     void HandleInput() override;
     void Update() override;
