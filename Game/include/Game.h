@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <stack>
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "GameStateManager.h"
 #include "AssetManager.h"

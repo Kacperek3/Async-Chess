@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "Game.h"
 #include "State.h"
 
@@ -18,25 +17,12 @@ public:
 private:
     GameDataRef _data;
     
+    sf::Font _font;
+    
 
-    sf::Font font;
-    sf::Text playWithAiText;
-    sf::Text playWith2Text;
-    sf::Text playByLanText;
-    sf::Text exitText;
+    sf::Sprite _backgroundSprite;     // Sprite tła
+    sf::Sprite _playWithFriendSprite;    
+    sf::Sprite _playWithAISprite;      // Sprite przycisku "Play with AI"
 
-
-    sf::RectangleShape playWithAiRect;
-    sf::RectangleShape playWith2Rect;
-    sf::RectangleShape playByLanRect;
-    sf::RectangleShape exitRect;
-
-    sf::Texture backgroundTexture;   // Tekstura tła
-    sf::Sprite backgroundSprite;     // Sprite tła
-
-    void setupText(sf::Text& text, sf::RectangleShape& rect,const std::string& str, float yPos);
-    void checkMouseHover(const sf::Vector2f& mousePos, sf::Text& text, sf::RectangleShape& rect);
-
-    const sf::Color normalColor = sf::Color::White;
-    const sf::Color hoverColor = sf::Color::Red;
+    void UpdateSpriteTexture(sf::Sprite& sprite, const std::string& normalTexture, const std::string& hoverTexture);
 };

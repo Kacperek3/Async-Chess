@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <map>
+#include <iostream>
 
 
 class AssetManager {
@@ -18,4 +19,6 @@ public:
 private:
     std::map<std::string, sf::Texture> _textures;
     std::map<std::string, sf::Font> _fonts;
+    std::map<std::string, sf::RectangleShape> _rectangles;
+    std::map<std::string, sf::Text> _text;
 };

@@ -21,4 +21,3 @@ void AssetManager::LoadFont(std::string name, std::string fileName) {
 sf::Font &AssetManager::GetFont(std::string name) {
     return this->_fonts.at(name);
 }
-
