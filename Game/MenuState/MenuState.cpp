@@ -1,5 +1,5 @@
 #include "MenuState.h"
-
+#include "GameWith2State.h"
 
 MenuState::MenuState(GameDataRef data) : _data(data) {
     
@@ -36,6 +36,7 @@ void MenuState::HandleInput() {
             
             if(_data->inputManager.IsSpriteClicked(_playWithFriendSprite, sf::Mouse::Left, _data->window)) {
                 std::cout << "Play with friend selected\n";
+                _data->stateManager.AddState(StateRef(new GameWith2State(_data)), false);
             }
             else if (_data->inputManager.IsSpriteClicked(_playWithAISprite, sf::Mouse::Left, _data->window)) {
                 std::cout << "Start selected\n";

@@ -1,15 +1,14 @@
 {
     "version": "0.2.0",
     "configurations": [
-
         {
-            "name": "C/C++: g++ build and debug active file",
+            "name": "C/C++: Build and Debug with Make",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/${workspaceFolderBasename}",  // Uruchamianie z folderu bin
+            "program": "${workspaceFolder}/bin/project_name",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",  // Możesz zmienić, jeśli program wymaga specyficznej ścieżki roboczej
+            "cwd": "${workspaceFolder}/assets",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -20,16 +19,8 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++ build active file",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "miDebuggerArgs": "",
-            "targetArchitecture": "x86_64",
-            "logging": {
-                "trace": true,
-                "engineLogging": true,
-                "programOutput": true,
-                "exceptions": true
-            }
+            "preLaunchTask": "Build project with Make",
+            "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
 }

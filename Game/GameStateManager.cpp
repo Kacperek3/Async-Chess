@@ -1,42 +1,34 @@
 #include "GameStateManager.h"
+#include <iostream>
 
 
-void GameStateManager::AddState(StateRef newState, bool isReplacing)
-	{
+void GameStateManager::AddState(StateRef newState, bool isReplacing){
 		this->_isAdding = true;
 		this->_isReplacing = isReplacing;
 		this->_newState = std::move(newState);
 	}
 
-	void GameStateManager::RemoveState()
-	{
+	void GameStateManager::RemoveState(){
 		this->_isRemoving = true;
 	}
 
-	void GameStateManager::ProcessStateChanges()
-	{
-		if (this->_isRemoving && !this->_states.empty())
-		{
+	void GameStateManager::ProcessStateChanges(){
+		if (this->_isRemoving && !this->_states.empty()){
 			this->_states.pop();
 
-			if (!this->_states.empty())
-			{
+			if (!this->_states.empty()){
 				this->_states.top()->Resume();
 			}
 
 			this->_isRemoving = false;
 		}
 
-		if (this->_isAdding)
-		{
-			if (!this->_states.empty())
-			{
-				if (this->_isReplacing)
-				{
+		if (this->_isAdding){
+			if (!this->_states.empty()){
+				if (this->_isReplacing){
 					this->_states.pop();
 				}
-				else
-				{
+				else{
 					this->_states.top()->Pause();
 				}
 			}
@@ -47,7 +39,9 @@ void GameStateManager::AddState(StateRef newState, bool isReplacing)
 		}
 	}
 
-	StateRef &GameStateManager::GetActiveState()
-	{
+	StateRef &GameStateManager::GetActiveState(){
+		if(this->_states.empty()){
+			std::cout << "No states in stack" << std::endl;
+		}
 		return this->_states.top();
 	}
