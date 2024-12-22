@@ -5,22 +5,11 @@ Knight::Knight() {
     
 }
 
-Knight::Knight(int color, int boardX, int boardY, Board* board)
+Knight::Knight(int color, int boardX, int boardY, Board* board, sf::Texture& knightTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Knight, boardX, boardY) 
 {
     this->board = board;
-    
-    std::string filePath;
-    if (color == 0) {
-        filePath =  "../assets/pieces/chessCom1/wn.png";
-    } else {
-        filePath = "../assets/pieces/chessCom1/bn.png";
-    }
-    if (!texture.loadFromFile(filePath)) {
-        std::cerr << "Error loading texture: " << filePath << std::endl;
-    }
-
-    sprite.setTexture(texture);
+    sprite.setTexture(knightTexture);
     sprite.setPosition(m_position);
 }
 

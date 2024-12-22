@@ -19,15 +19,11 @@ void GameWith2State::Init(){
     _data->assetManager.LoadTexture("START_BUTTON", "../assets/GameWithFriendState/Buttons/StartButton.png");
     _data->assetManager.LoadTexture("START_BUTTON_HOVER", "../assets/GameWithFriendState/Buttons/StartButton_hover.png");
     _startButton.setTexture(_data->assetManager.GetTexture("START_BUTTON"));
-    _startButton.setPosition(600, 271);
+    _startButton.setPosition(610, 271);
+    _startButton.setScale(0.90, 0.90);
 
     _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Thin.ttf");
     _font = _data->assetManager.GetFont("Poppins");
-
-
-    for(auto texture : _data->assetManager._textures){
-        std::cout << texture.first << std::endl;
-    }
 
     _textField = std::make_unique<sf::Text>();
     _textField->setFont(_font);

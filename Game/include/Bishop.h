@@ -7,7 +7,7 @@
 
 class Bishop : public Piece {
 public:
-    Bishop(int color, int boardX, int boardY, Board* board);
+    Bishop(int color, int boardX, int boardY, Board* board, sf::Texture& bishopTexture);
     Bishop();
     ~Bishop();
 

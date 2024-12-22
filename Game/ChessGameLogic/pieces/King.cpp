@@ -5,11 +5,11 @@ King::King() {
     
 }
 
-King::King(int color, int boardX, int boardY, Board* board, sf::Texture& kingSprite)
+King::King(int color, int boardX, int boardY, Board* board, sf::Texture& kingTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::King, boardX, boardY) 
 {
     this->board = board;
-    sprite.setTexture(kingSprite);
+    sprite.setTexture(kingTexture);
     sprite.setPosition(m_position);
 }
 

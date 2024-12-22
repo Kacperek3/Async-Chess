@@ -7,7 +7,7 @@
 
 class Knight : public Piece {
 public:
-    Knight(int color, int boardX, int boardY, Board* board);
+    Knight(int color, int boardX, int boardY, Board* board, sf::Texture& knightTexture);
     Knight();
     ~Knight();
 

@@ -7,7 +7,7 @@
 
 class Queen : public Piece {
 public:
-    Queen(int color, int boardX, int boardY, Board* board);
+    Queen(int color, int boardX, int boardY, Board* board, sf::Texture& queenTexture);
     Queen();
     ~Queen();
 

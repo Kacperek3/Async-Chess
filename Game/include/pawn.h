@@ -8,7 +8,7 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(int color, int boardX, int boardY, Board* board, int direction);
+    Pawn(int color, int boardX, int boardY, Board* board, int direction, sf::Texture& pawnTexture);
     Pawn();
     ~Pawn();
 

@@ -5,23 +5,11 @@ Queen::Queen() {
     
 }
 
-Queen::Queen(int color, int boardX, int boardY, Board* board)
+Queen::Queen(int color, int boardX, int boardY, Board* board, sf::Texture& queenTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Queen, boardX, boardY) 
 {
     this->board = board;
-    
-    std::string filePath;
-    if (color == 0) {
-        filePath =  "../assets/pieces/chessCom1/wq.png";
-    } else {
-        filePath = "../assets/pieces/chessCom1/bq.png";
-    }
-
-    if (!texture.loadFromFile(filePath)) {
-        std::cerr << "Error loading texture: " << filePath << std::endl;
-    }
-
-    sprite.setTexture(texture);
+    sprite.setTexture(queenTexture);
     sprite.setPosition(m_position);
 }
 

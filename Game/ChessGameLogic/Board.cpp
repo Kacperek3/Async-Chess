@@ -10,33 +10,47 @@ void Board::Init() {
     // do nothing
     _data->assetManager.LoadTexture("wk", "../assets/pieces/chessCom1/wk.png");
     _data->assetManager.LoadTexture("bk", "../assets/pieces/chessCom1/bk.png");
+    _data->assetManager.LoadTexture("wp", "../assets/pieces/chessCom1/wp.png");
+    _data->assetManager.LoadTexture("bp", "../assets/pieces/chessCom1/bp.png");
+    _data->assetManager.LoadTexture("wq", "../assets/pieces/chessCom1/wq.png");
+    _data->assetManager.LoadTexture("bq", "../assets/pieces/chessCom1/bq.png");
+    _data->assetManager.LoadTexture("wr", "../assets/pieces/chessCom1/wr.png");
+    _data->assetManager.LoadTexture("br", "../assets/pieces/chessCom1/br.png");
+    _data->assetManager.LoadTexture("wb", "../assets/pieces/chessCom1/wb.png");
+    _data->assetManager.LoadTexture("bb", "../assets/pieces/chessCom1/bb.png");
+    _data->assetManager.LoadTexture("wn", "../assets/pieces/chessCom1/wn.png");
+    _data->assetManager.LoadTexture("bn", "../assets/pieces/chessCom1/bn.png");
+
 
     // białe bierki
-    //b_pieces.push_back(new Rook(BLACK, 0, 0, this));
-    //b_pieces.push_back(new Knight(BLACK, 1, 0, this));
-    //b_pieces.push_back(new Bishop(BLACK, 2, 0, this));
-    //b_pieces.push_back(new Queen(BLACK, 3, 0, this));
+    b_pieces.push_back(new Rook(BLACK, 0, 0, this, _data->assetManager.GetTexture("br")));
+    b_pieces.push_back(new Knight(BLACK, 1, 0, this, _data->assetManager.GetTexture("bn")));
+    b_pieces.push_back(new Bishop(BLACK, 2, 0, this, _data->assetManager.GetTexture("bb")));
+    b_pieces.push_back(new Queen(BLACK, 3, 0, this, _data->assetManager.GetTexture("bq")));
     b_pieces.push_back(new King(BLACK, 4, 0, this, _data->assetManager.GetTexture("bk")));
-    //b_pieces.push_back(new Bishop(BLACK, 5, 0, this));
-    //b_pieces.push_back(new Knight(BLACK, 6, 0, this));
-    //b_pieces.push_back(new Rook(BLACK, 7, 0, this));
+    b_pieces.push_back(new Bishop(BLACK, 5, 0, this, _data->assetManager.GetTexture("bb")));
+    b_pieces.push_back(new Knight(BLACK, 6, 0, this, _data->assetManager.GetTexture("bn")));
+    b_pieces.push_back(new Rook(BLACK, 7, 0, this, _data->assetManager.GetTexture("br")));
     for(int i = 0; i < 8; i++){
-       // b_pieces.push_back(new Pawn(BLACK, i, 1, this, UP));
+        b_pieces.push_back(new Pawn(BLACK, i, 1, this, UP, _data->assetManager.GetTexture("bp")));
     }
 
 
     //czarne bierki
-    //b_pieces.push_back(new Rook(WHITE, 0, 7, this));
-    //b_pieces.push_back(new Knight(WHITE, 1, 7, this));
-    //b_pieces.push_back(new Bishop(WHITE, 2, 7, this));
-    //b_pieces.push_back(new Queen(WHITE, 3, 7, this));
+    b_pieces.push_back(new Rook(WHITE, 0, 7, this, _data->assetManager.GetTexture("wr")));
+    b_pieces.push_back(new Knight(WHITE, 1, 7, this, _data->assetManager.GetTexture("wn")));
+    b_pieces.push_back(new Bishop(WHITE, 2, 7, this, _data->assetManager.GetTexture("wb")));
+    b_pieces.push_back(new Queen(WHITE, 3, 7, this, _data->assetManager.GetTexture("wq")));
     b_pieces.push_back(new King(WHITE, 4, 7, this, _data->assetManager.GetTexture("wk")));
-    //b_pieces.push_back(new Bishop(WHITE, 5, 7, this));
-    //b_pieces.push_back(new Knight(WHITE, 6, 7, this));
-    //b_pieces.push_back(new Rook(WHITE, 7, 7, this));
+    b_pieces.push_back(new Bishop(WHITE, 5, 7, this, _data->assetManager.GetTexture("wb")));
+    b_pieces.push_back(new Knight(WHITE, 6, 7, this, _data->assetManager.GetTexture("wn")));
+    b_pieces.push_back(new Rook(WHITE, 7, 7, this, _data->assetManager.GetTexture("wr")));
     for(int i = 0; i < 8; i++){
-        //b_pieces.push_back(new Pawn(WHITE, i, 6, this, DOWN));
+        b_pieces.push_back(new Pawn(WHITE, i, 6, this, DOWN, _data->assetManager.GetTexture("wp")));
     }
+
+
+
     tile = new sf::RectangleShape(sf::Vector2f(75, 75));
     recColor = new sf::Color(245, 90, 105, 128);
     circleColor = new sf::Color(183, 180, 180, 128);
@@ -371,18 +385,18 @@ void Board::promotePawn(Piece* pawn) {
             } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(promotionWindow);
 
-                // Sprawdź, który sprite został kliknięty
+                // ! teraz dodaje tylko biale figury
                 if (queenSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Queen(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+                    newPiece = new Queen(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wq"));
                     promotionSelected = true;
                 } else if (rookSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Rook(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+                    newPiece = new Rook(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wr"));
                     promotionSelected = true;
                 } else if (bishopSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Bishop(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+                    newPiece = new Bishop(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wb"));
                     promotionSelected = true;
                 } else if (knightSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Knight(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this);
+                    newPiece = new Knight(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wn"));
                     promotionSelected = true;
                 }
             }

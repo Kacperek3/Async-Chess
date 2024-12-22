@@ -5,22 +5,11 @@ Bishop::Bishop() {
     
 }
 
-Bishop::Bishop(int color, int boardX, int boardY, Board* board)
+Bishop::Bishop(int color, int boardX, int boardY, Board* board, sf::Texture& bishopTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Bishop, boardX, boardY) 
 {
     this->board = board;
-    std::string filePath;
-    if (color == 0) {
-        filePath =  "../assets/pieces/chessCom1/wb.png";
-    } else {
-        filePath = "../assets/pieces/chessCom1/bb.png";
-    }
-
-    if (!texture.loadFromFile(filePath)) {
-        std::cerr << "Error loading texture: " << filePath << std::endl;
-    }
-
-    sprite.setTexture(texture);
+    sprite.setTexture(bishopTexture);
     sprite.setPosition(m_position);
 }
 

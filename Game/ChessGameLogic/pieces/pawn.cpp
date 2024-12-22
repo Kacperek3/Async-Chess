@@ -6,24 +6,12 @@ Pawn::Pawn() {
     
 }
 
-Pawn::Pawn(int color, int boardX, int boardY, Board* board, int direction)
+Pawn::Pawn(int color, int boardX, int boardY, Board* board, int direction, sf::Texture& pawnTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Pawn, boardX, boardY) 
 {
+    this->direction = direction;   
     this->board = board;
-    this->direction = direction;
-    
-    std::string filePath;
-    if (color == 0) {
-        filePath =  "../assets/pieces/chessCom1/wp.png";
-    } else {
-        filePath = "../assets/pieces/chessCom1/bp.png";
-    }
-
-    if (!texture.loadFromFile(filePath)) {
-        std::cerr << "Error loading texture: " << filePath << std::endl;
-    }
-
-    sprite.setTexture(texture);
+    sprite.setTexture(pawnTexture);
     sprite.setPosition(m_position);
 }
 

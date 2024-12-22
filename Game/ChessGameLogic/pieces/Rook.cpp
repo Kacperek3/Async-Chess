@@ -5,22 +5,11 @@ Rook::Rook() {
     
 }
 
-Rook::Rook(int color, int boardX, int boardY, Board* board)
+Rook::Rook(int color, int boardX, int boardY, Board* board, sf::Texture& rookTexture)
     : Piece(color, Position(boardX, boardY).getPixelPosition(), Piece::PieceType::Rook, boardX, boardY) 
 {
     this->board = board;
-    std::string filePath;
-    if (color == 0) {
-        filePath =  "../assets/pieces/chessCom1/wr.png";
-    } else {
-        filePath = "../assets/pieces/chessCom1/br.png";
-    }
-
-    if (!texture.loadFromFile(filePath)) {
-        std::cerr << "Error loading texture: " << filePath << std::endl;
-    }
-
-    sprite.setTexture(texture);
+    sprite.setTexture(rookTexture);
     sprite.setPosition(m_position);
 }
 
