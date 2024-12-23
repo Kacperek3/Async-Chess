@@ -10,6 +10,7 @@
 #include "King.h"
 #include "Bishop.h"
 #include "Knight.h"
+#include "CapturedPieces.h"
 
 class Board {
 public:
@@ -26,7 +27,7 @@ public:
     bool isEmpty(int x, int y);
     bool isEnemyPieceAt(int boardX, int boardY, int color) const;
     bool isTeamPieceAt(int boardX, int boardY, int color) const;
-    void removePiece(int boardX, int boardY);
+    void removePiece(int boardX, int boardY, CapturedPieces* capturedPieces);
     bool isKingInCheck(int color);
     bool canKingMove(int color);
     bool canPreventCheck(int color);

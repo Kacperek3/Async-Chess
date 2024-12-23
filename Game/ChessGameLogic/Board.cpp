@@ -107,9 +107,13 @@ bool Board::isTeamPieceAt(int boardX, int boardY, int color) const {
     return false;
 }
 
-void Board::removePiece(int boardX, int boardY) {
+void Board::removePiece(int boardX, int boardY, CapturedPieces* capturedPieces) {
     for (auto it = b_pieces.begin(); it != b_pieces.end(); ) {
         if ((*it) != nullptr && (*it)->getBoardPosition().x == boardX && (*it)->getBoardPosition().y == boardY) {
+            if (capturedPieces != nullptr) {
+                capturedPieces->AddCapturedPiece((*it)->getTypeName(), (*it)->getColor());
+            } 
+            
             delete *it;                // Usunięcie obiektu
             it = b_pieces.erase(it);    // Usuń element z wektora i zaktualizuj iterator
         } else {
@@ -470,7 +474,7 @@ void Board::drawPieces(sf::RenderWindow& window, Piece* draggedPiece) {
 void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
     sf::Color *lightColor = new sf::Color(238, 238, 210);
     sf::Color *darkColor = new sf::Color(118, 150, 86);
-
+    
 
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {

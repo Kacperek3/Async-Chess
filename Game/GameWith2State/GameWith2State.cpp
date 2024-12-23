@@ -15,6 +15,7 @@ void GameWith2State::Init(){
     _board.Init();
 
     _clockWidget = new ClockWidget(_data);
+    _capturedPieces = new CapturedPieces(_data);
     _clockWidget->Init();
 }
 
@@ -94,7 +95,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) && _isClockTimeSet) {
         if (_board.isEnemyPieceAt(snappedX, snappedY, draggedPiece->getColor())) {
             std::cout << "Zbito" << std::endl;
-            _board.removePiece(snappedX, snappedY);
+            _board.removePiece(snappedX, snappedY, _capturedPieces);
         }
 
         draggedPiece->move(snappedX, snappedY);
@@ -123,7 +124,7 @@ void GameWith2State::Update() {
     // Usuwanie pionka, który doszedł do końca planszy
     for(auto& piece : _board.b_pieces){
         if(piece->getPosition().x == -1 && piece->getPosition().y == -1){
-            _board.removePiece(piece->getBoardPosition().x, piece->getBoardPosition().y);
+            _board.removePiece(piece->getBoardPosition().x, piece->getBoardPosition().y, nullptr);
         }
     }
 
@@ -149,6 +150,7 @@ void GameWith2State::Draw() {
     }
     _board.showCheck(_data->window, currentPlayerTurn);
     _board.drawPieces(_data->window, draggedPiece);
+    _capturedPieces->Draw();
    
     _clockWidget->Draw();
 
@@ -160,6 +162,7 @@ void GameWith2State::Draw() {
 void GameWith2State::ClearObjects() {
     _board.deleteObjects();
     delete _clockWidget;
+    delete _capturedPieces;
     _data->assetManager.clearAssets();
     
     //delete _backgroud_to_textField1;

@@ -45,7 +45,31 @@ public:
     Coordinate getBoardPosition();
     int getColor() { return m_color; }
     PieceType getType() { return m_type; }
-    
+
+    std::string getTypeName() {
+        if(m_color == BLACK){
+            switch (m_type) {
+            case PieceType::Pawn: return "bp";
+            case PieceType::Rook: return "br";
+            case PieceType::Knight: return "bn";
+            case PieceType::Bishop: return "bb";
+            case PieceType::Queen: return "bq";
+            case PieceType::King: return "bk";
+            }
+        }
+
+        if(m_color == WHITE){
+            switch (m_type) {
+            case PieceType::Pawn: return "wp";
+            case PieceType::Rook: return "wr";
+            case PieceType::Knight: return "wn";
+            case PieceType::Bishop: return "wb";
+            case PieceType::Queen: return "wq";
+            case PieceType::King: return "wk";
+            }
+        }
+        return "error";
+    }
 
 protected:
     Board* board; // wskaźnik na planszę

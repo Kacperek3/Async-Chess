@@ -7,6 +7,7 @@
 #include <string>
 #include <memory>
 #include "Clock.h"
+#include "CapturedPieces.h"
 
 class GameWith2State : public State {
 public:
@@ -22,7 +23,7 @@ private:
 
     void startDragging(const sf::Vector2f& mousePosition);
     void stopDragging(sf::Vector2f& mousePosition);
-    //void toggleCoordinates();
+
     void rotateView();
     
 
@@ -38,5 +39,8 @@ private:
 
     ClockWidget *_clockWidget;
     bool _isClockTimeSet = false;
+
+
+    CapturedPieces *_capturedPieces;
 
 };
