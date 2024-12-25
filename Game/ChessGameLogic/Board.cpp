@@ -431,7 +431,7 @@ void Board::showPossibleMoves(sf::RenderWindow& window, Piece* piece){
     std::vector<Coordinate> possibleMoves = getValidMoves(piece);
     for(auto& move : possibleMoves){
         circle->setFillColor(*circleColor);
-        circle->setPosition(move.x * 75 + 28, move.y * 75 + 28);
+        circle->setPosition(move.x * 75 + 28, move.y * 75 + 78);
         window.draw(*circle);
     }
 }
@@ -440,7 +440,7 @@ void Board::showPossibleCaptures(sf::RenderWindow& window, Piece* piece){
     std::vector<Coordinate> possibleCaptures = getValidCaptures(piece);
     for(auto& capture : possibleCaptures){
         markedField->setFillColor(*recColor);
-        markedField->setPosition(capture.x * 75, capture.y * 75);
+        markedField->setPosition(capture.x * 75, capture.y * 75 + 50);
         window.draw(*markedField);
     }
 }
@@ -448,7 +448,7 @@ void Board::showCheck(sf::RenderWindow& window, int color){
     if(isKingInCheck(color)){
         King* king = dynamic_cast<King*>(findKing(color));
         markedField->setFillColor(*recColor);
-        markedField->setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 75);
+        markedField->setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 125 + 50);
         window.draw(*markedField);
     }
 }
@@ -456,7 +456,7 @@ void Board::showCheck(sf::RenderWindow& window, int color){
 void Board::markPieceField(sf::RenderWindow& window, Piece* piece){
     sf::Color markedColor(223, 223, 103, 128);
     markedField->setFillColor(markedColor);
-    markedField->setPosition(piece->getBoardPosition().x * 75, piece->getBoardPosition().y * 75);
+    markedField->setPosition(piece->getBoardPosition().x * 75, piece->getBoardPosition().y * 75 + 50);
     window.draw(*markedField);
 }
 
@@ -479,7 +479,7 @@ void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             
-            tile->setPosition(col * 75, row * 75);
+            tile->setPosition(col * 75, row * 75 + 50);
 
             // Kolorowanie kafelków
             if ((row + col) % 2 == 0) {

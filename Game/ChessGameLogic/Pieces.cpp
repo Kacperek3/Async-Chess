@@ -8,7 +8,7 @@ Piece::Piece(int color, sf::Vector2f position, PieceType type, int boardX, int b
     boardPosition = Coordinate(boardX, boardY);
 }
 sf::Sprite& Piece::getSprite() {
-    return sprite;
+    return sprite;  
 }
 
 sf::Vector2f Piece::getPosition() {
@@ -28,6 +28,7 @@ void Piece::simulateMove(int boardX, int boardY) {
     m_position = Position(boardX, boardY).getPixelPosition();
     boardPosition = Coordinate(boardX, boardY);
     sprite.setPosition(m_position);
+
 }
 
 void Piece::rotatePiece() {

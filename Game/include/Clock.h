@@ -37,6 +37,14 @@ public:
 private:
     GameDataRef _data;
 
+
+    sf::Sprite _clockIconWhite;
+    bool _isClockWhiteIconVisible = false;
+
+    sf::Sprite _clockIconBlack;
+    bool _isClockBlackIconVisible = false;
+
+
     sf::Sprite _startButton;
     sf::Font _font;
 

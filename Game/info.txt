@@ -1,0 +1,5 @@
+Board 800 x 700
+
+side panel 
+
+

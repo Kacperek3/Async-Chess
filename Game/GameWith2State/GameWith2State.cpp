@@ -17,6 +17,7 @@ void GameWith2State::Init(){
     _clockWidget = new ClockWidget(_data);
     _capturedPieces = new CapturedPieces(_data);
     _clockWidget->Init();
+    _capturedPieces->Init();
 }
 
 void GameWith2State::HandleInput() {
@@ -88,8 +89,8 @@ void GameWith2State::startDragging(const sf::Vector2f& mousePosition) {
 void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
     isDragging = false;
 
-    float snappedX = int(mousePosition.x / 75);
-    float snappedY = int(mousePosition.y / 75);
+    int snappedX = int(mousePosition.x / 75);
+    int snappedY = int((mousePosition.y - 50) / 75);
     
     if (draggedPiece->isValidMove(snappedX, snappedY) && 
         !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) && _isClockTimeSet) {
@@ -132,8 +133,7 @@ void GameWith2State::Update() {
 }
 
 void GameWith2State::Draw() {
-
-    sf::View view(sf::FloatRect(0, 0, 800, 600));
+    sf::View view = sf::View(sf::FloatRect(0, 0, 800, 700));
     _data->window.setView(view);
     _data->window.clear(sf::Color( 58, 58, 58 ));
     

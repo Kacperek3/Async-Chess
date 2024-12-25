@@ -12,6 +12,7 @@ Pawn::Pawn(int color, int boardX, int boardY, Board* board, int direction, sf::T
     this->direction = direction;   
     this->board = board;
     sprite.setTexture(pawnTexture);
+    m_position = Position(boardX, boardY).getPixelPosition();
     sprite.setPosition(m_position);
 }
 

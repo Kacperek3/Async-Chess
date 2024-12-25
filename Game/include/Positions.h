@@ -6,7 +6,7 @@ struct Position {
     sf::Vector2f pixelPosition;  
 
     Position(int x, int y) : boardX(x), boardY(y) {
-        pixelPosition = sf::Vector2f(x * 75+5, y * 75 + 6); 
+        pixelPosition = sf::Vector2f(x * 75+5, y * 75 + 56); 
     }
 
     sf::Vector2f getPixelPosition() const {

@@ -10,6 +10,7 @@ Rook::Rook(int color, int boardX, int boardY, Board* board, sf::Texture& rookTex
 {
     this->board = board;
     sprite.setTexture(rookTexture);
+    std::cout << m_position.x << " " << m_position.y << std::endl;
     sprite.setPosition(m_position);
 }
 

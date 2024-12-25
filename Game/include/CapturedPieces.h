@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include <SFML/Graphics.hpp>
-#include <map>
+#include <vector>
 #include <iostream>
 #include <string>
 
@@ -19,7 +19,9 @@ public:
     
 private:
     GameDataRef _data;
-    std::map<std::string, sf::Sprite> _capturedWhitePieces;
-    std::map<std::string, sf::Sprite> _capturedBlackPieces;
+    std::vector<sf::Sprite> _capturedWhitePieces;
+    std::vector<sf::Sprite> _capturedBlackPieces;
 
+
+    sf::RectangleShape *_background1;
 };

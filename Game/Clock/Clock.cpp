@@ -19,7 +19,25 @@ void ClockWidget::Init() {
     _startButton.setPosition(610, 271);
     _startButton.setScale(0.90, 0.90);
 
-    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Thin.ttf");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_1", "../assets/ClockWhiteICON1.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_2", "../assets/ClockWhiteICON2.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_3", "../assets/ClockWhiteICON3.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_4", "../assets/ClockWhiteICON4.png");
+    _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_1"));
+    _clockIconWhite.setScale(0.55, 0.55);
+    _clockIconWhite.setPosition(460, 8);
+
+
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_1", "../assets/ClockBlackICON1.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_2", "../assets/ClockBlackICON2.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_3", "../assets/ClockBlackICON3.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_4", "../assets/ClockBlackICON4.png");
+    _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_1"));
+    _clockIconBlack.setScale(0.55, 0.55);
+    _clockIconBlack.setPosition(460, 666);
+
+
+    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Light.ttf");
     _font = _data->assetManager.GetFont("Poppins");
 
    
@@ -28,22 +46,22 @@ void ClockWidget::Init() {
 
     _textFieldBlack = new sf::Text();
     _textFieldBlack->setFont(_font);
-    _textFieldBlack->setCharacterSize(24);
-    _textFieldBlack->setFillColor(sf::Color::Black);
-    _textFieldBlack->setPosition(665, 35);
-    _textFieldBlack->setOutlineColor(sf::Color::White);
-    _textFieldBlack->setOutlineThickness(1);
+    _textFieldBlack->setCharacterSize(18);
+    _textFieldBlack->setFillColor(sf::Color(200,200,200));
+    _textFieldBlack->setPosition(530, 10);
+    _textFieldBlack->setOutlineColor(sf::Color::Black);
+    _textFieldBlack->setOutlineThickness(0);
     _textFieldBlack->setString("00:00");
     _textFieldBlack->setStyle(sf::Text::Bold);
 
 
     _textFieldWhite = new sf::Text();
     _textFieldWhite->setFont(_font);
-    _textFieldWhite->setCharacterSize(24);
-    _textFieldWhite->setFillColor(sf::Color::Black);
-    _textFieldWhite->setPosition(665, 530);
+    _textFieldWhite->setCharacterSize(18);
+    _textFieldWhite->setFillColor(sf::Color( 80, 80, 80));
+    _textFieldWhite->setPosition(530, 668);
     _textFieldWhite->setOutlineColor(sf::Color::White);
-    _textFieldWhite->setOutlineThickness(1);
+    _textFieldWhite->setOutlineThickness(0);
     _textFieldWhite->setString("00:00");
     _textFieldWhite->setStyle(sf::Text::Bold);
 
@@ -52,26 +70,41 @@ void ClockWidget::Init() {
     _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD", "../assets/TextClockBackground.png");
     _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_POINTED", "../assets/TextClockBackgroundPointed.png");
     _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME", "../assets/TextClockBackgroundLowTime.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK", "../assets/TextClockBackgroundBlack.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED", "../assets/TextClockBackgroundBlackPointed.png");
 
-    _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
-    _backgroudn_to_textFieldBlack.setPosition(620, 25);
+
+    _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK"));
+    _backgroudn_to_textFieldBlack.setScale(0.8, 0.65);
+    _backgroudn_to_textFieldBlack.setPosition(480, 5);
 
 
     _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
-    _backgroudn_to_textFieldWhite.setPosition(620, 520);
+    _backgroudn_to_textFieldWhite.setScale(0.8, 0.65);
+    _backgroudn_to_textFieldWhite.setPosition(480, 663);
 }
 
 
 void ClockWidget::StartButtonPressed() {
     if(_data->inputManager.IsSpriteClicked(_backgroudn_to_textFieldBlack, sf::Mouse::Left, _data->window)){
         _whichClockPointed = BLACK;
-        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_POINTED"));
+        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED"));
+        _textFieldBlack->setFillColor(sf::Color(255,255,255)); // czysty bialy
+        _isClockBlackIconVisible = false;
+
         _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
+        _textFieldWhite->setFillColor(sf::Color(80,80,80));
+        _isClockWhiteIconVisible = true;
     }
     else if(_data->inputManager.IsSpriteClicked(_backgroudn_to_textFieldWhite, sf::Mouse::Left, _data->window)){
         _whichClockPointed = WHITE;
         _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_POINTED"));
-        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
+        _textFieldWhite->setFillColor(sf::Color(0,0,0)); // czysty bialy
+        _isClockWhiteIconVisible = false;
+
+        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK"));
+        _textFieldBlack->setFillColor(sf::Color(200,200,200)); // taki szarawy
+        _isClockBlackIconVisible = true;
     }
 
 
@@ -93,8 +126,13 @@ void ClockWidget::StartButtonPressed() {
 
             //Ustawienie aby na poczatku zegar bialego byl podswietlony
             _whichClockPointed = WHITE;
-            _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
+            _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK"));
+            _textFieldBlack->setFillColor(sf::Color(200,200,200));
+            _isClockBlackIconVisible = true;
+
             _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_POINTED"));
+            _textFieldWhite->setFillColor(sf::Color(0,0,0));
+            _isClockWhiteIconVisible = false;
 
             _isClockTimeSet = true;
         } catch (...) {
@@ -162,8 +200,6 @@ void ClockWidget::inputTimeWhite(sf::Event event) {
     _textFieldWhite->setString(inputTextWhite);
 }
 
-
-
 void ClockWidget::Update(){
     if(_data->inputManager.IsSpriteHover(_startButton, sf::Mouse::Left, _data->window)){
         _startButton.setTexture(_data->assetManager.GetTexture("START_BUTTON_HOVER"));
@@ -180,9 +216,18 @@ void ClockWidget::Update(){
             remainingTimeInSecondsBlack -= static_cast<int>(elapsed.asSeconds());
             countdownClockBlack->restart();
 
-            if (remainingTimeInSecondsBlack <= 40) {
-                _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
+            int whichAnimation = remainingTimeInSecondsBlack % 4 + 1;
+            if (whichAnimation == 1) {
+                _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_4"));
+            } else if (whichAnimation == 2) {
+                _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_3"));
+            } else if (whichAnimation == 3) {
+                _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_2"));
+            } else if (whichAnimation == 4) {
+                _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_1"));
             }
+
+
 
             if (remainingTimeInSecondsBlack <= 0) {
                 isCountdownActiveBlack = false;
@@ -206,9 +251,17 @@ void ClockWidget::Update(){
             remainingTimeInSecondsWhite -= static_cast<int>(elapsed.asSeconds());
             countdownClockWhite->restart();
 
-            if (remainingTimeInSecondsWhite <= 40) {
-                _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
+            int whichAnimation = remainingTimeInSecondsWhite % 4 + 1;
+            if (whichAnimation == 1) {
+                _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_4"));
+            } else if (whichAnimation == 2) {
+                _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_3"));
+            } else if (whichAnimation == 3) {
+                _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_2"));
+            } else if (whichAnimation == 4) {
+                _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_1"));
             }
+
 
             if (remainingTimeInSecondsWhite <= 0) {
                 isCountdownActiveWhite = false;
@@ -234,12 +287,17 @@ void ClockWidget::togglePlayerTime() {
 
         countdownClockWhite->restart();
 
-        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
+        _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK"));
+        _textFieldBlack->setFillColor(sf::Color(200,200,200));
+        _isClockWhiteIconVisible = false;
+
 
         if (remainingTimeInSecondsWhite <= 40) {
             _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
         } else {
             _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_POINTED"));
+            _textFieldWhite->setFillColor(sf::Color(0,0,0));
+            _isClockBlackIconVisible = true;
         }
 
         _whichClockPointed = WHITE;
@@ -251,11 +309,15 @@ void ClockWidget::togglePlayerTime() {
         countdownClockBlack->restart();
 
         _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD"));
+        _textFieldWhite->setFillColor(sf::Color( 80, 80, 80));
+        _isClockBlackIconVisible = false;
 
         if (remainingTimeInSecondsBlack <= 40) {
             _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
         } else {
-            _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_POINTED"));
+            _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED"));
+            _textFieldBlack->setFillColor(sf::Color(255,255,255));
+            _isClockWhiteIconVisible = true;
         }
 
         _whichClockPointed = BLACK;
@@ -264,18 +326,31 @@ void ClockWidget::togglePlayerTime() {
 
 
 void ClockWidget::rotatePositionClocks(){
+    //530, 10
+    //480, 5
+
+    //530, 668
+    //480, 663
+
      if (whoOnTop) {
-        _backgroudn_to_textFieldWhite.setPosition(620, 25);
-        _backgroudn_to_textFieldBlack.setPosition(620, 520);
+        _backgroudn_to_textFieldWhite.setPosition(480, 5);
+        _backgroudn_to_textFieldBlack.setPosition(480, 663);
 
-        _textFieldWhite->setPosition(665, 35);
-        _textFieldBlack->setPosition(665, 530);
+        _textFieldWhite->setPosition(530, 10);
+        _textFieldBlack->setPosition(530, 668);
+
+        _clockIconBlack.setPosition(460, 8);
+        _clockIconWhite.setPosition(460, 666);
+
     } else {
-        _backgroudn_to_textFieldWhite.setPosition(620, 520);
-        _backgroudn_to_textFieldBlack.setPosition(620, 25);
+        _backgroudn_to_textFieldWhite.setPosition(480, 663);
+        _backgroudn_to_textFieldBlack.setPosition(480, 5);
 
-        _textFieldWhite->setPosition(665, 530);
-        _textFieldBlack->setPosition(665, 35);
+        _textFieldWhite->setPosition(530, 668);
+        _textFieldBlack->setPosition(530, 10);
+
+        _clockIconBlack.setPosition(460, 666);
+        _clockIconWhite.setPosition(460, 8);
     }
     whoOnTop = !whoOnTop;
 }
@@ -284,12 +359,19 @@ void ClockWidget::rotatePositionClocks(){
 
 void ClockWidget::Draw() {
     _data->window.draw(_startButton);
-    //_data->window.draw(*_backgroud_to_textField1);
     _data->window.draw(_backgroudn_to_textFieldBlack);
     _data->window.draw(*_textFieldBlack);
 
     _data->window.draw(_backgroudn_to_textFieldWhite);
     _data->window.draw(*_textFieldWhite);
+
+    if(_isClockWhiteIconVisible){
+        _data->window.draw(_clockIconWhite);
+    }
+
+    if(_isClockBlackIconVisible){
+        _data->window.draw(_clockIconBlack);
+    }
 }
 
 

@@ -37,6 +37,7 @@ void MenuState::HandleInput() {
             if(_data->inputManager.IsSpriteClicked(_playWithFriendSprite, sf::Mouse::Left, _data->window)) {
                 std::cout << "Play with friend selected\n";
                 _data->stateManager.AddState(StateRef(new GameWith2State(_data)), true);
+                _data->window.setSize(sf::Vector2u(800, 700)); 
             }
             else if (_data->inputManager.IsSpriteClicked(_playWithAISprite, sf::Mouse::Left, _data->window)) {
                 std::cout << "Start selected\n";
