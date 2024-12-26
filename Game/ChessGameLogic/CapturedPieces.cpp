@@ -56,10 +56,21 @@ void CapturedPieces::Draw() {
     std::string previousType;
     bool firstBlack = false;
 
+
+    if(whoOnTop == WHITE){
+        y = 673;
+    }
+
     for (auto& [pieceType, piece] : orderedPieces) {
         if(pieceType[0] == 'b' and !firstBlack) {
-            x = 40;
-            y = 673;
+            if(whoOnTop == WHITE){
+                x = 40;
+                y = 23;
+            }
+            else{
+                x = 40;
+                y = 673;
+            }
             firstBlack = true;
         }
 
@@ -75,6 +86,12 @@ void CapturedPieces::Draw() {
         previousType = pieceType;
     }
 }
+
+
+void CapturedPieces::RotateCapturedPieces() {
+    whoOnTop = !whoOnTop;
+}
+
 
 
 CapturedPieces::~CapturedPieces() {

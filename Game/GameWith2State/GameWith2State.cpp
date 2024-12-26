@@ -45,16 +45,23 @@ void GameWith2State::HandleInput() {
                     sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                     startDragging(mousePos);
 
+                    clickedOnPiece(mousePos);
+                    clickedOnField(mousePos);
 
                     _clockWidget->StartButtonPressed();
                     _isClockTimeSet = _clockWidget->getIsClockTimeSet();
                 }
-                else if(event.mouseButton.button == sf::Mouse::Right and isDragging){
+                else if(event.mouseButton.button == sf::Mouse::Right){
                     //przywracanie pionka na miejsce po kliknieciu prawym przyciskiem myszy
-                    draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
-                    isDragging = false;
-                    draggedPiece = nullptr;
-                    dragOffset = sf::Vector2f(0, 0);
+                    selectedPiece = nullptr;
+                    
+                    if(isDragging){
+                        draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
+                        isDragging = false;
+                        draggedPiece = nullptr;
+                        dragOffset = sf::Vector2f(0, 0);
+                    }
+                    
                 }
                 break;
 
@@ -76,6 +83,57 @@ void GameWith2State::HandleInput() {
         }
     }
 }
+
+void GameWith2State::clickedOnPiece(const sf::Vector2f& mousePosition) {
+    for (auto& piece : _board.b_pieces) {
+        if (_data->inputManager.IsSpriteClicked(piece->getSprite(), sf::Mouse::Left, _data->window) && piece->getColor() == currentPlayerTurn) {
+            if (selectedPiece == nullptr) {
+                selectedPiece = dynamic_cast<Piece*>(piece);
+            } 
+            else {
+                if (selectedPiece == piece) {
+                    selectedPiece = nullptr;
+                } 
+                else {
+                    selectedPiece = dynamic_cast<Piece*>(piece);
+                }
+            }
+        }
+    }
+}
+void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
+    if (selectedPiece != nullptr) {
+        int snappedX = int(mousePosition.x / 75);
+        int snappedY = int((mousePosition.y - 50) / 75);
+        if (selectedPiece->isValidMove(snappedX, snappedY) && !_board.isKingInCheckAfterMove(selectedPiece, Coordinate(snappedX, snappedY))) {
+            if (_board.isEnemyPieceAt(snappedX, snappedY, selectedPiece->getColor())) {
+                _board.removePiece(snappedX, snappedY, _capturedPieces);
+            }
+
+            selectedPiece->move(snappedX, snappedY);
+            currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+            _board.rotatePieces();
+            _clockWidget->togglePlayerTime();
+            _clockWidget->rotatePositionClocks();
+            _capturedPieces->RotateCapturedPieces();
+            _decorations->rotatePositionDecorations();
+
+            if (_board.isCheckmate(currentPlayerTurn)) {
+                std::cout << "Szach" << std::endl;
+            }
+            if (_board.isStalemate(currentPlayerTurn)) {
+                std::cout << "Pat" << std::endl;
+            }
+            selectedPiece = nullptr;
+        } 
+        // else {
+        //     selectedPiece->simulateMove(selectedPiece->getBoardPosition().x, selectedPiece->getBoardPosition().y);
+        //     selectedPiece = nullptr;
+        // }
+    }
+}
+
+
 
 void GameWith2State::startDragging(const sf::Vector2f& mousePosition) {
     for (auto& piece : _board.b_pieces) {
@@ -112,6 +170,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         _board.rotatePieces();
         _clockWidget->togglePlayerTime();
         _clockWidget->rotatePositionClocks();
+        _capturedPieces->RotateCapturedPieces();
         _decorations->rotatePositionDecorations();
 
         if (_board.isCheckmate(currentPlayerTurn)) {
@@ -120,7 +179,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         if (_board.isStalemate(currentPlayerTurn)) {
             std::cout << "Pat" << std::endl;
         }
-        
+        selectedPiece = nullptr;
     } else {
         draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
     }
@@ -161,6 +220,14 @@ void GameWith2State::Draw() {
         temp.y = mousePos.y - draggedPiece->getSprite().getGlobalBounds().height / 2;
         draggedPiece->move(temp);
     }
+    else if(selectedPiece){
+        _board.showPossibleMoves(_data->window, selectedPiece);
+        _board.showPossibleCaptures(_data->window, selectedPiece);
+        _board.markPieceField(_data->window, selectedPiece);
+    }
+
+
+
     _board.showCheck(_data->window, currentPlayerTurn);
     _board.drawPieces(_data->window, draggedPiece);
     _capturedPieces->Draw();

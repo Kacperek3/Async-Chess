@@ -1,0 +1,19 @@
+kolejnosc tworzenia rzeczy
+
+- dodac mozliwosc klikania zamiast przesuwania
+
+-naprawic dodawanie hetmana skoczka gonca lub wiezy gdy pionek dotrze do konca 
+
+-dodac dzwieki
+
+-bicie w przelocie
+
+-zrobic ladne zakonczenie gry
+
+-poprawic side panel
+
+- poprawic cos w menu
+
+-stworzenie ai
+
+

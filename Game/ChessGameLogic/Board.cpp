@@ -448,7 +448,7 @@ void Board::showCheck(sf::RenderWindow& window, int color){
     if(isKingInCheck(color)){
         King* king = dynamic_cast<King*>(findKing(color));
         markedField->setFillColor(*recColor);
-        markedField->setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 125 + 50);
+        markedField->setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 75 + 50);
         window.draw(*markedField);
     }
 }

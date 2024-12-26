@@ -15,10 +15,14 @@ public:
     ~CapturedPieces();
     void Init();
     void AddCapturedPiece(std::string pieceName, int color);
+    void RotateCapturedPieces();
     void Draw();
     
 private:
     GameDataRef _data;
+
+    bool whoOnTop = BLACK;
+
     std::vector<sf::Sprite> _capturedWhitePieces;
     std::vector<sf::Sprite> _capturedBlackPieces;
 

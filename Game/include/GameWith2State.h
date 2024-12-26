@@ -25,11 +25,16 @@ private:
     void startDragging(const sf::Vector2f& mousePosition);
     void stopDragging(sf::Vector2f& mousePosition);
 
+    void clickedOnPiece(const sf::Vector2f& mousePosition);
+    void clickedOnField(const sf::Vector2f& mousePosition);
+
     void rotateView();
     
 
     GameDataRef _data;
     Board _board;
+
+    Piece *selectedPiece = nullptr;
 
 
     int currentPlayerTurn;
