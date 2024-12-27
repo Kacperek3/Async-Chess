@@ -25,7 +25,7 @@ private:
     void startDragging(const sf::Vector2f& mousePosition);
     void stopDragging(sf::Vector2f& mousePosition);
 
-    void clickedOnPiece(const sf::Vector2f& mousePosition);
+    bool clickedOnPiece(const sf::Vector2f& mousePosition);
     void clickedOnField(const sf::Vector2f& mousePosition);
 
     void rotateView();

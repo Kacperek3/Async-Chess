@@ -32,6 +32,10 @@ void Piece::simulateMove(int boardX, int boardY) {
 }
 
 void Piece::rotatePiece() {
+    if(boardPosition.x == -1 && boardPosition.y == -1){
+        return;
+    }
+
     boardPosition = Coordinate(7 - boardPosition.x, 7 - boardPosition.y);
     m_position = Position(boardPosition.x, boardPosition.y).getPixelPosition();
     sprite.setPosition(m_position);

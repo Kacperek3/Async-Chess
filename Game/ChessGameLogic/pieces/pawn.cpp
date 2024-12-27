@@ -91,10 +91,10 @@ void Pawn::move(int boardX, int boardY) {
     firstMove = false;
     // Sprawdź, czy pionek doszedł do końca planszy
     if (boardY == 0 || boardY == 7) {
-        board->window->clear();  // Wyczyść okno
-        board->drawBoard(*board->window, false);  // Narysuj planszę
-        board->drawPieces(*board->window,this);  // Narysuj pionki
-        board->window->display();  // Update the window
+        // board->window->clear();  // Wyczyść okno
+        // board->drawBoard(*board->window, false);  // Narysuj planszę
+        // board->drawPieces(*board->window,this);  // Narysuj pionki
+        // board->window->display();  // Update the window
 
 
         board->promotePawn(this);

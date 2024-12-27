@@ -348,80 +348,12 @@ bool Board::isStalemate(int color) {
 
 
 void Board::promotePawn(Piece* pawn) {
-    // Tworzenie nowego okna dla interfejsu promocji
-    sf::RenderWindow promotionWindow(sf::VideoMode(270, 200), "Pawn Promotion");
-
-    sf::Texture queenTexture, rookTexture, bishopTexture, knightTexture;
-    if(pawn->getColor() == WHITE){
-        if(!queenTexture.loadFromFile("../assets/pieces/chessCom1/wq.png") ||
-           !rookTexture.loadFromFile("../assets/pieces/chessCom1/wr.png") ||
-           !bishopTexture.loadFromFile("../assets/pieces/chessCom1/wb.png") ||
-           !knightTexture.loadFromFile("../assets/pieces/chessCom1/wn.png")) {
-            return; 
-        }
-    } else {
-        if (!queenTexture.loadFromFile("../assets/pieces/chessCom1/bq.png") ||
-            !rookTexture.loadFromFile("../assets/pieces/chessCom1/br.png") ||
-            !bishopTexture.loadFromFile("../assets/pieces/chessCom1/bb.png") ||
-            !knightTexture.loadFromFile("../assets/pieces/chessCom1/bn.png")) {
-            return;
-        }
-    }
-
-    // Utwórz sprite'y dla każdego typu figury
-    sf::Sprite queenSprite(queenTexture), rookSprite(rookTexture), bishopSprite(bishopTexture), knightSprite(knightTexture);
-
-    // Ustaw pozycje sprite'ów w nowym oknie
-    queenSprite.setPosition(50, 15);
-    rookSprite.setPosition(150, 15);
-    bishopSprite.setPosition(50, 105);
-    knightSprite.setPosition(150, 105);
-
-    // Pętla promocji
-    Piece* newPiece = nullptr;
-    bool promotionSelected = false;
-
-    while (promotionWindow.isOpen() && !promotionSelected) {
-        sf::Event event;
-        while (promotionWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                promotionWindow.close();
-            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(promotionWindow);
-
-                // ! teraz dodaje tylko biale figury
-                if (queenSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Queen(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wq"));
-                    promotionSelected = true;
-                } else if (rookSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Rook(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wr"));
-                    promotionSelected = true;
-                } else if (bishopSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Bishop(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wb"));
-                    promotionSelected = true;
-                } else if (knightSprite.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    newPiece = new Knight(pawn->getColor(), pawn->getBoardPosition().x, pawn->getBoardPosition().y, this, _data->assetManager.GetTexture("wn"));
-                    promotionSelected = true;
-                }
-            }
-        }
-
-        // Rysowanie nowego okna
-        promotionWindow.clear();
-        promotionWindow.draw(queenSprite);
-        promotionWindow.draw(rookSprite);
-        promotionWindow.draw(bishopSprite);
-        promotionWindow.draw(knightSprite);
-        promotionWindow.display();
-    }
-
-    // Zamknij okno promocji po dokonaniu wyboru
-    promotionWindow.close();
-
-    // Zamień pionka na nową figurę
-    if (newPiece) {
-        b_pieces.push_back(newPiece);
-    }
+    _pawnPromotion = new PawnPromotion(_data);
+    _pawnPromotion->Init(pawn->getBoardPosition().x * 75, 50);
+    _pawnPromotion->Draw();
+    _pawnPromotion->ChoicePiece();
+    delete _pawnPromotion;
+    
 }
 
 

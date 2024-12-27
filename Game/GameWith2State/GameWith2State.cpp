@@ -45,8 +45,9 @@ void GameWith2State::HandleInput() {
                     sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                     startDragging(mousePos);
 
-                    clickedOnPiece(mousePos);
-                    clickedOnField(mousePos);
+                    if(!clickedOnPiece(mousePos)){
+                        clickedOnField(mousePos);
+                    } // jesli nie kliknieto na poprawne pole to clickedOnField zlikwiduje zaznaczenie na pionku
 
                     _clockWidget->StartButtonPressed();
                     _isClockTimeSet = _clockWidget->getIsClockTimeSet();
@@ -84,7 +85,7 @@ void GameWith2State::HandleInput() {
     }
 }
 
-void GameWith2State::clickedOnPiece(const sf::Vector2f& mousePosition) {
+bool GameWith2State::clickedOnPiece(const sf::Vector2f& mousePosition) {
     for (auto& piece : _board.b_pieces) {
         if (_data->inputManager.IsSpriteClicked(piece->getSprite(), sf::Mouse::Left, _data->window) && piece->getColor() == currentPlayerTurn) {
             if (selectedPiece == nullptr) {
@@ -98,8 +99,10 @@ void GameWith2State::clickedOnPiece(const sf::Vector2f& mousePosition) {
                     selectedPiece = dynamic_cast<Piece*>(piece);
                 }
             }
+            return true;
         }
     }
+    return false;
 }
 void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
     if (selectedPiece != nullptr) {
@@ -126,10 +129,9 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
             }
             selectedPiece = nullptr;
         } 
-        // else {
-        //     selectedPiece->simulateMove(selectedPiece->getBoardPosition().x, selectedPiece->getBoardPosition().y);
-        //     selectedPiece = nullptr;
-        // }
+        else{
+            selectedPiece = nullptr;
+        }
     }
 }
 
@@ -192,7 +194,8 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
 void GameWith2State::Update() {
     // Usuwanie pionka, który doszedł do końca planszy
     for(auto& piece : _board.b_pieces){
-        if(piece->getPosition().x == -1 && piece->getPosition().y == -1){
+        if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
+            std::cout << "Usunieto pionka" << std::endl;
             _board.removePiece(piece->getBoardPosition().x, piece->getBoardPosition().y, nullptr);
         }
     }
@@ -220,7 +223,7 @@ void GameWith2State::Draw() {
         temp.y = mousePos.y - draggedPiece->getSprite().getGlobalBounds().height / 2;
         draggedPiece->move(temp);
     }
-    else if(selectedPiece){
+    else if(selectedPiece && _isClockTimeSet){
         _board.showPossibleMoves(_data->window, selectedPiece);
         _board.showPossibleCaptures(_data->window, selectedPiece);
         _board.markPieceField(_data->window, selectedPiece);
@@ -245,6 +248,4 @@ void GameWith2State::ClearObjects() {
     delete _clockWidget;
     delete _capturedPieces;
     _data->assetManager.clearAssets();
-    
-    //delete _backgroud_to_textField1;
 }

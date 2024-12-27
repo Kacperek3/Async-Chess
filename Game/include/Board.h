@@ -11,6 +11,7 @@
 #include "Bishop.h"
 #include "Knight.h"
 #include "CapturedPieces.h"
+#include "PawnPromotion.h"
 
 class Board {
 public:
@@ -65,4 +66,8 @@ private:
 
     sf::Color *recColor;
     sf::Color *circleColor;
+
+
+    PawnPromotion* _pawnPromotion;
+
 };
