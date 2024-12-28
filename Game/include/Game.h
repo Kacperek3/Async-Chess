@@ -6,6 +6,7 @@
 #include "GameStateManager.h"
 #include "AssetManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 
 
 struct GameData {
@@ -13,6 +14,7 @@ struct GameData {
     sf::RenderWindow window;
     AssetManager assetManager;
     InputManager inputManager;
+    SoundManager soundManager;
 };
 
 typedef std::shared_ptr<GameData> GameDataRef;

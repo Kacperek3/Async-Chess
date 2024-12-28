@@ -2,7 +2,7 @@ kolejnosc tworzenia rzeczy
 
 - dodac mozliwosc klikania zamiast przesuwania              !!! wykonane
 
--naprawic dodawanie hetmana skoczka gonca lub wiezy gdy pionek dotrze do konca 
+-naprawic dodawanie hetmana skoczka gonca lub wiezy gdy pionek dotrze do konca !!! wykonane
 
 -dodac dzwieki
 

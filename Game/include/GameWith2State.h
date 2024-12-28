@@ -10,6 +10,7 @@
 #include "CapturedPieces.h"
 #include "Decorations.h"
 #include "PawnPromotion.h"
+#include "GameSounds.h"
 
 class GameWith2State : public State {
 public:
@@ -52,5 +53,7 @@ private:
 
     CapturedPieces *_capturedPieces;
     Decorations *_decorations;
+    GameSounds *_gameSounds;
+    bool _isGameStartSoundPlayed = false;
 
 };

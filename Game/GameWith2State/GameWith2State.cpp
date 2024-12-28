@@ -18,10 +18,12 @@ void GameWith2State::Init(){
     _capturedPieces = new CapturedPieces(_data);
     _decorations = new Decorations(_data);
     _pawnPromotion = new PawnPromotion(_data);
+    _gameSounds = new GameSounds(_data);
     _clockWidget->Init();
     _capturedPieces->Init();
     _decorations->Init();
     _pawnPromotion->Init();
+    _gameSounds->Init();
 }
 
 void GameWith2State::HandleInput() {
@@ -83,6 +85,11 @@ void GameWith2State::HandleInput() {
 
                 _clockWidget->StartButtonPressed();
                 _isClockTimeSet = _clockWidget->getIsClockTimeSet();
+                if(_isClockTimeSet && !_isGameStartSoundPlayed){
+                    _gameSounds->PlayStartGameSound();
+                    _isGameStartSoundPlayed = true;
+                }
+
             } else if (event.mouseButton.button == sf::Mouse::Right) {
                 // Przywracanie pionka na miejsce po kliknięciu prawym przyciskiem myszy
                 selectedPiece = nullptr;
@@ -134,9 +141,11 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
     if (selectedPiece != nullptr) {
         int snappedX = int(mousePosition.x / 75);
         int snappedY = int((mousePosition.y - 50) / 75);
+        bool iscapture = false;
         if (selectedPiece->isValidMove(snappedX, snappedY) && !_board.isKingInCheckAfterMove(selectedPiece, Coordinate(snappedX, snappedY))) {
             if (_board.isEnemyPieceAt(snappedX, snappedY, selectedPiece->getColor())) {
                 _board.removePiece(snappedX, snappedY, _capturedPieces);
+                iscapture = true;
             }
 
             selectedPiece->move(snappedX, snappedY);
@@ -149,11 +158,21 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
                 _decorations->rotatePositionDecorations();   
             }
             if (_board.isCheckmate(currentPlayerTurn)) {
-                std::cout << "Szach" << std::endl;
+                _gameSounds->PlayEndGameSound();
             }
-            if (_board.isStalemate(currentPlayerTurn)) {
-                std::cout << "Pat" << std::endl;
+            else if (_board.isStalemate(currentPlayerTurn)) {
+                
             }
+            else if(_board.isKingInCheck(currentPlayerTurn)){
+                _gameSounds->PlayCheckSound();
+            }
+            else if(!iscapture){
+                _gameSounds->PlayMoveSound();
+            }
+            else if(iscapture){
+                _gameSounds->PlayCaptureSound();
+            }
+
             selectedPiece = nullptr;
         } 
         else{
@@ -161,8 +180,6 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
         }
     }
 }
-
-
 
 void GameWith2State::startDragging(const sf::Vector2f& mousePosition) {
     for (auto& piece : _board.b_pieces) {
@@ -187,6 +204,8 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
     int snappedX = int(mousePosition.x / 75);
     int snappedY = int((mousePosition.y - 50) / 75);
     
+    bool isCapture = false; // Flaga do śledzenia, czy pionek został zbity
+
     if (draggedPiece->isValidMove(snappedX, snappedY) && 
         !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) 
         && _isClockTimeSet
@@ -195,6 +214,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         if (_board.isEnemyPieceAt(snappedX, snappedY, draggedPiece->getColor())) {
             std::cout << "Zbito" << std::endl;
             _board.removePiece(snappedX, snappedY, _capturedPieces);
+            isCapture = true; // Ustawienie flagi na true, gdy pionek został zbity
         }
 
         draggedPiece->move(snappedX, snappedY);
@@ -208,10 +228,19 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         }        
 
         if (_board.isCheckmate(currentPlayerTurn)) {
-            std::cout << "Szach" << std::endl;
+            _gameSounds->PlayEndGameSound();
         }
-        if (_board.isStalemate(currentPlayerTurn)) {
+        else if (_board.isStalemate(currentPlayerTurn)) {
             std::cout << "Pat" << std::endl;
+        }
+        else if(_board.isKingInCheck(currentPlayerTurn)){
+            _gameSounds->PlayCheckSound();
+        }
+        else if (!isCapture) { // Odtwórz dźwięk ruchu tylko wtedy, gdy pionek nie został zbity
+            _gameSounds->PlayMoveSound();
+        }
+        else if(isCapture){
+            _gameSounds->PlayCaptureSound();
         }
         selectedPiece = nullptr;
     } else {
@@ -285,5 +314,9 @@ void GameWith2State::ClearObjects() {
     _board.deleteObjects();
     delete _clockWidget;
     delete _capturedPieces;
+    delete _decorations;
+    delete _pawnPromotion;
+    delete _gameSounds;
+    _data->soundManager.ClearSounds();
     _data->assetManager.clearAssets();
 }
