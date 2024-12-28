@@ -11,7 +11,7 @@
 #include "Bishop.h"
 #include "Knight.h"
 #include "CapturedPieces.h"
-#include "PawnPromotion.h"
+#include "DataAboutPawnPromotion.h"
 
 class Board {
 public:
@@ -40,12 +40,19 @@ public:
     void showPossibleCaptures(sf::RenderWindow& window, Piece* piece); 
     void showCheck(sf::RenderWindow& window, int color);
     void markPieceField(sf::RenderWindow& window, Piece* piece);
-    void promotePawn(Piece* pawn);
     bool isStalemate(int color);
     Piece* getPieceAt(int x, int y);
     void rotatePieces();
     void deleteObjects();
+    
+    void addQueen(int color, int boardX, int boardY);
+    void addRook(int color, int boardX, int boardY);
+    void addBishop(int color, int boardX, int boardY);
+    void addKnight(int color, int boardX, int boardY);
 
+
+
+    DataAboutPawnPromotion _dataAboutPawnPromotion;
 
 private:
     
@@ -66,8 +73,4 @@ private:
 
     sf::Color *recColor;
     sf::Color *circleColor;
-
-
-    PawnPromotion* _pawnPromotion;
-
 };

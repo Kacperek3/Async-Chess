@@ -1,28 +1,38 @@
 #pragma once
 
 #include "Game.h"
-#include <vector>
+#include "Board.h"
+#include <array>
 #include <iostream>
 
-#define WHITE 0
-#define BLACK 1
+
+constexpr int TILE_SIZE = 75;
+constexpr int PROMOTION_WINDOW_WIDTH = 75;
+constexpr int PROMOTION_WINDOW_HEIGHT = 300;
+constexpr int PIECE_OFFSET = 5;
 
 class PawnPromotion {
 public:
-    PawnPromotion(GameDataRef data);
-    ~PawnPromotion();
-    void Init(int x, int y);
+    explicit PawnPromotion(GameDataRef data);
+    ~PawnPromotion() = default;
+
+    void Init();
     void Draw();
-    bool ChoicePiece();
-    
+    int ChoicePiece();
+    void ChangePosition(int x, int y, int color);
+
 private:
     GameDataRef _data;
-    bool whoOnTop = BLACK;
-   
-    sf::RectangleShape* _promotionWindow;
 
-    std::vector<sf::Sprite> _WhitePiecesToChoice;
-    std::vector<sf::Sprite> _BlackPiecesToChoice;
+    int _x, _y;
+    int _color;
 
+    sf::RectangleShape _promotionWindow;
 
+    std::array<sf::Sprite, 4> _whitePieces;
+    std::array<sf::Sprite, 4> _blackPieces;
+
+    void SetupPieces();
+    void DrawPieces(const std::array<sf::Sprite, 4>& pieces);
+    void SetPiecePositions(std::array<sf::Sprite, 4>& pieces, int x, int y);
 };

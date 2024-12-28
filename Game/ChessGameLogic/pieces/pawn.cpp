@@ -96,8 +96,11 @@ void Pawn::move(int boardX, int boardY) {
         // board->drawPieces(*board->window,this);  // Narysuj pionki
         // board->window->display();  // Update the window
 
+        board->_dataAboutPawnPromotion._isPawnPromotion = true;
+        board->_dataAboutPawnPromotion._pawnColor = m_color;
+        board->_dataAboutPawnPromotion._pawnX = boardX;
+        board->_dataAboutPawnPromotion._pawnY = boardY;
 
-        board->promotePawn(this);
         // Zastąp pionka królową
         move(-1, -1);  // Usuń pionka z planszy
         

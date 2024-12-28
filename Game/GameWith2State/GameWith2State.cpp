@@ -17,73 +17,99 @@ void GameWith2State::Init(){
     _clockWidget = new ClockWidget(_data);
     _capturedPieces = new CapturedPieces(_data);
     _decorations = new Decorations(_data);
+    _pawnPromotion = new PawnPromotion(_data);
     _clockWidget->Init();
     _capturedPieces->Init();
     _decorations->Init();
+    _pawnPromotion->Init();
 }
 
 void GameWith2State::HandleInput() {
     sf::Event event;
     while (_data->window.pollEvent(event)) {
-        switch (event.type) {
-            case sf::Event::Closed:
-                _data->window.close();
+        if (event.type == sf::Event::Closed) {
+            _data->window.close();
+            return;
+        }
+
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Escape) {
+                // Powrót do menu
+                std::cout << "Escape" << std::endl;
+                _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
                 return;
-                break;
-            case sf::Event::KeyPressed:
-                if(event.key.code == sf::Keyboard::Escape){
-                    //powrot do menu
-                    std::cout << "Escape" << std::endl;
-                    _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
-                    return;
-                }
-                break;
+            }
+        }
 
-            case sf::Event::MouseButtonPressed:
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    //rozpoczecie przesuwania pionka
-                    sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
-                    startDragging(mousePos);
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                // Rozpoczęcie przesuwania pionka
+                sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
+                startDragging(mousePos);
 
-                    if(!clickedOnPiece(mousePos)){
-                        clickedOnField(mousePos);
-                    } // jesli nie kliknieto na poprawne pole to clickedOnField zlikwiduje zaznaczenie na pionku
+                if(_board._dataAboutPawnPromotion._isPawnPromotion){
+                    int choice = _pawnPromotion->ChoicePiece();
+                    if(choice != 0){
+                        if(choice == 1){
+                            _board.addQueen(_board._dataAboutPawnPromotion._pawnColor, _board._dataAboutPawnPromotion._pawnX, _board._dataAboutPawnPromotion._pawnY);
+                        }
+                        else if(choice == 2){
+                            _board.addRook(_board._dataAboutPawnPromotion._pawnColor, _board._dataAboutPawnPromotion._pawnX, _board._dataAboutPawnPromotion._pawnY);
+                        }
+                        else if (choice == 3){
+                            _board.addBishop(_board._dataAboutPawnPromotion._pawnColor, _board._dataAboutPawnPromotion._pawnX, _board._dataAboutPawnPromotion._pawnY);
+                        }
+                        else if (choice == 4) {
+                            _board.addKnight(_board._dataAboutPawnPromotion._pawnColor, _board._dataAboutPawnPromotion._pawnX, _board._dataAboutPawnPromotion._pawnY);
+                        }
+                        _board._dataAboutPawnPromotion._isPawnPromotion = false;
+                        _board._dataAboutPawnPromotion._pawnColor = 2;
+                        _board._dataAboutPawnPromotion._pawnX = -1;
+                        _board._dataAboutPawnPromotion._pawnY = -1;
 
-                    _clockWidget->StartButtonPressed();
-                    _isClockTimeSet = _clockWidget->getIsClockTimeSet();
-                }
-                else if(event.mouseButton.button == sf::Mouse::Right){
-                    //przywracanie pionka na miejsce po kliknieciu prawym przyciskiem myszy
-                    selectedPiece = nullptr;
-                    
-                    if(isDragging){
-                        draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
-                        isDragging = false;
-                        draggedPiece = nullptr;
-                        dragOffset = sf::Vector2f(0, 0);
+                        currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+                        _board.rotatePieces();
+                        _clockWidget->togglePlayerTime();
+                        _clockWidget->rotatePositionClocks();
+                        _capturedPieces->RotateCapturedPieces();
+                        _decorations->rotatePositionDecorations();   
                     }
-                    
                 }
-                break;
 
-            case sf::Event::MouseButtonReleased:
-                //koniec przesuwania pionka
-                if (event.mouseButton.button == sf::Mouse::Left && isDragging) {
-                    sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
-                    stopDragging(mousePos);
+
+                if (!clickedOnPiece(mousePos)) {
+                    clickedOnField(mousePos);
+                } // Jeśli nie kliknięto na poprawne pole, to clickedOnField zlikwiduje zaznaczenie na pionku
+
+                _clockWidget->StartButtonPressed();
+                _isClockTimeSet = _clockWidget->getIsClockTimeSet();
+            } else if (event.mouseButton.button == sf::Mouse::Right) {
+                // Przywracanie pionka na miejsce po kliknięciu prawym przyciskiem myszy
+                selectedPiece = nullptr;
+
+                if (isDragging) {
+                    draggedPiece->simulateMove(draggedPiece->getBoardPosition().x, draggedPiece->getBoardPosition().y);
+                    isDragging = false;
+                    draggedPiece = nullptr;
+                    dragOffset = sf::Vector2f(0, 0);
                 }
-                break;
+            }
+        }
 
-           case sf::Event::TextEntered:
-               _clockWidget->inputTime(event);
-               break;
-           
+        if (event.type == sf::Event::MouseButtonReleased) {
+            // Koniec przesuwania pionka
+            if (event.mouseButton.button == sf::Mouse::Left && isDragging) {
+                sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
+                stopDragging(mousePos);
+            }
+        }
 
-            default:    
-                break;
+        if (event.type == sf::Event::TextEntered) {
+            _clockWidget->inputTime(event);
         }
     }
 }
+
 
 bool GameWith2State::clickedOnPiece(const sf::Vector2f& mousePosition) {
     for (auto& piece : _board.b_pieces) {
@@ -114,13 +140,14 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
             }
 
             selectedPiece->move(snappedX, snappedY);
-            currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
-            _board.rotatePieces();
-            _clockWidget->togglePlayerTime();
-            _clockWidget->rotatePositionClocks();
-            _capturedPieces->RotateCapturedPieces();
-            _decorations->rotatePositionDecorations();
-
+            if(!_board._dataAboutPawnPromotion._isPawnPromotion){
+                currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+                _board.rotatePieces();
+                _clockWidget->togglePlayerTime();
+                _clockWidget->rotatePositionClocks();
+                _capturedPieces->RotateCapturedPieces();
+                _decorations->rotatePositionDecorations();   
+            }
             if (_board.isCheckmate(currentPlayerTurn)) {
                 std::cout << "Szach" << std::endl;
             }
@@ -161,19 +188,24 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
     int snappedY = int((mousePosition.y - 50) / 75);
     
     if (draggedPiece->isValidMove(snappedX, snappedY) && 
-        !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) && _isClockTimeSet) {
+        !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) 
+        && _isClockTimeSet
+        && !_board._dataAboutPawnPromotion._isPawnPromotion) {
+
         if (_board.isEnemyPieceAt(snappedX, snappedY, draggedPiece->getColor())) {
             std::cout << "Zbito" << std::endl;
             _board.removePiece(snappedX, snappedY, _capturedPieces);
         }
 
         draggedPiece->move(snappedX, snappedY);
-        currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
-        _board.rotatePieces();
-        _clockWidget->togglePlayerTime();
-        _clockWidget->rotatePositionClocks();
-        _capturedPieces->RotateCapturedPieces();
-        _decorations->rotatePositionDecorations();
+        if(!_board._dataAboutPawnPromotion._isPawnPromotion){
+            currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+            _board.rotatePieces();
+            _clockWidget->togglePlayerTime();
+            _clockWidget->rotatePositionClocks();
+            _capturedPieces->RotateCapturedPieces();
+            _decorations->rotatePositionDecorations();   
+        }        
 
         if (_board.isCheckmate(currentPlayerTurn)) {
             std::cout << "Szach" << std::endl;
@@ -237,6 +269,12 @@ void GameWith2State::Draw() {
    
     _clockWidget->Draw();
     _decorations->Draw();
+
+    if(_board._dataAboutPawnPromotion._isPawnPromotion){
+        _pawnPromotion->ChangePosition(_board._dataAboutPawnPromotion._pawnX, 50, _board._dataAboutPawnPromotion._pawnColor);
+        _pawnPromotion->Draw();
+    }
+
 
     _data->window.display();
 }

@@ -80,6 +80,20 @@ Board::~Board() {
     std::cout << "Usunieto board" << std::endl;
 }
 
+void Board::addQueen(int color, int boardX, int boardY){
+    b_pieces.push_back(new Queen(color, boardX, boardY, this, color == WHITE ? _data->assetManager.GetTexture("wq") : _data->assetManager.GetTexture("bq")));
+}
+void Board::addRook(int color, int boardX, int boardY){
+    b_pieces.push_back(new Rook(color, boardX, boardY, this, color == WHITE ? _data->assetManager.GetTexture("wr") : _data->assetManager.GetTexture("br")));
+}
+void Board::addBishop(int color, int boardX, int boardY){
+    b_pieces.push_back(new Bishop(color, boardX, boardY, this, color == WHITE ? _data->assetManager.GetTexture("wb") : _data->assetManager.GetTexture("bb")));
+}
+void Board::addKnight(int color, int boardX, int boardY){
+    b_pieces.push_back(new Knight(color, boardX, boardY, this, color == WHITE ? _data->assetManager.GetTexture("wn") : _data->assetManager.GetTexture("bn")));
+}
+
+
 bool Board::isEmpty(int x, int y) {
     for (auto& piece : b_pieces) {
         if (piece->getBoardPosition().x == x && piece->getBoardPosition().y == y) {
@@ -347,14 +361,6 @@ bool Board::isStalemate(int color) {
 }
 
 
-void Board::promotePawn(Piece* pawn) {
-    _pawnPromotion = new PawnPromotion(_data);
-    _pawnPromotion->Init(pawn->getBoardPosition().x * 75, 50);
-    _pawnPromotion->Draw();
-    _pawnPromotion->ChoicePiece();
-    delete _pawnPromotion;
-    
-}
 
 
 // funkcje odpowiedzialne za rysowanie planszy i bierki itp

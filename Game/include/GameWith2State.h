@@ -9,6 +9,7 @@
 #include "Clock.h"
 #include "CapturedPieces.h"
 #include "Decorations.h"
+#include "PawnPromotion.h"
 
 class GameWith2State : public State {
 public:
@@ -46,6 +47,8 @@ private:
     ClockWidget *_clockWidget;
     bool _isClockTimeSet = false;
 
+
+    PawnPromotion *_pawnPromotion;
 
     CapturedPieces *_capturedPieces;
     Decorations *_decorations;

@@ -1,74 +1,68 @@
 #include "PawnPromotion.h"
 
-
-PawnPromotion::PawnPromotion(GameDataRef data) : _data(data) {
+PawnPromotion::PawnPromotion(GameDataRef data) : _data(std::move(data)), _promotionWindow(sf::Vector2f(PROMOTION_WINDOW_WIDTH, PROMOTION_WINDOW_HEIGHT)) {
+    _promotionWindow.setFillColor(sf::Color(255, 255, 255));
 }
 
-void PawnPromotion::Init(int x, int y) {
-    _promotionWindow = new sf::RectangleShape(sf::Vector2f(75, 300));
-    _promotionWindow->setFillColor(sf::Color(0, 0, 0));
-    _promotionWindow->setPosition(x, y);
-
-
-    _data->assetManager.LoadTexture("wq", "../assets/pieces/chessCom1/wq.png");
-    _data->assetManager.LoadTexture("wr", "../assets/pieces/chessCom1/wr.png");
-    _data->assetManager.LoadTexture("wb", "../assets/pieces/chessCom1/wb.png");
-    _data->assetManager.LoadTexture("wn", "../assets/pieces/chessCom1/wn.png");
-
-    sf::Sprite queen(_data->assetManager.GetTexture("wq"));
-    queen.setPosition(x*75, y + 15);
-
-    sf::Sprite rook(_data->assetManager.GetTexture("wr"));
-    rook.setPosition(x*75, y + 90);
-
-    sf::Sprite bishop(_data->assetManager.GetTexture("wb"));
-    bishop.setPosition(x*75, y + 165);
-
-    sf::Sprite knight(_data->assetManager.GetTexture("wn"));
-    knight.setPosition(x*75, y + 240);
-
-
-    _WhitePiecesToChoice.push_back(queen);
-    _WhitePiecesToChoice.push_back(rook);
-    _WhitePiecesToChoice.push_back(bishop);
-    _WhitePiecesToChoice.push_back(knight);
+void PawnPromotion::Init() {
+    SetupPieces();
 }
 
-PawnPromotion::~PawnPromotion() {
-    delete _promotionWindow;
+void PawnPromotion::SetupPieces() {
+    // Load textures for white pieces
+    _whitePieces[0].setTexture(_data->assetManager.GetTexture("wq"));
+    _whitePieces[1].setTexture(_data->assetManager.GetTexture("wr"));
+    _whitePieces[2].setTexture(_data->assetManager.GetTexture("wb"));
+    _whitePieces[3].setTexture(_data->assetManager.GetTexture("wn"));
+
+    // Load textures for black pieces
+    _blackPieces[0].setTexture(_data->assetManager.GetTexture("bq"));
+    _blackPieces[1].setTexture(_data->assetManager.GetTexture("br"));
+    _blackPieces[2].setTexture(_data->assetManager.GetTexture("bb"));
+    _blackPieces[3].setTexture(_data->assetManager.GetTexture("bn"));
 }
 
+void PawnPromotion::ChangePosition(int x, int y, int color) {
+    _color = color;
+    _promotionWindow.setPosition(x * TILE_SIZE, y);
+
+    int ypos = y + PIECE_OFFSET;
+    if (_color == BLACK) {
+        SetPiecePositions(_blackPieces, x, ypos);
+    } else {
+        SetPiecePositions(_whitePieces, x, ypos);
+    }
+}
+
+void PawnPromotion::SetPiecePositions(std::array<sf::Sprite, 4>& pieces, int x, int y) {
+    for (auto& piece : pieces) {
+        piece.setPosition(x * TILE_SIZE + PIECE_OFFSET, y);
+        y += TILE_SIZE;
+    }
+}
 
 void PawnPromotion::Draw() {
-    _data->window.draw(*_promotionWindow);
-    for(auto& piece : _WhitePiecesToChoice){
+    _data->window.draw(_promotionWindow);
+    if (_color == BLACK) {
+        DrawPieces(_blackPieces);
+    } else {
+        DrawPieces(_whitePieces);
+    }
+}
+
+void PawnPromotion::DrawPieces(const std::array<sf::Sprite, 4>& pieces) {
+    for (const auto& piece : pieces) {
         _data->window.draw(piece);
     }
-
 }
 
-bool PawnPromotion::ChoicePiece() {
-    bool spriteClicked = false;
+int PawnPromotion::ChoicePiece() {
+    const auto& pieces = (_color == WHITE) ? _whitePieces : _blackPieces;
 
-    while(!spriteClicked){
-        if(_data->inputManager.IsSpriteClicked(_WhitePiecesToChoice[0], sf::Mouse::Left, _data->window)){
-            spriteClicked = true;
-            return true;
-        }
-        else if(_data->inputManager.IsSpriteClicked(_WhitePiecesToChoice[1], sf::Mouse::Left, _data->window)){
-            spriteClicked = true;
-            return true;
-        }
-        else if(_data->inputManager.IsSpriteClicked(_WhitePiecesToChoice[2], sf::Mouse::Left, _data->window)){
-            spriteClicked = true;
-            return true;
-        }
-        else if(_data->inputManager.IsSpriteClicked(_WhitePiecesToChoice[3], sf::Mouse::Left, _data->window)){
-            spriteClicked = true;
-            return true;
+    for (size_t i = 0; i < pieces.size(); ++i) {
+        if (_data->inputManager.IsSpriteClicked(pieces[i], sf::Mouse::Left, _data->window)) {
+            return static_cast<int>(i + 1);
         }
     }
-    return false;
+    return 0;
 }
-
-
