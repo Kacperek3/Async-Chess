@@ -1,4 +1,5 @@
 #include "AiLogic.h"
+#include "Pieces.h"
 
 
 AiLogic::AiLogic(GameDataRef data): _data(data){
@@ -11,24 +12,47 @@ AiLogic::~AiLogic(){
 }
 
 
+int AiLogic::getPositionValue(Piece* piece) {
+    if (!piece) return 0;
+
+    Coordinate pos = piece->getBoardPosition();
+    int x = pos.x;
+    int y = pos.y;
+
+    if (x < 0 || x >= 8 || y < 0 || y >= 8) return 0;
+
+    switch (piece->getType()) {
+        case piece->PieceType::Pawn:return pawnPositionValues[y][x];
+        case piece->PieceType::Knight: return knightPositionValues[y][x];
+        case piece->PieceType::Bishop: return bishopPositionValues[y][x];
+        case piece->PieceType::Rook: return rookPositionValues[y][x];
+        case piece->PieceType::Queen: return queenPositionValues[y][x];
+        case piece->PieceType::King: return kingPositionValues[y][x];
+        default:
+            return 0;
+    }
+}
+
+
+
 int AiLogic::evaluatePosition(int color) {
     int score = 0;
-    std::cout << "Evaluating position" << std::endl;
-    // Dodaj wartości materiału
+    
     for (Piece* piece : _board->enemyPieces(color)) {
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             continue;
         }
         std::cout << piece->getBoardPosition().x << " " << piece->getBoardPosition().y << " "<<piece->getValue()<< std::endl;
         score += piece->getValue();
+        score += getPositionValue(piece);
     }
-    std::cout << "Enemy pieces" << std::endl;
     for (Piece* piece : _board->playerPieces(color)) {
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             continue;
         }
         std::cout << piece->getBoardPosition().x << " " << piece->getBoardPosition().y << " "<<piece->getValue()<< std::endl;
         score -= piece->getValue();
+        score -= getPositionValue(piece); 
     }
 
     if(_board->isCheckmate(1 - color)){
@@ -37,8 +61,6 @@ int AiLogic::evaluatePosition(int color) {
     if(_board->isCheckmate(color)){
         score += 10000;
     }
-    std::cout << "Score: " << score << std::endl;
-
 
     return score;
 }

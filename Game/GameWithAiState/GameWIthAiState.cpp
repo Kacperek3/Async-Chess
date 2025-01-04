@@ -259,11 +259,11 @@ void GameWithAiState::Update() {
         }
     }
 
-
     if(currentPlayerTurn == BLACK){
         _aiLogic->aiMove(BLACK);
         currentPlayerTurn = WHITE;
     }
+   
 
     _gameOver->Update();
 }
@@ -303,8 +303,6 @@ void GameWithAiState::Draw() {
         _pawnPromotion->ChangePosition(_aiLogic->_board->_dataAboutPawnPromotion._pawnX, 50, _aiLogic->_board->_dataAboutPawnPromotion._pawnColor);
         _pawnPromotion->Draw();
     }
-
-
 
     if(_isGameOver) _gameOver->Draw();
 
