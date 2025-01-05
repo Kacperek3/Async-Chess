@@ -18,9 +18,11 @@ public:
     std::vector<Coordinate> getPossibleCaptures() override;
 
     bool isFirstMove() const { return firstMove; }
+    bool getIsCastle() const { return isCastle; }
     void rotatePiece() override;
     
 private:
     bool firstMove = true;
+    bool isCastle = false;
     
 };

@@ -22,27 +22,82 @@ int AiLogic::getPositionValue(Piece* piece) {
     if (x < 0 || x >= 8 || y < 0 || y >= 8) return 0;
 
     switch (piece->getType()) {
-        case piece->PieceType::Pawn:return pawnPositionValues[y][x];
+        case piece->PieceType::Pawn:
+            if(piece->getColor() == WHITE) return pawnWhitePositionValues[y][x];
+            else return pawnBlackPositionValues[y][x];
+
         case piece->PieceType::Knight: return knightPositionValues[y][x];
         case piece->PieceType::Bishop: return bishopPositionValues[y][x];
         case piece->PieceType::Rook: return rookPositionValues[y][x];
         case piece->PieceType::Queen: return queenPositionValues[y][x];
-        case piece->PieceType::King: return kingPositionValues[y][x];
+        case piece->PieceType::King:
+            if (piece->getColor() == WHITE) return kingPositionValuesWhite[y][x];
+            else return kingPositionValuesBlack[y][x];
+
         default:
             return 0;
     }
 }
 
+bool AiLogic::canBeCaptured(Piece* piece) {
+    if (!piece) return false;
+
+    for (Piece* enemyPiece : _board->enemyPieces(piece->getColor())) {
+        if (enemyPiece->isValidMove(piece->getBoardPosition().x, piece->getBoardPosition().y)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
-int AiLogic::evaluatePosition(int color) {
+int AiLogic::canBeCapturedRecursive(Piece* piece) {
+    // do zrobienia
     int score = 0;
+    
+    return 0;
+}
+
+
+
+float AiLogic::evaluatePositionBlack(int color, Piece* RecentlyMovedPiece, int depth) {
+    float score = 0;
     
     for (Piece* piece : _board->enemyPieces(color)) {
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             continue;
         }
-        std::cout << piece->getBoardPosition().x << " " << piece->getBoardPosition().y << " "<<piece->getValue()<< std::endl;
+        score -= piece->getValue();
+        score -= getPositionValue(piece);
+    }
+    for (Piece* piece : _board->playerPieces(color)) {
+        if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
+            continue;
+        }
+        score += piece->getValue();
+        score += getPositionValue(piece); 
+    }
+
+    if(canBeCaptured(RecentlyMovedPiece) && RecentlyMovedPiece->getColor() == BLACK){
+        score -= RecentlyMovedPiece->getValue() - getPositionValue(RecentlyMovedPiece);
+    }
+
+    if(_board->isCheckmate(color)){
+        score -= 5000 - depth *10;
+    }
+    if(_board->isCheckmate(1 - color)){
+        score += 5000 + depth *10;
+    }
+    return score;
+}
+
+float AiLogic::evaluatePositionWhite(int color, Piece* RecentlyMovedPiece, int depth) {
+    float score = 0;
+    
+    for (Piece* piece : _board->enemyPieces(color)) {
+        if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
+            continue;
+        }
         score += piece->getValue();
         score += getPositionValue(piece);
     }
@@ -50,30 +105,39 @@ int AiLogic::evaluatePosition(int color) {
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             continue;
         }
-        std::cout << piece->getBoardPosition().x << " " << piece->getBoardPosition().y << " "<<piece->getValue()<< std::endl;
         score -= piece->getValue();
         score -= getPositionValue(piece); 
     }
 
-    if(_board->isCheckmate(1 - color)){
-        score -= 10000;
-    }
-    if(_board->isCheckmate(color)){
-        score += 10000;
+    if(canBeCaptured(RecentlyMovedPiece) && RecentlyMovedPiece->getColor() == WHITE){
+        score += RecentlyMovedPiece->getValue() + getPositionValue(RecentlyMovedPiece);
     }
 
+    //bialy chce jak najmniej punktow 
+
+    if(_board->isCheckmate(color)){ // sprawdzenie czy bialy nie dostal mata im mniejsza glebokosc tym lepiej
+
+        score += 5000 + depth *10;
+    }
+    if(_board->isCheckmate(1 - color)){ // sprawdzenie czy bialy nie zamatowal przeciwnika im mniejsza glebokosc tym lepiej
+        score -= 5000 - depth *10;
+    }
     return score;
 }
 
 
-int AiLogic::minimax(int depth, int color, bool maximizingPlayer, int alpha, int beta) {
+
+
+float AiLogic::minimax(int depth, int color, bool maximizingPlayer, float alpha, float beta, Piece* RecentlyMovedPiece) {
     // Sprawdź warunki końcowe
     if (depth == 0 || _board->isCheckmate(color) || _board->isStalemate(color)) {
-        return evaluatePosition(color);
+
+        if(color == WHITE) return evaluatePositionWhite(color, RecentlyMovedPiece, depth);
+        else return evaluatePositionBlack(color, RecentlyMovedPiece, depth);
     }
 
     if (maximizingPlayer) {
-        int maxEval = -10000;
+        float maxEval = -10000;
         auto allMoves = _board->getAllMoves(color);
 
         for (const auto& move : allMoves) {
@@ -90,7 +154,7 @@ int AiLogic::minimax(int depth, int color, bool maximizingPlayer, int alpha, int
             if (capturedPiece) capturedPiece->simulateMove(-1, -1);
 
             // Rekurencja
-            int eval = minimax(depth - 1, 1 - color, false, alpha, beta);
+            float eval = minimax(depth - 1, 1 - color, false, alpha, beta, movedPiece);
 
             // Cofnij ruch
             movedPiece->simulateMove(originalPosition.x, originalPosition.y);
@@ -106,7 +170,7 @@ int AiLogic::minimax(int depth, int color, bool maximizingPlayer, int alpha, int
         return maxEval;
 
     } else {
-        int minEval = 10000;
+        float minEval = 10000;
         auto allMoves = _board->getAllMoves(color);
 
         for (const auto& move : allMoves) {
@@ -123,7 +187,7 @@ int AiLogic::minimax(int depth, int color, bool maximizingPlayer, int alpha, int
             if (capturedPiece) capturedPiece->simulateMove(-1, -1);
 
             // Rekurencja
-            int eval = minimax(depth - 1, 1 - color, true, alpha, beta);
+            float eval = minimax(depth - 1, 1 - color, true, alpha, beta, movedPiece);
 
             // Cofnij ruch
             movedPiece->simulateMove(originalPosition.x, originalPosition.y);
@@ -143,9 +207,9 @@ int AiLogic::minimax(int depth, int color, bool maximizingPlayer, int alpha, int
 
 
 std::pair<Piece*, Coordinate> AiLogic::getBestMove(int depth, int color) {
-    int bestScore = -10000;
+    float bestScore = -10000;
     std::pair<Piece*, Coordinate> bestMove;
-    int alpha = -10000, beta = 10000;
+    float alpha = -10000, beta = 10000;
 
     auto allMoves = _board->getAllMoves(color);
 
@@ -161,7 +225,7 @@ std::pair<Piece*, Coordinate> AiLogic::getBestMove(int depth, int color) {
         if (capturedPiece) capturedPiece->simulateMove(-1, -1);
 
         // Oblicz ocenę
-        int score = minimax(depth - 1, 1 - color, false, alpha, beta);
+        float score = minimax(depth - 1, 1 - color, false, alpha, beta, movedPiece);
 
         // Cofnij ruch
         movedPiece->simulateMove(originalPosition.x, originalPosition.y);
