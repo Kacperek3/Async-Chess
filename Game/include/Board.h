@@ -43,6 +43,8 @@ public:
     std::vector<std::pair<Piece*, Coordinate>> getAllMoves(int color);
     bool isStalemate(int color);
     Piece* getPieceAt(int x, int y);
+    Piece* getRookForCastle(Piece* king, Coordinate targetPosition);
+    Coordinate getRookTargetForCastle(Coordinate targetPosition);
     void rotatePieces();
     void deleteObjects();
     

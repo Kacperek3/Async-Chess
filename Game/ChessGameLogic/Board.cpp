@@ -23,31 +23,31 @@ void Board::Init() {
 
 
     // czarne bierki
-    //b_pieces.push_back(new Rook(BLACK, 0, 0, this, _data->assetManager.GetTexture("br")));
-    // b_pieces.push_back(new Knight(BLACK, 1, 0, this, _data->assetManager.GetTexture("bn")));
-    // b_pieces.push_back(new Bishop(BLACK, 2, 0, this, _data->assetManager.GetTexture("bb")));
-    // b_pieces.push_back(new Queen(BLACK, 3, 0, this, _data->assetManager.GetTexture("bq")));
+    b_pieces.push_back(new Rook(BLACK, 0, 0, this, _data->assetManager.GetTexture("br")));
+    b_pieces.push_back(new Knight(BLACK, 1, 0, this, _data->assetManager.GetTexture("bn")));
+    b_pieces.push_back(new Bishop(BLACK, 2, 0, this, _data->assetManager.GetTexture("bb")));
+    b_pieces.push_back(new Queen(BLACK, 3, 0, this, _data->assetManager.GetTexture("bq")));
     b_pieces.push_back(new King(BLACK, 4, 0, this, _data->assetManager.GetTexture("bk")));
-    // b_pieces.push_back(new Bishop(BLACK, 5, 0, this, _data->assetManager.GetTexture("bb")));
-    // b_pieces.push_back(new Knight(BLACK, 6, 0, this, _data->assetManager.GetTexture("bn")));
+    b_pieces.push_back(new Bishop(BLACK, 5, 0, this, _data->assetManager.GetTexture("bb")));
+    b_pieces.push_back(new Knight(BLACK, 6, 0, this, _data->assetManager.GetTexture("bn")));
      b_pieces.push_back(new Rook(BLACK, 7, 0, this, _data->assetManager.GetTexture("br")));
-    // for(int i = 0; i < 8; i++){
-    //     b_pieces.push_back(new Pawn(BLACK, i, 1, this, UP, _data->assetManager.GetTexture("bp")));
-    // }
+    for(int i = 0; i < 8; i++){
+        b_pieces.push_back(new Pawn(BLACK, i, 1, this, UP, _data->assetManager.GetTexture("bp")));
+    }
 
 
     //biale bierki
-    //b_pieces.push_back(new Rook(WHITE, 0, 7, this, _data->assetManager.GetTexture("wr")));
-    // b_pieces.push_back(new Knight(WHITE, 1, 7, this, _data->assetManager.GetTexture("wn")));
-    // b_pieces.push_back(new Bishop(WHITE, 2, 7, this, _data->assetManager.GetTexture("wb")));
-    // b_pieces.push_back(new Queen(WHITE, 3, 7, this, _data->assetManager.GetTexture("wq")));
+    b_pieces.push_back(new Rook(WHITE, 0, 7, this, _data->assetManager.GetTexture("wr")));
+    b_pieces.push_back(new Knight(WHITE, 1, 7, this, _data->assetManager.GetTexture("wn")));
+    b_pieces.push_back(new Bishop(WHITE, 2, 7, this, _data->assetManager.GetTexture("wb")));
+    b_pieces.push_back(new Queen(WHITE, 3, 7, this, _data->assetManager.GetTexture("wq")));
     b_pieces.push_back(new King(WHITE, 4, 7, this, _data->assetManager.GetTexture("wk")));
-    // b_pieces.push_back(new Bishop(WHITE, 5, 7, this, _data->assetManager.GetTexture("wb")));
-    // b_pieces.push_back(new Knight(WHITE, 6, 7, this, _data->assetManager.GetTexture("wn")));
-    // b_pieces.push_back(new Rook(WHITE, 7, 7, this, _data->assetManager.GetTexture("wr")));
-    // for(int i = 0; i < 8; i++){
-    //     b_pieces.push_back(new Pawn(WHITE, i, 6, this, DOWN, _data->assetManager.GetTexture("wp")));
-    // }
+    b_pieces.push_back(new Bishop(WHITE, 5, 7, this, _data->assetManager.GetTexture("wb")));
+    b_pieces.push_back(new Knight(WHITE, 6, 7, this, _data->assetManager.GetTexture("wn")));
+    b_pieces.push_back(new Rook(WHITE, 7, 7, this, _data->assetManager.GetTexture("wr")));
+    for(int i = 0; i < 8; i++){
+        b_pieces.push_back(new Pawn(WHITE, i, 6, this, DOWN, _data->assetManager.GetTexture("wp")));
+    }
 
 
 
@@ -206,6 +206,39 @@ Piece* Board::getPieceAt(int x, int y) {
     }
     return nullptr;
 }
+
+Piece* Board::getRookForCastle(Piece* king, Coordinate targetPosition) {
+    int boardX = targetPosition.x;
+    int boardY = targetPosition.y;
+
+    if (boardX == 6 && boardY == king->getBoardPosition().y) {
+        std::cout << "Penis jestem tu" << std::endl;
+        Piece * rook = getPieceAt(7, boardY);
+        return rook;
+    } else if (boardX == 2 && boardY == king->getBoardPosition().y) {
+        std::cout << "Penis jestem tu2"<< std::endl;
+        return dynamic_cast<Rook*>(getPieceAt(0, boardY));
+    }
+    return nullptr;
+}
+
+Coordinate Board::getRookTargetForCastle(Coordinate targetPosition) {
+    int boardX = targetPosition.x;
+    int boardY = targetPosition.y;
+
+    if (boardX == 6 && boardY == 0) {
+        return Coordinate(5, 0);
+    } else if (boardX == 2 && boardY == 0) {
+        return Coordinate(3, 0);
+    } else if (boardX == 6 && boardY == 7) {
+        return Coordinate(5, 7);
+    } else if (boardX == 2 && boardY == 7) {
+        return Coordinate(3, 7);
+    }
+    return Coordinate(-1, -1);
+}
+
+
 
 bool Board::isWithinBounds(int x, int y) {
     return (x >= 0 && x < 8 && y >= 0 && y < 8);

@@ -22,7 +22,11 @@ private:
     int getPositionValue(Piece* piece);
     bool canBeCaptured(Piece* piece);
     int canBeCapturedRecursive(Piece* piece);
+    void handleCastle(Piece* movedPiece, const Coordinate& target, Piece*& rook, Coordinate& rookOriginalPosition, Coordinate& rookTargetPosition);
+    void undoCastle(Piece* movedPiece, const Coordinate& target);
 
+    std::vector<std::pair<Piece*, Coordinate>>getAllMovesSorted(int color);
+    std::pair<Piece*, Coordinate> getBestMoveIterative(int maxDepth, int color);
 
     GameDataRef _data;
 

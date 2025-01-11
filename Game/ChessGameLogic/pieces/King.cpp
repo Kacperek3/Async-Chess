@@ -51,6 +51,7 @@ std::vector<Coordinate> King::getPossibleMoves() {
                 Rook* rook = dynamic_cast<Rook*>(board->getPieceAt(7, boardPosition.y));
                 if (rook && rook->getType() == Piece::PieceType::Rook && rook->isFirstMove()) {
                     possibleMoves.push_back(Coordinate(6, boardPosition.y));  // Castling move
+                    isCastle = true;
                 }
             }
 
@@ -62,6 +63,7 @@ std::vector<Coordinate> King::getPossibleMoves() {
                 Rook* rook = dynamic_cast<Rook*>(board->getPieceAt(0, boardPosition.y));
                 if (rook && rook->getType() == Piece::PieceType::Rook && rook->isFirstMove()) {
                     possibleMoves.push_back(Coordinate(2, boardPosition.y));  // Castling move
+                    isCastle = true;
                 }
             }
         } else if (getColor() == BLACK) {
@@ -72,6 +74,7 @@ std::vector<Coordinate> King::getPossibleMoves() {
                 Rook* rook = dynamic_cast<Rook*>(board->getPieceAt(7, boardPosition.y));
                 if (rook && rook->getType() == Piece::PieceType::Rook && rook->isFirstMove()) {
                     possibleMoves.push_back(Coordinate(6, boardPosition.y));  // Castling move
+                    isCastle = true;
                 }
             }
 
@@ -83,12 +86,11 @@ std::vector<Coordinate> King::getPossibleMoves() {
                 Rook* rook = dynamic_cast<Rook*>(board->getPieceAt(0, boardPosition.y));
                 if (rook && rook->getType() == Piece::PieceType::Rook && rook->isFirstMove()) {
                     possibleMoves.push_back(Coordinate(2, boardPosition.y));  // Castling move
+                    isCastle = true;
                 }
             }
         }
     }
-
-
     return possibleMoves;
 }
 
@@ -200,6 +202,14 @@ bool King::isValidMove(int boardX, int boardY) {
 
     return false;  // W innych przypadkach ruch jest niedozwolony
 }
+
+
+
+void King::getIsCastle(bool &isCastle) {
+    isCastle = this->isCastle;
+    this->isCastle = false;
+}
+
 
 void King::move(int boardX, int boardY) {
     Piece::move(boardX, boardY);
