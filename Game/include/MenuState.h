@@ -20,9 +20,9 @@ private:
     sf::Font _font;
     
 
-    sf::Sprite _backgroundSprite;     // Sprite tła
+    sf::Sprite _backgroundSprite;    
     sf::Sprite _playWithFriendSprite;    
-    sf::Sprite _playWithAISprite;      // Sprite przycisku "Play with AI"
+    sf::Sprite _playWithAISprite;      
 
     void UpdateSpriteTexture(sf::Sprite& sprite, const std::string& normalTexture, const std::string& hoverTexture);
 };

@@ -70,6 +70,7 @@ bool InputManager::IsSpriteHoverAccurate(sf::Sprite object, sf::Mouse::Button bu
         if (texture) {
             sf::Image image = texture->copyToImage();
 
+            sf::Vector2f localPos = mouseWorldPos - spritePosition;
             sf::Vector2f scaledPos(localPos.x / object.getScale().x, localPos.y / object.getScale().y);
 
             if (scaledPos.x >= 0 && scaledPos.y >= 0 &&
