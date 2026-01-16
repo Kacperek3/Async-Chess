@@ -1,3 +1,5 @@
-/.vscode
-/przerabianie_chess_logic
-/obj
+.vscode/*
+przerabianie_chess_logic/*
+obj/*
+build/*
+bin/*

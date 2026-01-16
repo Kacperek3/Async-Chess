@@ -7,18 +7,18 @@ Board::Board(GameDataRef data) : _data(data), window(window) {
 
 
 void Board::Init() {
-    _data->assetManager.LoadTexture("wk", "../assets/pieces/chessCom1/wk.png");
-    _data->assetManager.LoadTexture("bk", "../assets/pieces/chessCom1/bk.png");
-    _data->assetManager.LoadTexture("wp", "../assets/pieces/chessCom1/wp.png");
-    _data->assetManager.LoadTexture("bp", "../assets/pieces/chessCom1/bp.png");
-    _data->assetManager.LoadTexture("wq", "../assets/pieces/chessCom1/wq.png");
-    _data->assetManager.LoadTexture("bq", "../assets/pieces/chessCom1/bq.png");
-    _data->assetManager.LoadTexture("wr", "../assets/pieces/chessCom1/wr.png");
-    _data->assetManager.LoadTexture("br", "../assets/pieces/chessCom1/br.png");
-    _data->assetManager.LoadTexture("wb", "../assets/pieces/chessCom1/wb.png");
-    _data->assetManager.LoadTexture("bb", "../assets/pieces/chessCom1/bb.png");
-    _data->assetManager.LoadTexture("wn", "../assets/pieces/chessCom1/wn.png");
-    _data->assetManager.LoadTexture("bn", "../assets/pieces/chessCom1/bn.png");
+    _data->assetManager.LoadTexture("wk", "assets/pieces/chessCom1/wk.png");
+    _data->assetManager.LoadTexture("bk", "assets/pieces/chessCom1/bk.png");
+    _data->assetManager.LoadTexture("wp", "assets/pieces/chessCom1/wp.png");
+    _data->assetManager.LoadTexture("bp", "assets/pieces/chessCom1/bp.png");
+    _data->assetManager.LoadTexture("wq", "assets/pieces/chessCom1/wq.png");
+    _data->assetManager.LoadTexture("bq", "assets/pieces/chessCom1/bq.png");
+    _data->assetManager.LoadTexture("wr", "assets/pieces/chessCom1/wr.png");
+    _data->assetManager.LoadTexture("br", "assets/pieces/chessCom1/br.png");
+    _data->assetManager.LoadTexture("wb", "assets/pieces/chessCom1/wb.png");
+    _data->assetManager.LoadTexture("bb", "assets/pieces/chessCom1/bb.png");
+    _data->assetManager.LoadTexture("wn", "assets/pieces/chessCom1/wn.png");
+    _data->assetManager.LoadTexture("bn", "assets/pieces/chessCom1/bn.png");
 
 
     // black pieces

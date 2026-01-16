@@ -38,7 +38,6 @@ void GameWith2State::HandleInput() {
 
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
-                // Powrót do menu
                 std::cout << "Escape" << std::endl;
                 _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
                 return;
@@ -47,7 +46,6 @@ void GameWith2State::HandleInput() {
 
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                // Rozpoczęcie przesuwania pionka
                 sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                 startDragging(mousePos);
 
@@ -95,7 +93,7 @@ void GameWith2State::HandleInput() {
 
                 if (!clickedOnPiece(mousePos)) {
                     clickedOnField(mousePos);
-                } // Jeśli nie kliknięto na poprawne pole, to clickedOnField zlikwiduje zaznaczenie na pionku
+                } 
 
                 _clockWidget->StartButtonPressed();
                 _isClockTimeSet = _clockWidget->getIsClockTimeSet();
@@ -105,7 +103,6 @@ void GameWith2State::HandleInput() {
                 }
 
             } else if (event.mouseButton.button == sf::Mouse::Right) {
-                // Przywracanie pionka na miejsce po kliknięciu prawym przyciskiem myszy
                 selectedPiece = nullptr;
 
                 if (isDragging) {
@@ -118,7 +115,6 @@ void GameWith2State::HandleInput() {
         }
 
         if (event.type == sf::Event::MouseButtonReleased) {
-            // Koniec przesuwania pionka
             if (event.mouseButton.button == sf::Mouse::Left && isDragging) {
                 sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                 stopDragging(mousePos);
@@ -221,7 +217,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
     int snappedX = int(mousePosition.x / 75);
     int snappedY = int((mousePosition.y - 50) / 75);
     
-    bool isCapture = false; // Flaga do śledzenia, czy pionek został zbity
+    bool isCapture = false; 
 
     if (draggedPiece->isValidMove(snappedX, snappedY) && 
         !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) 
@@ -231,7 +227,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         if (_board.isEnemyPieceAt(snappedX, snappedY, draggedPiece->getColor())) {
             std::cout << "Zbito" << std::endl;
             _board.removePiece(snappedX, snappedY, _capturedPieces);
-            isCapture = true; // Ustawienie flagi na true, gdy pionek został zbity
+            isCapture = true; 
         }
 
         draggedPiece->move(snappedX, snappedY);
@@ -256,7 +252,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         else if(_board.isKingInCheck(currentPlayerTurn)){
             _gameSounds->PlayCheckSound();
         }
-        else if (!isCapture) { // Odtwórz dźwięk ruchu tylko wtedy, gdy pionek nie został zbity
+        else if (!isCapture) {
             _gameSounds->PlayMoveSound();
         }
         else if(isCapture){
@@ -273,7 +269,6 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
 
 
 void GameWith2State::Update() {
-    // Usuwanie pionka, który doszedł do końca planszy
     for(auto& piece : _board.b_pieces){
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             std::cout << "Usunieto pionka" << std::endl;

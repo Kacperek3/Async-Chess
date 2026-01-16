@@ -7,19 +7,19 @@ MenuState::MenuState(GameDataRef data) : _data(data) {
 }
 
 void MenuState::Init(){
-    _data->assetManager.LoadTexture("Background", "../assets/Designer.png");
-    _data->assetManager.LoadFont("Poppins-Thin", "../assets/fonts/Poppins-Thin.ttf");
+    _data->assetManager.LoadTexture("Background", "assets/Designer.png");
+    _data->assetManager.LoadFont("Poppins-Thin", "assets/fonts/Poppins-Thin.ttf");
 
     _backgroundSprite.setTexture(_data->assetManager.GetTexture("Background"));
     _font = _data->assetManager.GetFont("Poppins-Thin");
 
-    _data->assetManager.LoadTexture("PLAY_WITH_FRIEND", "../assets/MenuAssets/Buttons/Button_play_friend.png");
-    _data->assetManager.LoadTexture("PLAY_WITH_FRIEND_HOVER", "../assets/MenuAssets/Buttons/Button_play_friend_hover.png");
+    _data->assetManager.LoadTexture("PLAY_WITH_FRIEND", "assets/MenuAssets/Buttons/Button_play_friend.png");
+    _data->assetManager.LoadTexture("PLAY_WITH_FRIEND_HOVER", "assets/MenuAssets/Buttons/Button_play_friend_hover.png");
     _playWithFriendSprite.setTexture(_data->assetManager.GetTexture("PLAY_WITH_FRIEND"));
     _playWithFriendSprite.setPosition(280, 100);
 
-    _data->assetManager.LoadTexture("BUTTON_PLAY_AI", "../assets/MenuAssets/Buttons/Button_play_ai.png");
-    _data->assetManager.LoadTexture("BUTTON_PLAY_AI_HOVER", "../assets/MenuAssets/Buttons/Button_play_ai_hover.png");
+    _data->assetManager.LoadTexture("BUTTON_PLAY_AI", "assets/MenuAssets/Buttons/Button_play_ai.png");
+    _data->assetManager.LoadTexture("BUTTON_PLAY_AI_HOVER", "assets/MenuAssets/Buttons/Button_play_ai_hover.png");
     _playWithAISprite.setTexture(_data->assetManager.GetTexture("BUTTON_PLAY_AI"));
     _playWithAISprite.setPosition(280, 200);
 }

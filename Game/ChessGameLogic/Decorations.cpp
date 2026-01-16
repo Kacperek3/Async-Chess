@@ -5,7 +5,7 @@ Decorations::Decorations(GameDataRef data): _data(data) {
 
 void Decorations::Init() {
 
-    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Light.ttf");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
     _font = _data->assetManager.GetFont("Poppins");
 
 
@@ -31,8 +31,8 @@ void Decorations::Init() {
     _textFieldNameBlack->setStyle(sf::Text::Bold);
 
 
-    _data->assetManager.LoadTexture("YETI", "../assets/ProfilePictures/Yeti.png");
-    _data->assetManager.LoadTexture("GINGERBREAD", "../assets/ProfilePictures/Gingerbread.png");
+    _data->assetManager.LoadTexture("YETI", "assets/ProfilePictures/Yeti.png");
+    _data->assetManager.LoadTexture("GINGERBREAD", "assets/ProfilePictures/Gingerbread.png");
 
     _profilePictureWhite.setTexture(_data->assetManager.GetTexture("GINGERBREAD"));
     _profilePictureWhite.setPosition(15, 655);
@@ -46,7 +46,7 @@ void Decorations::Init() {
 
 
 
-    _data->assetManager.LoadTexture("SETTINGS", "../assets/settings.png");
+    _data->assetManager.LoadTexture("SETTINGS", "assets/settings.png");
     _settings.setTexture(_data->assetManager.GetTexture("SETTINGS"));
     _settings.setPosition(608, 12);
 }

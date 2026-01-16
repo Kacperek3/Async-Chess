@@ -13,30 +13,30 @@ ClockWidget::~ClockWidget() {
 }
 
 void ClockWidget::Init() {
-    _data->assetManager.LoadTexture("START_BUTTON", "../assets/GameWithFriendState/Buttons/StartButton.png");
-    _data->assetManager.LoadTexture("START_BUTTON_HOVER", "../assets/GameWithFriendState/Buttons/StartButton_hover.png");
+    _data->assetManager.LoadTexture("START_BUTTON", "assets/GameWithFriendState/Buttons/StartButton.png");
+    _data->assetManager.LoadTexture("START_BUTTON_HOVER", "assets/GameWithFriendState/Buttons/StartButton_hover.png");
     _startButton.setTexture(_data->assetManager.GetTexture("START_BUTTON"));
     _startButton.setPosition(648, 330);
 
-    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_1", "../assets/ClockWhiteICON1.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_2", "../assets/ClockWhiteICON2.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_3", "../assets/ClockWhiteICON3.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_4", "../assets/ClockWhiteICON4.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_1", "assets/ClockWhiteICON1.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_2", "assets/ClockWhiteICON2.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_3", "assets/ClockWhiteICON3.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_4", "assets/ClockWhiteICON4.png");
     _clockIconWhite.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_WHITE_1"));
     _clockIconWhite.setScale(0.55, 0.55);
     _clockIconWhite.setPosition(460, 8);
 
 
-    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_1", "../assets/ClockBlackICON1.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_2", "../assets/ClockBlackICON2.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_3", "../assets/ClockBlackICON3.png");
-    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_4", "../assets/ClockBlackICON4.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_1", "assets/ClockBlackICON1.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_2", "assets/ClockBlackICON2.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_3", "assets/ClockBlackICON3.png");
+    _data->assetManager.LoadTexture("CLOCK_ICON_BLACK_4", "assets/ClockBlackICON4.png");
     _clockIconBlack.setTexture(_data->assetManager.GetTexture("CLOCK_ICON_BLACK_1"));
     _clockIconBlack.setScale(0.55, 0.55);
     _clockIconBlack.setPosition(460, 666);
 
 
-    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Light.ttf");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
     _font = _data->assetManager.GetFont("Poppins");
 
    
@@ -66,11 +66,11 @@ void ClockWidget::Init() {
 
 
 
-    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD", "../assets/TextClockBackground.png");
-    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_POINTED", "../assets/TextClockBackgroundPointed.png");
-    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME", "../assets/TextClockBackgroundLowTime.png");
-    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK", "../assets/TextClockBackgroundBlack.png");
-    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED", "../assets/TextClockBackgroundBlackPointed.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD", "assets/TextClockBackground.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_POINTED", "assets/TextClockBackgroundPointed.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME", "assets/TextClockBackgroundLowTime.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK", "assets/TextClockBackgroundBlack.png");
+    _data->assetManager.LoadTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED", "assets/TextClockBackgroundBlackPointed.png");
 
 
     _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK"));
