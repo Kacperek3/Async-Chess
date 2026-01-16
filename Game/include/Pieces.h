@@ -73,11 +73,11 @@ public:
 
 protected:
     int _value;
-    Board* board; // wskaźnik na planszę
-    sf::Sprite sprite; // sprite figury
-    sf::Vector2f m_position; // pozycja figury na planszy
-    int m_color; // kolor figury
-    PieceType m_type; // typ figury
-    Coordinate boardPosition; // pozycja figury na planszy w postaci współrzędnych planszy
+    Board* board; 
+    sf::Sprite sprite; 
+    sf::Vector2f m_position; 
+    int m_color;
+    PieceType m_type; 
+    Coordinate boardPosition; 
 
 };

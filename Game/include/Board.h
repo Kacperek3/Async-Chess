@@ -22,7 +22,6 @@ public:
     void Init();
     ~Board();
 
-    // funkcje odpowiedzialne za logikę gry
     void draw(sf::RenderWindow& window, bool showCoordinates);  
     void drawPieces(sf::RenderWindow& window, Piece* draggedPiece);
     void drawBoard(sf::RenderWindow& window, bool showCoordinates);
@@ -65,7 +64,6 @@ public:
 
 private:
     GameDataRef _data;
-    // funkcje odpowiedzialne za rysowanie planszy i bierki itp
     sf::RectangleShape *tile;
     sf::RectangleShape *markedField;
     sf::CircleShape *circle;

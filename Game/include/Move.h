@@ -3,7 +3,7 @@ struct Move {
     Piece* piece;
     int fromX, fromY;
     int toX, toY;
-    int score; // Do sortowania
+    int score; 
 
     Move() : piece(nullptr), fromX(0), fromY(0), toX(0), toY(0), score(0) {}
     Move(Piece* p, int tx, int ty) : piece(p), toX(tx), toY(ty), score(0) {
@@ -15,9 +15,8 @@ struct Move {
     }
 };
 
-// Szybka lista ruchów bez alokacji dynamicznej
 struct MoveList {
-    Move moves[256]; // W szachach rzadko jest więcej niż 218 ruchów
+    Move moves[256]; 
     int count = 0;
 
     void add(Piece* p, int tx, int ty) {
@@ -27,7 +26,6 @@ struct MoveList {
         }
     }
     
-    // Umożliwia iterację pętlą for(:)
     Move* begin() { return &moves[0]; }
     Move* end() { return &moves[count]; }
 };
