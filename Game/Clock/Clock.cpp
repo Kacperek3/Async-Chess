@@ -15,8 +15,30 @@ ClockWidget::~ClockWidget() {
 void ClockWidget::Init() {
     _data->assetManager.LoadTexture("START_BUTTON", "assets/GameWithFriendState/Buttons/StartButton.png");
     _data->assetManager.LoadTexture("START_BUTTON_HOVER", "assets/GameWithFriendState/Buttons/StartButton_hover.png");
+    _data->assetManager.LoadTexture("PAUSE_BUTTON", "assets/GameWithFriendState/Buttons/PauseButton.png");
+    _data->assetManager.LoadTexture("NEW_GAME_BUTTON","assets/GameWithFriendState/Buttons/NewGameButton.png");
+    _data->assetManager.LoadTexture("MENU_BUTTON","assets/GameWithFriendState/Buttons/MenuButton.png");
+    _data->assetManager.LoadTexture("RESUME_BUTTON","assets/GameWithFriendState/Buttons/ResumeButton.png");
+    _data->assetManager.LoadTexture("RESUME_BUTTON_HOVER","assets/GameWithFriendState/Buttons/ResumeButton_hover.png");
+    _data->assetManager.LoadTexture("MENU_BUTTON_HOVER","assets/GameWithFriendState/Buttons/MenuButton_hover.png");
+    _data->assetManager.LoadTexture("NEW_GAME_BUTTON_HOVER","assets/GameWithFriendState/Buttons/NewGameButton_hover.png");
+    _data->assetManager.LoadTexture("PAUSE_BUTTON_HOVER","assets/GameWithFriendState/Buttons/PauseButton_hover.png");
+
+
+
     _startButton.setTexture(_data->assetManager.GetTexture("START_BUTTON"));
     _startButton.setPosition(648, 330);
+
+    _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON"));
+    _newGameButton.setPosition(648, 330);
+
+    _pauseButton.setTexture(_data->assetManager.GetTexture("PAUSE_BUTTON"));
+    _pauseButton.setPosition(648, 330 + 60);
+    _resumeButton.setTexture(_data->assetManager.GetTexture("RESUME_BUTTON"));
+    _resumeButton.setPosition(OUT_OF_SCREEN, OUT_OF_SCREEN);
+
+    _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON"));
+    _menuButton.setPosition(648, 330 + 60);
 
     _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_1", "assets/ClockWhiteICON1.png");
     _data->assetManager.LoadTexture("CLOCK_ICON_WHITE_2", "assets/ClockWhiteICON2.png");
@@ -84,7 +106,7 @@ void ClockWidget::Init() {
 }
 
 
-void ClockWidget::StartButtonPressed() {
+bool ClockWidget::StartButtonPressed() {
     if(_data->inputManager.IsSpriteClicked(_backgroudn_to_textFieldBlack, sf::Mouse::Left, _data->window)){
         _whichClockPointed = BLACK;
         _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_BLACK_POINTED"));
@@ -107,7 +129,7 @@ void ClockWidget::StartButtonPressed() {
     }
 
 
-    if (_data->inputManager.IsSpriteClicked(_startButton, sf::Mouse::Left, _data->window)) {
+    if (_data->inputManager.IsSpriteClicked(_startButton, sf::Mouse::Left, _data->window) && _gameStatus == BEFORE_GAME) {
         try {
             int minutes = std::stoi(inputTextBlack.substr(0, 2));
             int seconds = std::stoi(inputTextBlack.substr(3, 2));
@@ -131,18 +153,60 @@ void ClockWidget::StartButtonPressed() {
             _isClockWhiteIconVisible = false;
 
             _isClockTimeSet = true;
+            _gameStatus = GAME_RUNNING;
+            _startButton.setPosition(OUT_OF_SCREEN, OUT_OF_SCREEN);
+            _menuButton.setPosition(648, 330 + 60*2);
+            return true;
         } catch (...) {
-
             std::cout << "Nieprawidłowy format czasu" << std::endl;
             _backgroudn_to_textFieldBlack.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
             _backgroudn_to_textFieldWhite.setTexture(_data->assetManager.GetTexture("BACKGROUND_TO_TEXTFIELD_LOW_TIME"));
             _isClockTimeSet = false;
         }
     }
+    return false;
+}
+bool ClockWidget::MenuButtonPressed(){
+    if(_data->inputManager.IsSpriteClicked(_menuButton, sf::Mouse::Left, _data->window)){
+        return true;
+    }
+    return false;
+}
+
+bool ClockWidget::NewGameButtonPressed(){
+    if(_data->inputManager.IsSpriteClicked(_newGameButton, sf::Mouse::Left, _data->window)){
+        return true;
+    }
+    return false;    
+}
+
+bool ClockWidget::PauseButtonPressed(){
+    if(_data->inputManager.IsSpriteClicked(_pauseButton, sf::Mouse::Left, _data->window)){
+        _gameStatus = GAME_PAUSE;
+        _pauseButton.setPosition(OUT_OF_SCREEN, OUT_OF_SCREEN);
+        _resumeButton.setPosition(648, 330 + 60);
+        return true;
+    }
+    return false;
+}
+
+bool ClockWidget::ResumeButtonPressed(){
+    if(_data->inputManager.IsSpriteClicked(_resumeButton, sf::Mouse::Left, _data->window)){
+       ResumeGame();
+       return true;
+    }
+    return false;
+}
+
+void ClockWidget::ResumeGame(){
+    _gameStatus = GAME_RUNNING;
+    _resumeButton.setPosition(OUT_OF_SCREEN, OUT_OF_SCREEN);
+    _pauseButton.setPosition(648, 330 + 60);
+    countdownClockBlack->restart();
+    countdownClockWhite->restart();
 }
 
 void ClockWidget::inputTime(sf::Event event) {
-
     if(_whichClockPointed == BLACK){
         inputTimeBlack(event);
     }
@@ -204,9 +268,39 @@ bool ClockWidget::Update(){
         _startButton.setTexture(_data->assetManager.GetTexture("START_BUTTON"));
     }
 
+    if(_data->inputManager.IsSpriteHover(_resumeButton, sf::Mouse::Left, _data->window)){
+        _resumeButton.setTexture(_data->assetManager.GetTexture("RESUME_BUTTON_HOVER"));
+    } 
+    else {
+        _resumeButton.setTexture(_data->assetManager.GetTexture("RESUME_BUTTON"));
+    }
+
+    if(_data->inputManager.IsSpriteHover(_menuButton, sf::Mouse::Left, _data->window)){
+        _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON_HOVER"));
+    } 
+    else {
+        _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON"));
+    }
+
+    if(_data->inputManager.IsSpriteHover(_pauseButton, sf::Mouse::Left, _data->window)){
+        _pauseButton.setTexture(_data->assetManager.GetTexture("PAUSE_BUTTON_HOVER"));
+    } 
+    else {
+        _pauseButton.setTexture(_data->assetManager.GetTexture("PAUSE_BUTTON"));
+    }
+    
+    if(_data->inputManager.IsSpriteHover(_newGameButton, sf::Mouse::Left, _data->window)){
+        _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON_HOVER"));
+    } 
+    else {
+        _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON"));
+    }
+
+
+
    sf::Time elapsed;
 
-    if (isCountdownActiveBlack) {
+    if (isCountdownActiveBlack && _gameStatus != GAME_PAUSE) {
         elapsed = countdownClockBlack->getElapsedTime();
         if (elapsed.asSeconds() >= 1) {
             remainingTimeInSecondsBlack -= static_cast<int>(elapsed.asSeconds());
@@ -224,7 +318,6 @@ bool ClockWidget::Update(){
             }
 
 
-
             if (remainingTimeInSecondsBlack <= 0) {
                 isCountdownActiveBlack = false;
                 remainingTimeInSecondsBlack = 0;
@@ -240,7 +333,7 @@ bool ClockWidget::Update(){
         }
     }
 
-    if (isCountdownActiveWhite) {
+    if (isCountdownActiveWhite && _gameStatus != GAME_PAUSE) {
         elapsed = countdownClockWhite->getElapsedTime();
         if (elapsed.asSeconds() >= 1) {
             remainingTimeInSecondsWhite -= static_cast<int>(elapsed.asSeconds());
@@ -264,7 +357,6 @@ bool ClockWidget::Update(){
                 return WHITE_LOST;
             }
 
-            // Aktualizuj tekst wyświetlany w _textFieldWhite
             int minutes = remainingTimeInSecondsWhite / 60;
             int seconds = remainingTimeInSecondsWhite % 60;
             std::ostringstream timeStream;
@@ -346,7 +438,16 @@ void ClockWidget::rotatePositionClocks(){
 
 
 void ClockWidget::Draw() {
-    _data->window.draw(_startButton);
+    if (_gameStatus == BEFORE_GAME)    _data->window.draw(_startButton);
+    else if(_gameStatus == GAME_RUNNING){
+        _data->window.draw(_pauseButton);
+    }
+    else if(_gameStatus == GAME_PAUSE){
+        _data->window.draw(_resumeButton);
+    }
+    _data->window.draw(_newGameButton);
+    _data->window.draw(_menuButton);
+
     _data->window.draw(_backgroudn_to_textFieldBlack);
     _data->window.draw(*_textFieldBlack);
 

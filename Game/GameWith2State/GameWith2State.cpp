@@ -38,7 +38,6 @@ void GameWith2State::HandleInput() {
 
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
-                std::cout << "Escape" << std::endl;
                 _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
                 return;
             }
@@ -95,7 +94,17 @@ void GameWith2State::HandleInput() {
                     clickedOnField(mousePos);
                 } 
 
-                _clockWidget->StartButtonPressed();
+                if(_clockWidget->StartButtonPressed()) continue;
+                else if(_clockWidget->MenuButtonPressed()){
+                    _data->stateManager.AddState(StateRef(new MenuState(_data)),false);
+                }
+                else if(_clockWidget->ResumeButtonPressed()) continue;
+                else if(_clockWidget->PauseButtonPressed()) continue;
+                else if(_clockWidget->NewGameButtonPressed()){
+                    _data->stateManager.AddState(StateRef(new GameWith2State(_data)), true);
+                }
+
+
                 _isClockTimeSet = _clockWidget->getIsClockTimeSet();
                 if(_isClockTimeSet && !_isGameStartSoundPlayed){
                     _gameSounds->PlayStartGameSound();
@@ -231,6 +240,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         }
 
         draggedPiece->move(snappedX, snappedY);
+        _clockWidget->ResumeGame();
         if(!_board._dataAboutPawnPromotion._isPawnPromotion){
             currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
             _board.rotatePieces();

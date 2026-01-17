@@ -8,7 +8,6 @@
 #include <iostream>
 
 
-
 #define WHITE 0
 #define BLACK 1
 #define NOTHING_POINTED 2
@@ -16,7 +15,14 @@
 #define BLACK_LOST 1
 #define WHITE_LOST 2
 
+#define OUT_OF_SCREEN -1000
 
+enum GameStatus{
+    BEFORE_GAME,
+    GAME_RUNNING,
+    GAME_PAUSE,
+    GAME_END
+};
 
 class ClockWidget {
 
@@ -24,7 +30,12 @@ public:
     ClockWidget(GameDataRef data);
     ~ClockWidget();
     void Init();
-    void StartButtonPressed();
+    bool StartButtonPressed();
+    bool PauseButtonPressed();
+    bool ResumeButtonPressed();
+    bool NewGameButtonPressed();
+    bool MenuButtonPressed();
+    void ResumeGame();
     void inputTime(sf::Event event);
     bool Update();
     void inputTimeBlack(sf::Event event);
@@ -33,9 +44,6 @@ public:
     void rotatePositionClocks();
     bool getIsClockTimeSet(){return _isClockTimeSet;}
     void Draw();
-
-
-
 
       
 private:
@@ -50,6 +58,12 @@ private:
 
 
     sf::Sprite _startButton;
+    sf::Sprite _newGameButton;
+    sf::Sprite _pauseButton;
+    sf::Sprite _resumeButton;
+    sf::Sprite _menuButton;
+    enum GameStatus _gameStatus = BEFORE_GAME;
+
     sf::Font _font;
 
     int _whichClockPointed = NOTHING_POINTED;
