@@ -1,5 +1,5 @@
-.vscode/*
-przerabianie_chess_logic/*
-obj/*
-build/*
-bin/*
+/.vscode
+/przerabianie_chess_logic
+/obj
+/build
+/bin
