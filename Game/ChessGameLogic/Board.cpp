@@ -283,15 +283,15 @@ bool Board::isKingInCheckAfterMove(Piece* movedPiece, Coordinate targetPosition)
     }
 
     if (capturedPiece != nullptr) {
-        capturedPiece->simulateMove(-1, -1);
+        capturedPiece->simulateMove(-1, -1, false);
     }
-    movedPiece->simulateMove(targetPosition.x, targetPosition.y);
+    movedPiece->simulateMove(targetPosition.x, targetPosition.y, false);
     
     bool isCheck = isKingInCheck(movedPiece->getColor());
 
-    movedPiece->simulateMove(originalPosition.x, originalPosition.y);
+    movedPiece->simulateMove(originalPosition.x, originalPosition.y, false);
     if (capturedPiece != nullptr) {
-        capturedPiece->simulateMove(targetPosition.x, targetPosition.y);
+        capturedPiece->simulateMove(targetPosition.x, targetPosition.y, false);
     }
 
     return isCheck;
@@ -396,7 +396,17 @@ bool Board::isStalemate(int color) {
     return true;
 }
 
-void Board::showPossibleMoves(sf::RenderWindow& window, Piece* piece){
+void Board::createSnapshot(){
+   visualSnapshot.clear();
+    for(auto& piece: b_pieces){
+        if(piece->getBoardPosition().x != -1 && piece->getBoardPosition().y != -1){
+            visualSnapshot.push_back(piece->getSprite());
+        }
+    } 
+}
+
+void Board::showPossibleMoves(sf::RenderWindow& window, Piece* piece, bool isAiThinking){
+    if(isAiThinking) return;
     std::vector<Coordinate> possibleMoves = getValidMoves(piece);
     for(auto& move : possibleMoves){
         circle->setFillColor(*circleColor);
@@ -405,7 +415,8 @@ void Board::showPossibleMoves(sf::RenderWindow& window, Piece* piece){
     }
 }
 
-void Board::showPossibleCaptures(sf::RenderWindow& window, Piece* piece){
+void Board::showPossibleCaptures(sf::RenderWindow& window, Piece* piece, bool isAiThinking){
+    if(isAiThinking) return;
     std::vector<Coordinate> possibleCaptures = getValidCaptures(piece);
     for(auto& capture : possibleCaptures){
         markedField->setFillColor(*recColor);
@@ -413,8 +424,8 @@ void Board::showPossibleCaptures(sf::RenderWindow& window, Piece* piece){
         window.draw(*markedField);
     }
 }
-void Board::showCheck(sf::RenderWindow& window, int color){
-    if(isKingInCheck(color)){
+void Board::showCheck(sf::RenderWindow& window, int color, bool isAiThinking){
+    if(isKingInCheck(color) && !isAiThinking){
         King* king = dynamic_cast<King*>(findKing(color));
         markedField->setFillColor(*recColor);
         markedField->setPosition(king->getBoardPosition().x * 75, king->getBoardPosition().y * 75 + 50);
@@ -422,22 +433,34 @@ void Board::showCheck(sf::RenderWindow& window, int color){
     }
 }
 
-void Board::markPieceField(sf::RenderWindow& window, Piece* piece){
+void Board::markPieceField(sf::RenderWindow& window, Piece* piece, bool isAiThinking){
+    if(isAiThinking) return;
     sf::Color markedColor(223, 223, 103, 128);
     markedField->setFillColor(markedColor);
     markedField->setPosition(piece->getBoardPosition().x * 75, piece->getBoardPosition().y * 75 + 50);
     window.draw(*markedField);
 }
 
-void Board::drawPieces(sf::RenderWindow& window, Piece* draggedPiece) {
-    for (auto& piece : b_pieces) {
-        if (piece != draggedPiece) {
-            piece->draw(window);
+void Board::drawPieces(sf::RenderWindow& window, Piece* draggedPiece, bool isAiThinking) {
+   if(isAiThinking){
+        for(auto& sprite : visualSnapshot){
+            window.draw(sprite);
+        }
+
+        if (draggedPiece != nullptr) {
+            draggedPiece->draw(window);
         }
     }
-    if (draggedPiece != nullptr) {
-        draggedPiece->draw(window);
-    }
+    else{
+        for (auto& piece : b_pieces) {
+            if (piece != draggedPiece) {
+                piece->draw(window);
+            }
+        }
+        if (draggedPiece != nullptr) {
+            draggedPiece->draw(window);
+        }
+    } 
 }
 
 void Board::drawBoard(sf::RenderWindow& window, bool showCoordinates) {
