@@ -9,19 +9,19 @@ GameSounds::~GameSounds() {
 }
 
 void GameSounds::Init() {
-    _data->soundManager.LoadSoundBuffer("MOVE", "../assets/Sounds/move-self.wav");
+    _data->soundManager.LoadSoundBuffer("MOVE", "assets/Sounds/move-self.wav");
     _moveSound = _data->soundManager.CreateSound("MOVE");
 
-    _data->soundManager.LoadSoundBuffer("CAPTURE", "../assets/Sounds/capture.wav");
+    _data->soundManager.LoadSoundBuffer("CAPTURE", "assets/Sounds/capture.wav");
     _captureSound = _data->soundManager.CreateSound("CAPTURE");
 
-    _data->soundManager.LoadSoundBuffer("START_GAME", "../assets/Sounds/game-start.wav");
+    _data->soundManager.LoadSoundBuffer("START_GAME", "assets/Sounds/game-start.wav");
     _startGameSound = _data->soundManager.CreateSound("START_GAME");
 
-    _data->soundManager.LoadSoundBuffer("END_GAME", "../assets/Sounds/game-end.wav");
+    _data->soundManager.LoadSoundBuffer("END_GAME", "assets/Sounds/game-end.wav");
     _endGameSound = _data->soundManager.CreateSound("END_GAME");
 
-    _data->soundManager.LoadSoundBuffer("CHECK", "../assets/Sounds/move-check.wav");
+    _data->soundManager.LoadSoundBuffer("CHECK", "assets/Sounds/move-check.wav");
     _CheckSound = _data->soundManager.CreateSound("CHECK");
 }
 

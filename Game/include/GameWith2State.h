@@ -48,7 +48,11 @@ private:
 
     ClockWidget *_clockWidget;
     bool _isClockTimeSet = false;
-
+    sf::Sprite _player1Logo;
+    sf::Font _font;
+    sf::Sprite _player2Logo;
+    sf::Text* _player1LogoText;
+    sf::Text* _player2LogoText;
 
     PawnPromotion *_pawnPromotion;
     GameOver *_gameOver;

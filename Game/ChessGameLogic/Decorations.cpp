@@ -3,9 +3,9 @@
 Decorations::Decorations(GameDataRef data): _data(data) {
 }
 
-void Decorations::Init() {
+void Decorations::Init(std::string player1Name, std::string Player2Name) {
 
-    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Light.ttf");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
     _font = _data->assetManager.GetFont("Poppins");
 
 
@@ -15,7 +15,7 @@ void Decorations::Init() {
     _textFieldNameWhite->setFillColor(sf::Color(255,255,255));
     _textFieldNameWhite->setPosition(65, 655);
     _textFieldNameWhite->setOutlineColor(sf::Color::Black);
-    _textFieldNameWhite->setString("Player 1");
+    _textFieldNameWhite->setString(player1Name);
     _textFieldNameWhite->setOutlineThickness(0);
     _textFieldNameWhite->setStyle(sf::Text::Bold);
 
@@ -26,13 +26,13 @@ void Decorations::Init() {
     _textFieldNameBlack->setFillColor(sf::Color(255,255,255));
     _textFieldNameBlack->setPosition(65, 5);
     _textFieldNameBlack->setOutlineColor(sf::Color::Black);
-    _textFieldNameBlack->setString("Player 2");
+    _textFieldNameBlack->setString(Player2Name);
     _textFieldNameBlack->setOutlineThickness(0);
     _textFieldNameBlack->setStyle(sf::Text::Bold);
 
 
-    _data->assetManager.LoadTexture("YETI", "../assets/ProfilePictures/Yeti.png");
-    _data->assetManager.LoadTexture("GINGERBREAD", "../assets/ProfilePictures/Gingerbread.png");
+    _data->assetManager.LoadTexture("YETI", "assets/ProfilePictures/Yeti.png");
+    _data->assetManager.LoadTexture("GINGERBREAD", "assets/ProfilePictures/Gingerbread.png");
 
     _profilePictureWhite.setTexture(_data->assetManager.GetTexture("GINGERBREAD"));
     _profilePictureWhite.setPosition(15, 655);
@@ -46,7 +46,7 @@ void Decorations::Init() {
 
 
 
-    _data->assetManager.LoadTexture("SETTINGS", "../assets/settings.png");
+    _data->assetManager.LoadTexture("SETTINGS", "assets/settings.png");
     _settings.setTexture(_data->assetManager.GetTexture("SETTINGS"));
     _settings.setPosition(608, 12);
 }

@@ -199,8 +199,8 @@ void King::getIsCastle(bool &isCastle) {
 }
 
 
-void King::move(int boardX, int boardY) {
-    Piece::move(boardX, boardY);
+void King::move(int boardX, int boardY, bool updateVisuals) {
+    Piece::move(boardX, boardY, updateVisuals);
     firstMove = false;
 }
 void King::rotatePiece() {

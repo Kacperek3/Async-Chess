@@ -26,7 +26,7 @@ public:
         uint64_t hash;
         float score;
         int depth;
-        int flag; // 0 = EXACT (Dokładny), 1 = ALPHA (Górna granica), 2 = BETA (Dolna granica)
+        int flag;
         int bestMoveSrcX, bestMoveSrcY;
         int bestMoveDstX, bestMoveDstY;
     };
@@ -37,7 +37,6 @@ private:
     static const int TT_SIZE = 1048576; 
     TTEntry transpositionTable[TT_SIZE];
 
-    // Funkcje pomocnicze
     void clearTT();
     void storeTT(uint64_t hash, float score, int depth, int flag, Piece* bestPiece, Coordinate bestTarget);
     bool probeTT(uint64_t hash, int depth, float alpha, float beta, float& score, Piece*& bestPiece, Coordinate& bestTarget);

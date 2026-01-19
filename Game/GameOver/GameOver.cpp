@@ -5,15 +5,15 @@ GameOver::GameOver(GameDataRef data): _data(data) {
 }
 
 void GameOver::Init() {
-    _data->assetManager.LoadFont("Poppins", "../assets/fonts/Poppins-Light.ttf");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
     _font = _data->assetManager.GetFont("Poppins");
 
-    _data->assetManager.LoadTexture("PLAY_AGAIN_BUTTON", "../assets/GameOverAssets/PlayAgainButton.png");
-    _data->assetManager.LoadTexture("PLAY_AGAIN_BUTTON_HOVER", "../assets/GameOverAssets/PlayAgainButton_hover.png");
+    _data->assetManager.LoadTexture("PLAY_AGAIN_BUTTON", "assets/GameOverAssets/PlayAgainButton.png");
+    _data->assetManager.LoadTexture("PLAY_AGAIN_BUTTON_HOVER", "assets/GameOverAssets/PlayAgainButton_hover.png");
     _playAgainButton.setTexture(_data->assetManager.GetTexture("PLAY_AGAIN_BUTTON"));
     _playAgainButton.setPosition(215, 250);
 
-    _data->assetManager.LoadTexture("GO_TO_MENU_BUTTON", "../assets/GameOverAssets/GoToMenuButton.png");
+    _data->assetManager.LoadTexture("GO_TO_MENU_BUTTON", "assets/GameOverAssets/GoToMenuButton.png");
     //_data->assetManager.LoadTexture("GO_TO_MENU_BUTTON_HOVER", "../assets/GameOverAssets/GoToMenuButton_hover.png");
     _goToMenuButton.setTexture(_data->assetManager.GetTexture("GO_TO_MENU_BUTTON"));
     _goToMenuButton.setPosition(215, 320);

@@ -20,9 +20,39 @@ void GameWith2State::Init(){
     _pawnPromotion = new PawnPromotion(_data);
     _gameSounds = new GameSounds(_data);
     _gameOver = new GameOver(_data);
+
+    _data->assetManager.LoadTexture("PLAYER_2_LOGO", "assets/ProfilePictures/Yeti_100x100.png");
+    _data->assetManager.LoadTexture("PLAYER_1_LOGO", "assets/ProfilePictures/Gingerbread_100x100.png");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
+    _font = _data->assetManager.GetFont("Poppins");
+
+    _player2Logo.setTexture(_data->assetManager.GetTexture("PLAYER_2_LOGO"));
+    _player2Logo.setPosition(658, 50);
+    _player1Logo.setTexture(_data->assetManager.GetTexture("PLAYER_1_LOGO"));
+    _player1Logo.setPosition(658,50);
+
+    _player1LogoText = new sf::Text();
+    _player1LogoText->setFont(_font);
+    _player1LogoText->setCharacterSize(18);
+    _player1LogoText->setFillColor(sf::Color(200,200,200));
+    _player1LogoText->setPosition(654, 170);
+    _player1LogoText->setOutlineColor(sf::Color::Black);
+    _player1LogoText->setOutlineThickness(0);
+    _player1LogoText->setString("Player 1 turn");
+    _player1LogoText->setStyle(sf::Text::Bold);
+    _player2LogoText = new sf::Text();
+    _player2LogoText->setFont(_font);
+    _player2LogoText->setCharacterSize(18);
+    _player2LogoText->setFillColor(sf::Color(200,200,200));
+    _player2LogoText->setPosition(654, 170);
+    _player2LogoText->setOutlineColor(sf::Color::Black);
+    _player2LogoText->setOutlineThickness(0);
+    _player2LogoText->setString("Player 2 turn");
+    _player2LogoText->setStyle(sf::Text::Bold);
+
     _clockWidget->Init();
     _capturedPieces->Init();
-    _decorations->Init();
+    _decorations->Init("Player 1", "Player 2");
     _pawnPromotion->Init();
     _gameSounds->Init();
     _gameOver->Init();
@@ -38,8 +68,6 @@ void GameWith2State::HandleInput() {
 
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Escape) {
-                // Powrót do menu
-                std::cout << "Escape" << std::endl;
                 _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
                 return;
             }
@@ -47,7 +75,6 @@ void GameWith2State::HandleInput() {
 
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                // Rozpoczęcie przesuwania pionka
                 sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                 startDragging(mousePos);
 
@@ -95,9 +122,19 @@ void GameWith2State::HandleInput() {
 
                 if (!clickedOnPiece(mousePos)) {
                     clickedOnField(mousePos);
-                } // Jeśli nie kliknięto na poprawne pole, to clickedOnField zlikwiduje zaznaczenie na pionku
+                } 
 
-                _clockWidget->StartButtonPressed();
+                if(_clockWidget->StartButtonPressed()) continue;
+                else if(_clockWidget->MenuButtonPressed()){
+                    _data->stateManager.AddState(StateRef(new MenuState(_data)),false);
+                }
+                else if(_clockWidget->ResumeButtonPressed()) continue;
+                else if(_clockWidget->PauseButtonPressed()) continue;
+                else if(_clockWidget->NewGameButtonPressed()){
+                    _data->stateManager.AddState(StateRef(new GameWith2State(_data)), true);
+                }
+
+
                 _isClockTimeSet = _clockWidget->getIsClockTimeSet();
                 if(_isClockTimeSet && !_isGameStartSoundPlayed){
                     _gameSounds->PlayStartGameSound();
@@ -105,7 +142,6 @@ void GameWith2State::HandleInput() {
                 }
 
             } else if (event.mouseButton.button == sf::Mouse::Right) {
-                // Przywracanie pionka na miejsce po kliknięciu prawym przyciskiem myszy
                 selectedPiece = nullptr;
 
                 if (isDragging) {
@@ -118,7 +154,6 @@ void GameWith2State::HandleInput() {
         }
 
         if (event.type == sf::Event::MouseButtonReleased) {
-            // Koniec przesuwania pionka
             if (event.mouseButton.button == sf::Mouse::Left && isDragging) {
                 sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                 stopDragging(mousePos);
@@ -175,7 +210,8 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
                 _gameSounds->PlayEndGameSound();
                 _isGameOver = true;
                 _isMovingAllowed = false;
-                _gameOver->whoWins(currentPlayerTurn, checkmate);
+                int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+                _gameOver->whoWins(winner, checkmate);
             }
             else if (_board.isStalemate(currentPlayerTurn)) {
                 
@@ -221,7 +257,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
     int snappedX = int(mousePosition.x / 75);
     int snappedY = int((mousePosition.y - 50) / 75);
     
-    bool isCapture = false; // Flaga do śledzenia, czy pionek został zbity
+    bool isCapture = false; 
 
     if (draggedPiece->isValidMove(snappedX, snappedY) && 
         !_board.isKingInCheckAfterMove(draggedPiece, Coordinate(snappedX, snappedY)) 
@@ -231,10 +267,11 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         if (_board.isEnemyPieceAt(snappedX, snappedY, draggedPiece->getColor())) {
             std::cout << "Zbito" << std::endl;
             _board.removePiece(snappedX, snappedY, _capturedPieces);
-            isCapture = true; // Ustawienie flagi na true, gdy pionek został zbity
+            isCapture = true; 
         }
 
         draggedPiece->move(snappedX, snappedY);
+        _clockWidget->ResumeGame();
         if(!_board._dataAboutPawnPromotion._isPawnPromotion){
             currentPlayerTurn = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
             _board.rotatePieces();
@@ -248,7 +285,8 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
             _gameSounds->PlayEndGameSound();
             _isGameOver = true;
             _isMovingAllowed = false;
-            _gameOver->whoWins(currentPlayerTurn, checkmate);
+            int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+            _gameOver->whoWins(winner, checkmate);
         }
         else if (_board.isStalemate(currentPlayerTurn)) {
             std::cout << "Pat" << std::endl;
@@ -256,7 +294,7 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
         else if(_board.isKingInCheck(currentPlayerTurn)){
             _gameSounds->PlayCheckSound();
         }
-        else if (!isCapture) { // Odtwórz dźwięk ruchu tylko wtedy, gdy pionek nie został zbity
+        else if (!isCapture) {
             _gameSounds->PlayMoveSound();
         }
         else if(isCapture){
@@ -273,7 +311,6 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
 
 
 void GameWith2State::Update() {
-    // Usuwanie pionka, który doszedł do końca planszy
     for(auto& piece : _board.b_pieces){
         if(piece->getBoardPosition().x == -1 && piece->getBoardPosition().y == -1){
             std::cout << "Usunieto pionka" << std::endl;
@@ -285,7 +322,8 @@ void GameWith2State::Update() {
     if(isWinnerbyTime){
         _isGameOver = true;
         _isMovingAllowed = false;
-        _gameOver->whoWins(!currentPlayerTurn, timeEnd);
+        int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+        _gameOver->whoWins(winner, checkmate);
     }
     _gameOver->Update();
 }
@@ -323,6 +361,14 @@ void GameWith2State::Draw() {
     _capturedPieces->Draw();
     _decorations->Draw();
     _clockWidget->Draw();
+
+    if(currentPlayerTurn == WHITE){
+        _data->window.draw(_player1Logo);
+        _data->window.draw(*_player1LogoText);
+    } else{
+        _data->window.draw(_player2Logo);
+        _data->window.draw(*_player2LogoText);
+    }
     
     if(_board._dataAboutPawnPromotion._isPawnPromotion){
         _pawnPromotion->ChangePosition(_board._dataAboutPawnPromotion._pawnX, 50, _board._dataAboutPawnPromotion._pawnColor);
@@ -340,6 +386,8 @@ void GameWith2State::Draw() {
 
 void GameWith2State::ClearObjects() {
     _board.deleteObjects();
+    delete _player1LogoText;
+    delete _player2LogoText;
     delete _decorations;
     delete _clockWidget;
     delete _capturedPieces;

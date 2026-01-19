@@ -124,8 +124,8 @@ bool Rook::isValidMove(int boardX, int boardY) {
     return false;
 }
 
-void Rook::move(int boardX, int boardY) {
-    Piece::move(boardX, boardY);
+void Rook::move(int boardX, int boardY, bool updateVisuals) {
+    Piece::move(boardX, boardY, updateVisuals);
     firstMove = false;
 }
 void Rook::rotatePiece() {

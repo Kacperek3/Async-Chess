@@ -24,10 +24,11 @@ void Piece::move(sf::Vector2f newPosition) {
     sprite.setPosition(newPosition);
 }
 
-void Piece::simulateMove(int boardX, int boardY) {
+void Piece::simulateMove(int boardX, int boardY, bool updateVisuals) {
     m_position = Position(boardX, boardY).getPixelPosition();
     boardPosition = Coordinate(boardX, boardY);
-    sprite.setPosition(m_position);
+    
+    if(updateVisuals){  sprite.setPosition(m_position); std::cout << "UWAGA! KTOŚ RUSZA SPRITEM! "<< std::endl;}
 }
 
 void Piece::rotatePiece() {
@@ -40,10 +41,10 @@ void Piece::rotatePiece() {
     sprite.setPosition(m_position);
 }
 
-void Piece::move(int boardX, int boardY) {
+void Piece::move(int boardX, int boardY, bool updateVisuals) {
     m_position = Position(boardX, boardY).getPixelPosition();
     boardPosition = Coordinate(boardX, boardY);
-    sprite.setPosition(m_position);
+    if(updateVisuals)  sprite.setPosition(m_position);
 }
 
 Piece::Piece() {}

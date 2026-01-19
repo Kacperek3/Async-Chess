@@ -23,7 +23,7 @@ public:
     ~Board();
 
     void draw(sf::RenderWindow& window, bool showCoordinates);  
-    void drawPieces(sf::RenderWindow& window, Piece* draggedPiece);
+    void drawPieces(sf::RenderWindow& window, Piece* draggedPiece, bool isAiThinking = false);
     void drawBoard(sf::RenderWindow& window, bool showCoordinates);
     bool isEmpty(int x, int y);
     bool isEnemyPieceAt(int boardX, int boardY, int color) const;
@@ -36,10 +36,10 @@ public:
     bool isCheckmate(int color);
     std::vector<Piece*> b_pieces;
     bool isKingInCheckAfterMove(Piece* movedPiece, Coordinate targetPosition);
-    void showPossibleMoves(sf::RenderWindow& window, Piece* piece); 
-    void showPossibleCaptures(sf::RenderWindow& window, Piece* piece); 
-    void showCheck(sf::RenderWindow& window, int color);
-    void markPieceField(sf::RenderWindow& window, Piece* piece);
+    void showPossibleMoves(sf::RenderWindow& window, Piece* piece, bool isAiThinking = false); 
+    void showPossibleCaptures(sf::RenderWindow& window, Piece* piece, bool isAiThinking = false); 
+    void showCheck(sf::RenderWindow& window, int color, bool isAiThinking = false);
+    void markPieceField(sf::RenderWindow& window, Piece* piece, bool isAiThinking = false);
     bool isStalemate(int color);
     void generateAllMoves(int color, MoveList& list);
     Piece* getPieceAt(int x, int y);
@@ -59,6 +59,9 @@ public:
     std::vector<Coordinate> getValidMoves(Piece* piece);
     std::vector<Coordinate> getValidCaptures(Piece* piece);
     void undoMove(Piece* piece, Coordinate originalPosition, Piece* capturedPiece);
+    void createSnapshot();
+
+    std::vector<sf::Sprite> visualSnapshot;
 
     DataAboutPawnPromotion _dataAboutPawnPromotion;
 

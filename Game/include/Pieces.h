@@ -31,8 +31,8 @@ public:
     virtual ~Piece();
 
     virtual void draw(sf::RenderWindow& window) = 0;
-    virtual void simulateMove(int boardX, int boardY);
-    virtual void move(int boardX, int boardY);
+    virtual void simulateMove(int boardX, int boardY, bool updateVisuals = true);
+    virtual void move(int boardX, int boardY, bool updateVisuals = true);
     virtual void move(sf::Vector2f newPosition);
     virtual bool isValidMove(int boardX, int boardY) = 0;
     virtual std::vector<Coordinate> getPossibleMoves() = 0;

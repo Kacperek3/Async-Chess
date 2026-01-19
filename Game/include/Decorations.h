@@ -11,7 +11,7 @@ class Decorations {
 public:
     Decorations(GameDataRef data);
     ~Decorations();
-    void Init();
+    void Init(std::string player1Name, std::string player2Name);
     void rotatePositionDecorations();
     void Draw();
     

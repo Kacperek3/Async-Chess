@@ -78,8 +78,8 @@ bool Pawn::isValidMove(int boardX, int boardY) {
     return false;  
 }
 
-void Pawn::move(int boardX, int boardY) {
-    Piece::move(boardX, boardY);
+void Pawn::move(int boardX, int boardY, bool updateVisuals) {
+    Piece::move(boardX, boardY, updateVisuals);
     firstMove = false;
     if (boardY == 0 || boardY == 7) {
             board->_dataAboutPawnPromotion._isPawnPromotion = true;

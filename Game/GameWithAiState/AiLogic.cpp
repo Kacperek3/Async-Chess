@@ -106,7 +106,7 @@ void AiLogic::handleCastle(Piece* movedPiece, const Coordinate& target, Piece*& 
 
 void AiLogic::undoCastle(Piece* rook, const Coordinate& rookOriginalPosition) {
     if (rook) {
-        rook->simulateMove(rookOriginalPosition.x, rookOriginalPosition.y);
+        rook->simulateMove(rookOriginalPosition.x, rookOriginalPosition.y, false);
     }
 }
 
@@ -173,13 +173,13 @@ float AiLogic::quiescence(float alpha, float beta, int color, int qDepth) {
         Piece* movedPiece = move.piece; 
         Coordinate originalPosition = movedPiece->getBoardPosition();
 
-        movedPiece->simulateMove(target.x, target.y);
-        targetPiece->simulateMove(-1, -1);
+        movedPiece->simulateMove(target.x, target.y, false);
+        targetPiece->simulateMove(-1, -1, false);
 
         float score = -quiescence(-beta, -alpha, 1 - color, qDepth - 1);
 
-        movedPiece->simulateMove(originalPosition.x, originalPosition.y);
-        targetPiece->simulateMove(target.x, target.y);
+        movedPiece->simulateMove(originalPosition.x, originalPosition.y, false);
+        targetPiece->simulateMove(target.x, target.y, false);
 
         if (score >= beta) return beta;
         if (score > alpha) alpha = score;
@@ -228,14 +228,14 @@ float AiLogic::negaMax(int depth, int color, float alpha, float beta) {
         Piece* rook = nullptr;
         handleCastle(movedPiece, target, rook, rookOriginal, rookTarget);
 
-        movedPiece->simulateMove(target.x, target.y);
-        if (capturedPiece) capturedPiece->simulateMove(-1, -1);
-        if (rook) rook->simulateMove(rookTarget.x, rookTarget.y);
+        movedPiece->simulateMove(target.x, target.y, false);
+        if (capturedPiece) capturedPiece->simulateMove(-1, -1, false);
+        if (rook) rook->simulateMove(rookTarget.x, rookTarget.y, false);
 
         float currentScore = -negaMax(depth - 1, 1 - color, -beta, -alpha);
 
-        movedPiece->simulateMove(originalPosition.x, originalPosition.y);
-        if (capturedPiece) capturedPiece->simulateMove(target.x, target.y);
+        movedPiece->simulateMove(originalPosition.x, originalPosition.y, false);
+        if (capturedPiece) capturedPiece->simulateMove(target.x, target.y,false);
         undoCastle(rook, rookOriginal);
 
         if (currentScore >= beta) {
@@ -299,14 +299,14 @@ std::pair<Piece*, Coordinate> AiLogic::getBestMove(int depth, int color) {
         Piece* rook = nullptr;
         handleCastle(movedPiece, target, rook, rookOriginal, rookTarget);
 
-        movedPiece->simulateMove(target.x, target.y);
-        if (capturedPiece) capturedPiece->simulateMove(-1, -1);
-        if (rook) rook->simulateMove(rookTarget.x, rookTarget.y);
+        movedPiece->simulateMove(target.x, target.y, false);
+        if (capturedPiece) capturedPiece->simulateMove(-1, -1, false);
+        if (rook) rook->simulateMove(rookTarget.x, rookTarget.y,false);
 
         float score = -negaMax(depth - 1, 1 - color, -beta, -alpha);
 
-        movedPiece->simulateMove(originalPosition.x, originalPosition.y);
-        if (capturedPiece) capturedPiece->simulateMove(target.x, target.y);
+        movedPiece->simulateMove(originalPosition.x, originalPosition.y, false);
+        if (capturedPiece) capturedPiece->simulateMove(target.x, target.y, false);
         undoCastle(rook, rookOriginal);
 
         if (score > bestScore) {
@@ -343,8 +343,11 @@ void AiLogic::aiMove(int color) {
     Piece* rook = nullptr;
     handleCastle(movedPiece, target, rook, rookOriginal, rookTarget);
 
-    if (capturedPiece) _board->removePiece(target.x, target.y, nullptr);
+   if (capturedPiece) {
+        capturedPiece->simulateMove(-1, -1, false); 
+    }
     
-    movedPiece->move(target.x, target.y);
-    if(rook) rook->move(rookTarget.x, rookTarget.y);
+    movedPiece->move(target.x, target.y, true); 
+    
+    if(rook) rook->move(rookTarget.x, rookTarget.y, true); 
 }

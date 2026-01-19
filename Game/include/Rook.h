@@ -7,7 +7,7 @@
 class Rook : public Piece {
 public:
     Rook(int color, int boardX, int boardY, Board* board, sf::Texture& rookTexture);
-    void move(int boardX, int boardY) override;
+    void move(int boardX, int boardY, bool updateVisuals = true) override;
     Rook();
     ~Rook();
 
