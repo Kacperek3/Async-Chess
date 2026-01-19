@@ -72,5 +72,8 @@ private:
     sf::Text* _playerLogoText;
     sf::Text* _aiLogoText;
 
+    sf::Sprite _newGameButton;
+    sf::Sprite _menuButton;
+
     AiLogic *_aiLogic;
 };

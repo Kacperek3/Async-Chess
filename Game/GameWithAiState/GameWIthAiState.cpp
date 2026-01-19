@@ -27,6 +27,11 @@ void GameWithAiState::Init(){
     _pawnPromotion->Init();
     _gameSounds->Init();
     _gameOver->Init();
+
+    _data->assetManager.LoadTexture("MENU_BUTTON","assets/GameWithFriendState/Buttons/MenuButton.png");
+    _data->assetManager.LoadTexture("MENU_BUTTON_HOVER","assets/GameWithFriendState/Buttons/MenuButton_hover.png");
+    _data->assetManager.LoadTexture("NEW_GAME_BUTTON","assets/GameWithFriendState/Buttons/NewGameButton.png");
+    _data->assetManager.LoadTexture("NEW_GAME_BUTTON_HOVER","assets/GameWithFriendState/Buttons/NewGameButton_hover.png");
     _data->assetManager.LoadTexture("AI_LOGO", "assets/ProfilePictures/Yeti_100x100.png");
     _data->assetManager.LoadTexture("PLAYER_LOGO", "assets/ProfilePictures/Gingerbread_100x100.png");
     _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
@@ -36,6 +41,12 @@ void GameWithAiState::Init(){
     _aiLogo.setPosition(658, 50);
     _playerLogo.setTexture(_data->assetManager.GetTexture("PLAYER_LOGO"));
     _playerLogo.setPosition(658,50);
+
+    _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON"));
+    _newGameButton.setPosition(648, 330);
+    _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON"));
+    _menuButton.setPosition(648, 330 + 60);
+
 
     _aiLogoText = new sf::Text();
     _aiLogoText->setFont(_font);
@@ -78,6 +89,12 @@ void GameWithAiState::HandleInput() {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2f mousePos = _data->inputManager.GetMousePosition(_data->window);
                 startDragging(mousePos);
+
+                if(_data->inputManager.IsSpriteClickedAccurate(_menuButton, sf::Mouse::Left, _data->window)){
+                    _data->stateManager.AddState(StateRef(new MenuState(_data)), true);
+                }else if(_data->inputManager.IsSpriteClickedAccurate(_newGameButton, sf::Mouse::Left, _data->window)){
+                    _data->stateManager.AddState(StateRef(new GameWithAiState(_data)), true);
+                }
 
 
                 if(_isGameOver){
@@ -391,6 +408,19 @@ void GameWithAiState::Update() {
    
 
     _gameOver->Update();
+
+    if(_data->inputManager.IsSpriteHover(_newGameButton, sf::Mouse::Left, _data->window)){
+        _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON_HOVER"));
+    } 
+    else {
+        _newGameButton.setTexture(_data->assetManager.GetTexture("NEW_GAME_BUTTON"));
+    }
+    if(_data->inputManager.IsSpriteHover(_menuButton, sf::Mouse::Left, _data->window)){
+        _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON_HOVER"));
+    } 
+    else {
+        _menuButton.setTexture(_data->assetManager.GetTexture("MENU_BUTTON"));
+    }
 }
 
 void GameWithAiState::Draw() {
@@ -438,6 +468,9 @@ void GameWithAiState::Draw() {
         _pawnPromotion->ChangePosition(_aiLogic->_board->_dataAboutPawnPromotion._pawnX, 50, _aiLogic->_board->_dataAboutPawnPromotion._pawnColor);
         _pawnPromotion->Draw();
     }
+
+    _data->window.draw(_newGameButton);
+    _data->window.draw(_menuButton);
 
     if(_isAiThinking){
         _data->window.draw(_aiLogo);

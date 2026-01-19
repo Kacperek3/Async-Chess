@@ -20,6 +20,36 @@ void GameWith2State::Init(){
     _pawnPromotion = new PawnPromotion(_data);
     _gameSounds = new GameSounds(_data);
     _gameOver = new GameOver(_data);
+
+    _data->assetManager.LoadTexture("PLAYER_2_LOGO", "assets/ProfilePictures/Yeti_100x100.png");
+    _data->assetManager.LoadTexture("PLAYER_1_LOGO", "assets/ProfilePictures/Gingerbread_100x100.png");
+    _data->assetManager.LoadFont("Poppins", "assets/fonts/Poppins-Light.ttf");
+    _font = _data->assetManager.GetFont("Poppins");
+
+    _player2Logo.setTexture(_data->assetManager.GetTexture("PLAYER_2_LOGO"));
+    _player2Logo.setPosition(658, 50);
+    _player1Logo.setTexture(_data->assetManager.GetTexture("PLAYER_1_LOGO"));
+    _player1Logo.setPosition(658,50);
+
+    _player1LogoText = new sf::Text();
+    _player1LogoText->setFont(_font);
+    _player1LogoText->setCharacterSize(18);
+    _player1LogoText->setFillColor(sf::Color(200,200,200));
+    _player1LogoText->setPosition(654, 170);
+    _player1LogoText->setOutlineColor(sf::Color::Black);
+    _player1LogoText->setOutlineThickness(0);
+    _player1LogoText->setString("Player 1 turn");
+    _player1LogoText->setStyle(sf::Text::Bold);
+    _player2LogoText = new sf::Text();
+    _player2LogoText->setFont(_font);
+    _player2LogoText->setCharacterSize(18);
+    _player2LogoText->setFillColor(sf::Color(200,200,200));
+    _player2LogoText->setPosition(654, 170);
+    _player2LogoText->setOutlineColor(sf::Color::Black);
+    _player2LogoText->setOutlineThickness(0);
+    _player2LogoText->setString("Player 2 turn");
+    _player2LogoText->setStyle(sf::Text::Bold);
+
     _clockWidget->Init();
     _capturedPieces->Init();
     _decorations->Init();
@@ -328,6 +358,14 @@ void GameWith2State::Draw() {
     _capturedPieces->Draw();
     _decorations->Draw();
     _clockWidget->Draw();
+
+    if(currentPlayerTurn == WHITE){
+        _data->window.draw(_player1Logo);
+        _data->window.draw(*_player1LogoText);
+    } else{
+        _data->window.draw(_player2Logo);
+        _data->window.draw(*_player2LogoText);
+    }
     
     if(_board._dataAboutPawnPromotion._isPawnPromotion){
         _pawnPromotion->ChangePosition(_board._dataAboutPawnPromotion._pawnX, 50, _board._dataAboutPawnPromotion._pawnColor);
@@ -345,6 +383,8 @@ void GameWith2State::Draw() {
 
 void GameWith2State::ClearObjects() {
     _board.deleteObjects();
+    delete _player1LogoText;
+    delete _player2LogoText;
     delete _decorations;
     delete _clockWidget;
     delete _capturedPieces;
