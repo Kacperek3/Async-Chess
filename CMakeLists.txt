@@ -8,7 +8,6 @@ file(GLOB_RECURSE SOURCES Game/*.cpp)
 add_executable(Chess ${SOURCES})
 
 
-
 target_include_directories(Chess PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Game/include/
 )
