@@ -11,7 +11,8 @@ if [ "$COMPILE_CONFIG" = "Release" ]; then
     cmake -S . -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Release 
 else
     echo "Default debug mode"
-    cmake -S . -B $BUILD_DIR 
+    cmake -S . -B $BUILD_DIR -DCMAKE_BUILD_TYPE=Debug
+    COMPILE_CONFIG="Debug"
 fi
 
 echo "Compiling source" 

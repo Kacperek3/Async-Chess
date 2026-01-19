@@ -23,6 +23,7 @@ private:
     sf::Sprite _backgroundSprite;    
     sf::Sprite _playWithFriendSprite;    
     sf::Sprite _playWithAISprite;      
+    sf::Text * _authorName;
 
     void UpdateSpriteTexture(sf::Sprite& sprite, const std::string& normalTexture, const std::string& hoverTexture);
 };

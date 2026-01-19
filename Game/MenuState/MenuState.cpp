@@ -22,6 +22,17 @@ void MenuState::Init(){
     _data->assetManager.LoadTexture("BUTTON_PLAY_AI_HOVER", "assets/MenuAssets/Buttons/PlayWithAI_button_hover.png");
     _playWithAISprite.setTexture(_data->assetManager.GetTexture("BUTTON_PLAY_AI"));
     _playWithAISprite.setPosition(120, 130);
+
+
+    _authorName = new sf::Text();
+    _authorName->setFont(_font);
+    _authorName->setCharacterSize(24);
+    _authorName->setFillColor(sf::Color(255,255,255));
+    _authorName->setPosition(600, 550);
+    _authorName->setOutlineColor(sf::Color::Black);
+    _authorName->setOutlineThickness(0);
+    _authorName->setString("Kacperek3");
+    _authorName->setStyle(sf::Text::Bold);
 }
 
 void MenuState::HandleInput() {
@@ -70,10 +81,12 @@ void MenuState::Draw() {
     _data->window.draw(_backgroundSprite);
     _data->window.draw(_playWithFriendSprite);
     _data->window.draw(_playWithAISprite);
+    _data->window.draw(*_authorName);
     _data->window.display();
 }
 
 
 void MenuState::ClearObjects() {
+    delete _authorName;
     _data->assetManager.clearAssets();
 }
