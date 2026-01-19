@@ -23,7 +23,7 @@ void GameWithAiState::Init(){
     _gameSounds = new GameSounds(_data);
     _gameOver = new GameOver(_data);
     _capturedPieces->Init();
-    _decorations->Init();
+    _decorations->Init("Player", "Yetti AI");
     _pawnPromotion->Init();
     _gameSounds->Init();
     _gameOver->Init();

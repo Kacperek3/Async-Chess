@@ -52,7 +52,7 @@ void GameWith2State::Init(){
 
     _clockWidget->Init();
     _capturedPieces->Init();
-    _decorations->Init();
+    _decorations->Init("Player 1", "Player 2");
     _pawnPromotion->Init();
     _gameSounds->Init();
     _gameOver->Init();
@@ -210,7 +210,8 @@ void GameWith2State::clickedOnField(const sf::Vector2f& mousePosition) {
                 _gameSounds->PlayEndGameSound();
                 _isGameOver = true;
                 _isMovingAllowed = false;
-                _gameOver->whoWins(currentPlayerTurn, checkmate);
+                int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+                _gameOver->whoWins(winner, checkmate);
             }
             else if (_board.isStalemate(currentPlayerTurn)) {
                 
@@ -284,7 +285,8 @@ void GameWith2State::stopDragging(sf::Vector2f& mousePosition) {
             _gameSounds->PlayEndGameSound();
             _isGameOver = true;
             _isMovingAllowed = false;
-            _gameOver->whoWins(currentPlayerTurn, checkmate);
+            int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+            _gameOver->whoWins(winner, checkmate);
         }
         else if (_board.isStalemate(currentPlayerTurn)) {
             std::cout << "Pat" << std::endl;
@@ -320,7 +322,8 @@ void GameWith2State::Update() {
     if(isWinnerbyTime){
         _isGameOver = true;
         _isMovingAllowed = false;
-        _gameOver->whoWins(!currentPlayerTurn, timeEnd);
+        int winner = (currentPlayerTurn == WHITE) ? BLACK : WHITE;
+        _gameOver->whoWins(winner, checkmate);
     }
     _gameOver->Update();
 }
