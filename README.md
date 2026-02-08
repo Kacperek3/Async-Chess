@@ -14,7 +14,7 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 * **Intelligent AI:** Custom chess engine playing at approximately **1500 ELO**. Capable of challenging intermediate players.
 * **Multithreaded Architecture:** The AI calculates moves on a separate thread, ensuring the **GUI remains buttery smooth** (60 FPS) even while the computer is thinking.
@@ -26,7 +26,7 @@
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 ### Main Menu
 <p align="center">
@@ -55,7 +55,7 @@
 
 ---
 
-## 🛠️ Installation & Building
+## ️ Installation & Building
 
 This project uses **CMake** for building. I have provided a simple helper script to automate the process for you.
 
@@ -63,7 +63,7 @@ This project uses **CMake** for building. I have provided a simple helper script
 * **Linux:** `g++`, `cmake`, `libsfml-dev`
 * **Windows:** Visual Studio (with C++) or MinGW, and CMake.
 
-### 🚀 The "One-Click" Run (Recommended)
+###  The "One-Click" Run (Recommended)
 
 1.  Clone the repository:
     ```bash
@@ -84,7 +84,7 @@ This project uses **CMake** for building. I have provided a simple helper script
 
 ---
 
-## 💻 Technical Details
+##  Technical Details
 
 For developers interested in the architecture:
 
@@ -94,7 +94,7 @@ For developers interested in the architecture:
 
 ---
 
-## 🎮 Controls
+##  Controls
 
 * **Mouse Left Click:** Select a piece to move, or click and hold to drag.
 * **Mouse Right Click:** Cancel drag (returns the piece to its original square).
@@ -103,16 +103,16 @@ For developers interested in the architecture:
 ---
 
 
-## 🚧 Work in Progress
+##  Work in Progress
 
 This project is currently under active development.
 
 **Roadmap:**
-* 🌐 **LAN Multiplayer:** Support for playing against friends over the local network is coming soon.
+*  **LAN Multiplayer:** Support for playing against friends over the local network is coming soon.
 * Further engine optimizations.
 
 ---
 
-## 📜 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
